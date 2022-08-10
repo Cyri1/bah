@@ -1,0 +1,18 @@
+platforms:
+  android:
+    incrementVersionCode: true
+    manifest:
+      - file: AndroidManifest.xml
+        target: manifest/application
+        attrs:
+        android:name: com.bah.app
+
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+          <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+          <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    xml:
+      - resFile: values/styles.xml
+        target: resources/style[@name="AppTheme.NoActionBar"]
+        inject: <item name="android:windowFullscreen">true</item>
