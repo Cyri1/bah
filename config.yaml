@@ -1,18 +1,44 @@
 platforms:
   android:
+    versionName: 1.0.0
     incrementVersionCode: true
     manifest:
       - file: AndroidManifest.xml
         target: manifest/application
         attrs:
-        android:name: com.bah.app
+          android:requestLegacyExternalStorage: "true"
 
       - file: AndroidManifest.xml
         target: manifest
-        inject: <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-          <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-          <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+        merge:
+          <manifest>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+          </manifest>
     xml:
       - resFile: values/styles.xml
         target: resources/style[@name="AppTheme.NoActionBar"]
-        inject: <item name="android:windowFullscreen">true</item>
+        merge: 
+          <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+            <item name="android:windowFullscreen">true</item>
+          </style>
+      - resFile: values/ic_launcher_background.xml
+        target: resources/color[@name="ic_launcher_background"]
+        replace: |
+          <color name="ic_launcher_background">#0ec6d2</color>
+    # gradle:
+    #   - file: app/build.gradle
+    #     target:
+    #       android:
+    #         buildTypes:
+    #     insert: |
+    #       applicationVariants.all{
+    #           variant ->
+    #               variant.outputs.all {
+    #                   def appName = "bah-"
+    #                   def date = new Date()
+    #                   def formattedDate = date.format('MM-dd-yyyy')
+    #                   outputFileName = appName + formattedDate + "-${variant.versionName}-${variant.versionCode}.apk"
+    #               }
+    #       }
