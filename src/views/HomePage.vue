@@ -2,7 +2,13 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" icon-only color="warning" v-show="false" size="small">
+        <ion-button
+          class="preferences"
+          icon-only
+          color="warning"
+          v-show="false"
+          size="small"
+        >
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row
@@ -84,6 +90,7 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { ScreenBrightness } from "@capacitor-community/screen-brightness";
+import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 import { Dialog } from "@capacitor/dialog";
 
 let jsonStories = ref([]);
@@ -100,6 +107,16 @@ const basePath = "/storage/emulated/0/";
 const modules = [EffectFlip];
 
 onMounted(() => {
+  var permissions = AndroidPermissions;
+  permissions.checkPermission(permissions.CAMERA).then(
+                res => {
+                  console.log(res);
+                },
+                err => {
+                  console.log(err);
+                }
+            );
+
   ScreenBrightness.getBrightness().then((result) => {
     console.log(result);
   });

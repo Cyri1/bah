@@ -11,6 +11,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@awesome-cordova-plugins/android-permissions": "^5.44.0",
     "@awesome-cordova-plugins/core": "^5.44.0",
     "@awesome-cordova-plugins/insomnia": "^5.44.0",
     "@awesome-cordova-plugins/screen-orientation": "^5.44.0",
