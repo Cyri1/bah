@@ -108,8 +108,9 @@ const modules = [EffectFlip];
 
 onMounted(() => {
   var permissions = AndroidPermissions;
-  permissions.checkPermission(permissions.CAMERA).then(
+  permissions.checkPermission(permissions.MANAGE_EXTERNAL_STORAGE).then(
                 res => {
+                  console.log(permissions);
                   console.log(res);
                 },
                 err => {
