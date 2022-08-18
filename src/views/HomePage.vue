@@ -90,7 +90,6 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { ScreenBrightness } from "@capacitor-community/screen-brightness";
-import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 import { Dialog } from "@capacitor/dialog";
 
 let jsonStories = ref([]);
@@ -107,17 +106,6 @@ const basePath = "/storage/emulated/0/";
 const modules = [EffectFlip];
 
 onMounted(() => {
-  var permissions = AndroidPermissions;
-  permissions.checkPermission(permissions.MANAGE_EXTERNAL_STORAGE).then(
-                res => {
-                  console.log(permissions);
-                  console.log(res);
-                },
-                err => {
-                  console.log(err);
-                }
-            );
-
   ScreenBrightness.getBrightness().then((result) => {
     console.log(result);
   });
@@ -127,52 +115,76 @@ onMounted(() => {
 
   (async () => {
     try {
-      //check if packs directory exists
-      let mainDirContent = await Filesystem.readdir({
+      var mainDirContent = await Filesystem.readdir({
         path: "",
         directory: directory,
       });
-      var createPacksDir = true;
-      for (let dirName of mainDirContent.files) {
-        if (dirName.name == "packs") {
-          createPacksDir = false;
-        }
+    } catch (err) {
+      console.log("error reading main dir " + err);
+    }
+    //check if packs directory exists
+
+    var createPacksDir = true;
+    for (let dirName of mainDirContent.files) {
+      if (dirName.name == "packs") {
+        createPacksDir = false;
       }
-      if (createPacksDir) {
-        console.log("creating packs dir");
-        //create packs folder if it doesnt exists
+    }
+    if (createPacksDir) {
+      console.log("creating packs dir");
+      //create packs folder if it doesnt exists
+      try {
         await Filesystem.mkdir({
           path: "packs/",
           directory: directory,
         });
+      } catch (err) {
+        console.log("error creating packs dir " + err);
       }
-      //read packs directory
-      let packsDirContent = await Filesystem.readdir({
+    }
+    //read packs directory
+    try {
+      var packsDirContent = await Filesystem.readdir({
         path: "packs/",
         directory: directory,
         encoding: Encoding.UTF8,
       });
-      if (!packsDirContent.files.length) {
-        Dialog.alert({
-          title: "Aucune histoire",
-          message: "Il n'y a pas d'histoire dans le dossier Documents/packs/",
-        });
-      } else {
-        for (let storyDir of packsDirContent.files) {
-          //create stories index with all story.json
-          let readStoryJson = await Filesystem.readFile({
+    } catch (err) {
+      console.log("error reading packs dir " + err);
+    }
+
+    if (!packsDirContent.files.length) {
+      Dialog.alert({
+        title: "Aucune histoire",
+        message: "Il n'y a pas d'histoire dans le dossier Documents/packs/",
+      });
+    } else {
+      for (let storyDir of packsDirContent.files) {
+        //create stories index with all story.json
+        try {
+          var readStoryJson = await Filesystem.readFile({
             path: "packs/" + storyDir.name + "/story.json",
             directory: directory,
             encoding: Encoding.UTF8,
           });
-          let jsonStory = await JSON.parse(readStoryJson.data);
+        } catch (err) {
+          console.log("error reading story.json " + err);
+          Dialog.alert({
+            title: "Impossible de lire le fichier story.json",
+            message:
+              'Impossible de lire le fichier story.json : vérifier que les permissions d\'accès aux fichiers soient sur "Tous les fichiers".',
+          });
+        }
+        try {
+          var jsonStory = await JSON.parse(readStoryJson.data);
           jsonStory["name"] = storyDir.name;
           jsonStories.value.push(jsonStory);
           createStoriesIndex();
+        } catch (err) {
+          console.log("error parsing json " + err);
         }
+
       }
-    } catch (err) {
-      console.log(err);
     }
   })();
 });
