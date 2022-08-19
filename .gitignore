@@ -1,6 +1,6 @@
-node_modules
-.vscode
-android
-ios
-resources/android
-dist
+/node_modules
+/.vscode
+/android
+/ios
+/assets/android
+/dist
