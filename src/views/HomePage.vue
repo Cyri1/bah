@@ -161,29 +161,31 @@ onMounted(() => {
     } else {
       for (let storyDir of packsDirContent.files) {
         //create stories index with all story.json
-        try {
-          var readStoryJson = await Filesystem.readFile({
-            path: "packs/" + storyDir.name + "/story.json",
-            directory: directory,
-            encoding: Encoding.UTF8,
-          });
-        } catch (err) {
-          console.log("error reading story.json " + err);
-          Dialog.alert({
-            title: "Impossible de lire le fichier story.json",
-            message:
-              'Impossible de lire le fichier story.json : vérifier que les permissions d\'accès aux fichiers soient sur "Tous les fichiers".',
-          });
-        }
-        try {
-          var jsonStory = await JSON.parse(readStoryJson.data);
-          jsonStory["name"] = storyDir.name;
-          jsonStories.value.push(jsonStory);
-          createStoriesIndex();
-        } catch (err) {
-          console.log("error parsing json " + err);
-        }
+        if (storyDir.type == "directory") {
+          try {
+            var readStoryJson = await Filesystem.readFile({
+              path: "packs/" + storyDir.name + "/story.json",
+              directory: directory,
+              encoding: Encoding.UTF8,
+            });
+          } catch (err) {
+            console.log("error reading story.json " + err);
+            Dialog.alert({
+              title: "Impossible de lire le fichier story.json",
+              message:
+                'Impossible de lire le fichier story.json : vérifier que les permissions d\'accès aux fichiers soient sur "Tous les fichiers".',
+            });
+          }
 
+          try {
+            var jsonStory = await JSON.parse(readStoryJson.data);
+            jsonStory["name"] = storyDir.name;
+            jsonStories.value.push(jsonStory);
+            createStoriesIndex();
+          } catch (err) {
+            console.log("error parsing json " + err);
+          }
+        }
       }
     }
   })();
