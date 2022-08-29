@@ -91,10 +91,18 @@ import { useCreateStoriesIndex } from '../composables/createStoriesIndex';
 let activeSlides = ref([]);
 let swiperVisible = ref(true);
 const modules = [EffectFlip];
-
 onMounted(() => {
-  useCreateStoriesIndex()
+  const jsonStories = useCreateStoriesIndex()
+  jsonStories.then((result) => {
+    createIndexSlides(result.value)
+  })
 });
+
+function createIndexSlides(stories) {
+  for (var story of stories) {
+      console.log(story);
+  }
+}
 
 </script>
 
