@@ -2,61 +2,28 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-grid>
-        <ion-button
-          class="preferences"
-          icon-only
-          color="warning"
-          v-show="false"
-          size="small"
-        >
+        <ion-button class="preferences" icon-only color="warning" v-show="false" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
-        <ion-row
-          class="ion-align-items-center ion-justify-content-center main-row"
-        >
+        <ion-row class="ion-align-items-center ion-justify-content-center main-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button
-              class="big-buttons"
-              @click="stop"
-              icon-only
-              color="warning"
-              size="large"
-            >
+            <ion-button class="big-buttons" @click="stop" icon-only color="warning" size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <button @click="click2" v-show="false" color="primary">
-              log datas
-            </button>
           </ion-col>
           <ion-col size="8">
-            <swiper
-              :loop="true"
-              v-show="swiperVisible"
-              :modules="modules"
-              :effect="'flip'"
-              @init="storeSwiperInstance"
-              @slideChange="readAudioActiveSlide"
-            >
-              <swiper-slide v-for="(slide, index) in activeSlides" :key="index">
-                <ion-img
-                  part="image"
-                  @click="
-                    storeActiveStoryIndex(index), clickOk(slide.actionNode)
-                  "
-                  :src="convertPath(slide.image)"
-                >
+            <swiper :loop="true" v-show="swiperVisible" :modules="modules" :effect="'flip'" @init="storeSwiperInstance, useReadAudioActiveSlide"
+              @slideChange="useReadAudioActiveSlide">
+              <swiper-slide v-for="(slide, index) in activeSlidesSet" :key="index">
+                <ion-img @click="
+                  storeActiveStoryIndex(index), clickOk(slide.actionNode)
+                " :src="useConvertPath(slide.image, slide.storyName)">
                 </ion-img>
               </swiper-slide>
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button
-              @click="pause"
-              class="big-buttons"
-              icon-only
-              color="warning"
-              size="large"
-            >
+            <ion-button @click="pause" class="big-buttons" icon-only color="warning" size="large">
               <ion-icon :icon="pauseSharp" size="large"></ion-icon>
             </ion-button>
           </ion-col>
@@ -87,21 +54,39 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useCreateStoriesIndex } from '../composables/createStoriesIndex';
+import { useConvertPath } from '../composables/convertPath';
+// import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
+import { useReadAudioActiveSlide } from '../composables/readAudio';
 
-let activeSlides = ref([]);
-let swiperVisible = ref(true);
+var swiperVisible = ref(true);
+const swipe = ref(null);
 const modules = [EffectFlip];
+var activeSlidesSet = ref([]);
+
 onMounted(() => {
   const jsonStories = useCreateStoriesIndex()
   jsonStories.then((result) => {
-    createIndexSlides(result.value)
+    listIndexSlidesSet(result.value)
   })
 });
 
-function createIndexSlides(stories) {
+function listIndexSlidesSet(stories) {
+  //search squareOne in stagesNodes
+  var indexSlidesSet = [];
   for (var story of stories) {
-      console.log(story);
+    for (var stageNode of story.stageNodes) {
+      if (stageNode.squareOne) {
+        stageNode.storyName = story.name
+        indexSlidesSet.push(stageNode);
+      }
+    }
   }
+  activeSlidesSet.value = indexSlidesSet
+  console.log(activeSlidesSet);
+}
+
+function storeSwiperInstance(swiper) {
+  swipe.value = swiper;
 }
 
 </script>
@@ -114,6 +99,7 @@ ion-content {
 .main-row {
   height: 100vh;
 }
+
 .preferences {
   position: absolute;
   top: 10px;
