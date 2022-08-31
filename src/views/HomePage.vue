@@ -10,14 +10,16 @@
             <ion-button class="big-buttons" @click="stop" icon-only color="warning" size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
+            <button @click="debug" v-show="true" color="primary">
+              log datas
+            </button>
           </ion-col>
           <ion-col size="8">
-            <swiper :loop="true" v-show="swiperVisible" :modules="modules" :effect="'flip'" @init="storeSwiperInstance, useReadAudioActiveSlide"
-              @slideChange="useReadAudioActiveSlide">
+            <swiper :loop="true" v-show="swiperVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
+              @realIndexChange="useReadAudioActiveSlide">
               <swiper-slide v-for="(slide, index) in activeSlidesSet" :key="index">
-                <ion-img @click="
-                  storeActiveStoryIndex(index), clickOk(slide.actionNode)
-                " :src="useConvertPath(slide.image, slide.storyName)">
+                <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.actionNode)"
+                  :src="useConvertPath(slide.image, slide.storyName)">
                 </ion-img>
               </swiper-slide>
             </swiper>
@@ -62,6 +64,7 @@ var swiperVisible = ref(true);
 const swipe = ref(null);
 const modules = [EffectFlip];
 var activeSlidesSet = ref([]);
+var activeStoryIndex = ref(null);
 
 onMounted(() => {
   const jsonStories = useCreateStoriesIndex()
@@ -69,6 +72,14 @@ onMounted(() => {
     listIndexSlidesSet(result.value)
   })
 });
+
+function debug() {
+  console.log(activeSlidesSet.value);
+}
+
+function onSwiper(swiper) {
+  swipe.value = swiper
+}
 
 function listIndexSlidesSet(stories) {
   //search squareOne in stagesNodes
@@ -82,13 +93,13 @@ function listIndexSlidesSet(stories) {
     }
   }
   activeSlidesSet.value = indexSlidesSet
-  console.log(activeSlidesSet);
 }
 
-function storeSwiperInstance(swiper) {
-  swipe.value = swiper;
+function storeActiveStoryIndex(index) {
+  if (activeStoryIndex.value !== null) {
+    activeStoryIndex.value = index;
+  }
 }
-
 </script>
 
 <style>
