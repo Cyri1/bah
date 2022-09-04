@@ -1,10 +1,8 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { ref } from 'vue';
 
-export async function useCreateStoriesIndex() {
+export async function storiesIndex() {
   const directory = Directory.Documents;
-  const jsonStories = ref([]);
-
+    var jsonStories = [];
   try {
     var mainDirContent = await Filesystem.readdir({
       path: '',
@@ -63,7 +61,7 @@ export async function useCreateStoriesIndex() {
         try {
           var jsonStory = await JSON.parse(readStoryJson.data);
           jsonStory['name'] = storyDir.name;
-          jsonStories.value.push(jsonStory);
+          jsonStories.push(jsonStory);
         } catch (err) {
             console.log('error parsing json ' + err);
         }

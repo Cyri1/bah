@@ -17,7 +17,7 @@
           <ion-col size="8">
             <swiper :loop="true" v-show="swiperVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
               @realIndexChange="useReadAudioActiveSlide">
-              <swiper-slide v-for="(slide, index) in activeSlidesSet" :key="index">
+              <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.actionNode)"
                   :src="useConvertPath(slide.image, slide.storyName)">
                 </ion-img>
@@ -55,51 +55,45 @@ import "swiper/css";
 import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
-import { useCreateStoriesIndex } from '../composables/createStoriesIndex';
 import { useConvertPath } from '../composables/convertPath';
 // import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useReadAudioActiveSlide } from '../composables/readAudio';
+import { useStoryStore } from '../stores/StoryStores';
+const storyStore = useStoryStore();
 
 var swiperVisible = ref(true);
 const swipe = ref(null);
 const modules = [EffectFlip];
-var activeSlidesSet = ref([]);
-var activeStoryIndex = ref(null);
 
 onMounted(() => {
-  const jsonStories = useCreateStoriesIndex()
-  jsonStories.then((result) => {
-    listIndexSlidesSet(result.value)
+  storyStore.fillStoriesIndex()
+  storyStore.$subscribe((mutation) => {
+    if(mutation.events.key == "stories" && mutation.events.type == "set") {
+      storyStore.fillIndexSlides()
+    }
   })
+
 });
 
+
 function debug() {
-  console.log(activeSlidesSet.value);
+  console.log(storyStore.stories);
+  console.log(storyStore.activeSlides);
 }
 
 function onSwiper(swiper) {
   swipe.value = swiper
 }
 
-function listIndexSlidesSet(stories) {
-  //search squareOne in stagesNodes
-  var indexSlidesSet = [];
-  for (var story of stories) {
-    for (var stageNode of story.stageNodes) {
-      if (stageNode.squareOne) {
-        stageNode.storyName = story.name
-        indexSlidesSet.push(stageNode);
-      }
-    }
-  }
-  activeSlidesSet.value = indexSlidesSet
-}
 
-function storeActiveStoryIndex(index) {
-  if (activeStoryIndex.value !== null) {
-    activeStoryIndex.value = index;
-  }
-}
+
+// listIndexSlidesSet()
+
+// function storeActiveStoryIndex(index) {
+//   if (activeStoryIndex.value !== null) {
+//     activeStoryIndex.value = index;
+//   }
+// }
 </script>
 
 <style>

@@ -1,15 +1,24 @@
-// import { Howl } from 'howler';
-// import { ref } from 'vue';
+import { Howl } from 'howler';
 
+export function useReadAudioActiveSlide(swiper) {
+  var activeAudioSlideHowl;
+  console.log(swiper);
+  var audioFile;
+  activeAudioSlideHowl = new Howl({src: [audioFile]});
 
-export function useReadAudioActiveSlide() {
-  console.log('test');
+  console.log(activeAudioSlideHowl);
+  console.log("read audio active slide");
+  // activeAudioSlideHowl.play();
 }
 
+
+
+
+
 export function useRreadAudioActiveSlideSet() {
-  console.log('test');
+  console.log('useRreadAudioActiveSlideSet');
 }
 
 export function useReadAudioStory() {
-  console.log('test');
+  console.log('useReadAudioStory');
 }
