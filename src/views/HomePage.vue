@@ -68,15 +68,15 @@ onMounted(() => {
   storyStore.$subscribe((mutation) => {
     if (mutation.events.key == "stories" && mutation.events.type == "set") {
       storyStore.fillIndexSlides()
-
+      console.log('test');
     }
   })
 
   storyStore.swiper.on('realIndexChange', function (swiper) {
-    console.log(swiper);
     var convertedPath = useConvertPath(storyStore.activeSlides[swiper.realIndex].storyName + '/assets/' + storyStore.activeSlides[swiper.realIndex].audio)
     useReadAudioActiveSlide(convertedPath)
   });
+
 });
 
 
