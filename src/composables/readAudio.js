@@ -1,14 +1,13 @@
 import { Howl } from 'howler';
 
-export function useReadAudioActiveSlide(swiper) {
+
+export function useReadAudioActiveSlide(audioFile) {
   var activeAudioSlideHowl;
-  console.log(swiper);
-  var audioFile;
   activeAudioSlideHowl = new Howl({src: [audioFile]});
 
   console.log(activeAudioSlideHowl);
   console.log("read audio active slide");
-  // activeAudioSlideHowl.play();
+  activeAudioSlideHowl.play();
 }
 
 

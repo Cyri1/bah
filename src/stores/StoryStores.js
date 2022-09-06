@@ -6,6 +6,8 @@ export const useStoryStore = defineStore('StoryStore', {
     return {
       stories: [],
       activeSlides: [],
+      swiper: {},
+      slidesVisible: true,
     };
   },
   actions: {
@@ -18,7 +20,6 @@ export const useStoryStore = defineStore('StoryStore', {
       //create array of stagesnodes containing squareOne
       var indexSlides = [];
       for (var story of this.stories) {
-        console.log(story);
         for (var stageNode of story.stageNodes) {
           if (stageNode.squareOne) {
             stageNode.storyName = story.name;

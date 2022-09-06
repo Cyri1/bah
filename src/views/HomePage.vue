@@ -15,11 +15,11 @@
             </button>
           </ion-col>
           <ion-col size="8">
-            <swiper :loop="true" v-show="swiperVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
-              @realIndexChange="useReadAudioActiveSlide">
+            <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
+              @swiper="onSwiper">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.actionNode)"
-                  :src="useConvertPath(slide.image, slide.storyName)">
+                  :src="useConvertPath(slide.storyName + '/assets/' + slide.image)">
                 </ion-img>
               </swiper-slide>
             </swiper>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import {
   IonImg,
   IonButton,
@@ -57,37 +57,40 @@ import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
 // import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
-import { useReadAudioActiveSlide } from '../composables/readAudio';
 import { useStoryStore } from '../stores/StoryStores';
+import { useReadAudioActiveSlide } from '../composables/readAudio';
 const storyStore = useStoryStore();
 
-var swiperVisible = ref(true);
-const swipe = ref(null);
 const modules = [EffectFlip];
 
 onMounted(() => {
   storyStore.fillStoriesIndex()
   storyStore.$subscribe((mutation) => {
-    if(mutation.events.key == "stories" && mutation.events.type == "set") {
+    if (mutation.events.key == "stories" && mutation.events.type == "set") {
       storyStore.fillIndexSlides()
+
     }
   })
 
+  storyStore.swiper.on('realIndexChange', function (swiper) {
+    console.log(swiper);
+    var convertedPath = useConvertPath(storyStore.activeSlides[swiper.realIndex].storyName + '/assets/' + storyStore.activeSlides[swiper.realIndex].audio)
+    useReadAudioActiveSlide(convertedPath)
+  });
 });
 
 
 function debug() {
   console.log(storyStore.stories);
-  console.log(storyStore.activeSlides);
+  // console.log(storyStore.activeSlides);
+  // console.log(storyStore.slidesVisible);
 }
 
 function onSwiper(swiper) {
-  swipe.value = swiper
+  storyStore.swiper = swiper
+  // var convertedPath = useConvertPath(storyStore.activeSlides[swiper.realIndex].storyName + '/assets/' + storyStore.activeSlides[swiper.realIndex].audio)
+  // useReadAudioActiveSlide(convertedPath)
 }
-
-
-
-// listIndexSlidesSet()
 
 // function storeActiveStoryIndex(index) {
 //   if (activeStoryIndex.value !== null) {
