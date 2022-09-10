@@ -36,7 +36,7 @@
     "es6-promise-plugin": "^4.2.2",
     "howler": "^2.2.3",
     "pinia": "^2.0.21",
-    "swiper": "^8.3.2",
+    "swiper": "^8.1.5",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12"
   },

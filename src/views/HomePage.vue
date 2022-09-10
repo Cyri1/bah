@@ -16,7 +16,7 @@
           </ion-col>
           <ion-col size="8">
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
-              @swiper="onSwiper">
+              @swiper="onSwiper" @realIndexChange="onRealIndexChange">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.actionNode)"
                   :src="useConvertPath(slide.storyName + '/assets/' + slide.image)">
@@ -64,33 +64,33 @@ const storyStore = useStoryStore();
 const modules = [EffectFlip];
 
 onMounted(() => {
-  storyStore.fillStoriesIndex()
-  storyStore.$subscribe((mutation) => {
-    if (mutation.events.key == "stories" && mutation.events.type == "set") {
-      storyStore.fillIndexSlides()
-      console.log('test');
-    }
-  })
-
-  storyStore.swiper.on('realIndexChange', function (swiper) {
-    var convertedPath = useConvertPath(storyStore.activeSlides[swiper.realIndex].storyName + '/assets/' + storyStore.activeSlides[swiper.realIndex].audio)
-    useReadAudioActiveSlide(convertedPath)
-  });
-
+  // storyStore.swiper.slideToLoop(0, 100, true)
 });
+storyStore.fillStoriesIndex()
+storyStore.$subscribe((mutation) => {
+  if (mutation.events.key === "stories" && mutation.events.type === "set") {
+    storyStore.fillIndexSlides()
+  }
+  if (mutation.events.key === "previousTranslate" && mutation.events.type === "set") {
+    storyStore.swiper.slideToLoop(0, 100, true)
+    storyStore.swiper.emit("realIndexChange")
+  }
+})
+
 
 
 function debug() {
-  console.log(storyStore.stories);
-  // console.log(storyStore.activeSlides);
-  // console.log(storyStore.slidesVisible);
+  console.log(storyStore.swiper.realIndex)
 }
 
 function onSwiper(swiper) {
   storyStore.swiper = swiper
-  // var convertedPath = useConvertPath(storyStore.activeSlides[swiper.realIndex].storyName + '/assets/' + storyStore.activeSlides[swiper.realIndex].audio)
-  // useReadAudioActiveSlide(convertedPath)
 }
+
+function onRealIndexChange() {
+  useReadAudioActiveSlide()
+}
+
 
 // function storeActiveStoryIndex(index) {
 //   if (activeStoryIndex.value !== null) {
