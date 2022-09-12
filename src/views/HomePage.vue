@@ -56,17 +56,16 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
-// import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useStoryStore } from '../stores/StoryStores';
+// import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useReadAudioActiveSlide } from '../composables/readAudio';
 const storyStore = useStoryStore();
 
 const modules = [EffectFlip];
 
 onMounted(() => {
-  // storyStore.swiper.slideToLoop(0, 100, true)
+  storyStore.fillStoriesIndex()
 });
-storyStore.fillStoriesIndex()
 storyStore.$subscribe((mutation) => {
   if (mutation.events.key === "stories" && mutation.events.type === "set") {
     storyStore.fillIndexSlides()
@@ -80,7 +79,7 @@ storyStore.$subscribe((mutation) => {
 
 
 function debug() {
-  console.log(storyStore.swiper.realIndex)
+  console.log(storyStore)
 }
 
 function onSwiper(swiper) {
@@ -91,12 +90,11 @@ function onRealIndexChange() {
   useReadAudioActiveSlide()
 }
 
-
-// function storeActiveStoryIndex(index) {
-//   if (activeStoryIndex.value !== null) {
-//     activeStoryIndex.value = index;
-//   }
-// }
+function storeActiveStoryIndex(index) {
+  if (storyStore.activeStoryIndex !== null) {
+    storyStore.activeStoryIndex = index;
+  }
+}
 </script>
 
 <style>

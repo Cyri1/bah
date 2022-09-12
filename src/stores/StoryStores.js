@@ -6,6 +6,7 @@ export const useStoryStore = defineStore('StoryStore', {
     return {
       stories: [],
       activeSlides: [],
+      activeStoryIndex: null,
       swiper: {},
       slidesVisible: true,
     };
