@@ -18,7 +18,7 @@
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
               @swiper="onSwiper" @realIndexChange="onRealIndexChange">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
-                <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.actionNode)"
+                <ion-img @click="storeActiveStoryIndex(index), findNextStageNodes(slide.okTransition)"
                   :src="useConvertPath(slide.storyName + '/assets/' + slide.image)">
                 </ion-img>
               </swiper-slide>
@@ -59,6 +59,7 @@ import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
 // import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useReadAudioActiveSlide } from '../composables/readAudio';
+import { findNextStageNodes } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 
 const modules = [EffectFlip];
@@ -91,10 +92,9 @@ function onRealIndexChange() {
 }
 
 function storeActiveStoryIndex(index) {
-  if (storyStore.activeStoryIndex !== null) {
     storyStore.activeStoryIndex = index;
-  }
 }
+
 </script>
 
 <style>
