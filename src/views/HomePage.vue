@@ -57,8 +57,8 @@ import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
-// import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
-import { useReadAudioActiveSlide } from '../composables/readAudio';
+// import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
+import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 
@@ -66,6 +66,7 @@ const modules = [EffectFlip];
 
 onMounted(() => {
   storyStore.fillStoriesIndex()
+  initHowlers();
 });
 storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
@@ -96,13 +97,20 @@ function storeActiveStoryIndex(index) {
 }
 
 function handleSlideClick(okTransition) {
+  console.log('////HANDLING CLICK////');
   var nextStageNodes = findNextStageNodes(okTransition)
   console.log(nextStageNodes)
   var nextActionNode = findNextActionNode(nextStageNodes)
   console.log(nextActionNode)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
   if(typeOfActionNode.type === 'audioSlideSet') {
+    console.log(nextActionNode);
+    useReadAudioActiveSlideSet(nextActionNode.audio)
+    handleSlideClick(nextActionNode.okTransition)
     console.log(typeOfActionNode.okTransition);
+  }
+  else {
+    console.log('else');
   }
 }
 

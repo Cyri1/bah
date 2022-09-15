@@ -29,7 +29,6 @@ export function findNextActionNode(nextStageNodes) {
   for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
     .stageNodes) {
       if (stageNode.uuid === nextStageNodes) {
-        console.log(stageNode);
         return stageNode;
       }
   }
@@ -39,5 +38,9 @@ export function detectTypeOfStageNode(actionNode) {
   if(actionNode.controlSettings.autoplay === true && actionNode.homeTransition === null) {
     console.log(actionNode);
     return { type : 'audioSlideSet', okTransition : actionNode.okTransition };
+  }
+  else if(actionNode.controlSettings.autoplay === false && actionNode.homeTransition === null && actionNode.image !== null) {
+    console.log(actionNode);
+    return { type : 'audioSlideSet', okTransition : actionNode.okTransition }
   }
 }

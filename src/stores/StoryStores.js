@@ -9,6 +9,9 @@ export const useStoryStore = defineStore('StoryStore', {
       activeStoryIndex: null,
       swiper: {},
       slidesVisible: true,
+      activeAudioSlideHowl: {},
+      activeAudioSlideSetHowl: {},
+      storyAudioHowl: {},
     };
   },
   actions: {
