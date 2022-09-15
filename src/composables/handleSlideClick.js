@@ -1,20 +1,43 @@
 import { useStoryStore } from '../stores/StoryStores';
 
-export function findNextStageNodes(okTransition) {
-  // okTransition : {
-  // actionNode: "f9dba8f9-e6b3-4cc0-ab8a-0449863bfc2a"
-  // optionIndex: 0
-  // }
-  const storyStore = useStoryStore();
-  console.log(okTransition);
-  console.log(storyStore.stories[storyStore.activeStoryIndex]);
-  console.log(storyStore.stories[storyStore.activeStoryIndex].actionNodes);
+// audio: "a4b2b5315493e6987923b35f2572734ecbf7fd6f.mp3"
+// controlSettings:
+    // autoplay: true
+    // home: true
+    // ok: true
+    // pause: false
+    // wheel: false
+// homeTransition: null
+// image: null
+// okTransition:
+    // actionNode: "48e6f7ce-4bc1-4572-87f2-4cab78783fe3"
+    // optionIndex: 0
+// uuid: "1ff09caf-a485-4582-a461-f2f8510ac011"
 
+export function findNextStageNodes(okTransition) {
+  const storyStore = useStoryStore();
   for (var actionNode of storyStore.stories[storyStore.activeStoryIndex]
     .actionNodes) {
     if (actionNode.id === okTransition.actionNode) {
-      console.log(actionNode.options[okTransition.optionIndex]);
-return stageNodeIds;
+      return actionNode.options[okTransition.optionIndex];
     }
+  }
+}
+
+export function findNextActionNode(nextStageNodes) {
+  const storyStore = useStoryStore();
+  for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
+    .stageNodes) {
+      if (stageNode.uuid === nextStageNodes) {
+        console.log(stageNode);
+        return stageNode;
+      }
+  }
+}
+
+export function detectTypeOfStageNode(actionNode) {
+  if(actionNode.controlSettings.autoplay === true && actionNode.homeTransition === null) {
+    console.log(actionNode);
+    return { type : 'audioSlideSet', okTransition : actionNode.okTransition };
   }
 }

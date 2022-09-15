@@ -18,7 +18,7 @@
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
               @swiper="onSwiper" @realIndexChange="onRealIndexChange">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
-                <ion-img @click="storeActiveStoryIndex(index), findNextStageNodes(slide.okTransition)"
+                <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
                   :src="useConvertPath(slide.storyName + '/assets/' + slide.image)">
                 </ion-img>
               </swiper-slide>
@@ -59,7 +59,7 @@ import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
 // import { useReadAudioActiveSlide, useRreadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useReadAudioActiveSlide } from '../composables/readAudio';
-import { findNextStageNodes } from '../composables/handleSlideClick';
+import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 
 const modules = [EffectFlip];
@@ -68,12 +68,12 @@ onMounted(() => {
   storyStore.fillStoriesIndex()
 });
 storyStore.$subscribe((mutation) => {
-  if (mutation.events.key === "stories" && mutation.events.type === "set") {
+  if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
     storyStore.fillIndexSlides()
   }
-  if (mutation.events.key === "previousTranslate" && mutation.events.type === "set") {
+  if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set') {
     storyStore.swiper.slideToLoop(0, 100, true)
-    storyStore.swiper.emit("realIndexChange")
+    storyStore.swiper.emit('realIndexChange')
   }
 })
 
@@ -93,6 +93,17 @@ function onRealIndexChange() {
 
 function storeActiveStoryIndex(index) {
     storyStore.activeStoryIndex = index;
+}
+
+function handleSlideClick(okTransition) {
+  var nextStageNodes = findNextStageNodes(okTransition)
+  console.log(nextStageNodes)
+  var nextActionNode = findNextActionNode(nextStageNodes)
+  console.log(nextActionNode)
+  var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
+  if(typeOfActionNode.type === 'audioSlideSet') {
+    console.log(typeOfActionNode.okTransition);
+  }
 }
 
 </script>
