@@ -59,7 +59,7 @@ import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
 // import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, initHowlers } from '../composables/readAudio';
-import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode } from '../composables/handleSlideClick';
+import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 
 const modules = [EffectFlip];
@@ -81,8 +81,11 @@ storyStore.$subscribe((mutation) => {
 
 
 function debug() {
-  console.log(storyStore)
+  console.log(storyStore.stories)
+  console.log(storyStore.activeSlides)
 }
+
+
 
 function onSwiper(swiper) {
   storyStore.swiper = swiper
@@ -97,19 +100,26 @@ function storeActiveStoryIndex(index) {
 }
 
 function handleSlideClick(okTransition) {
-  console.log('////HANDLING CLICK////');
+  console.log('////HANDLING CLICK////')
+  console.log(okTransition)
   var nextStageNodes = findNextStageNodes(okTransition)
-  console.log(nextStageNodes)
   var nextActionNode = findNextActionNode(nextStageNodes)
-  console.log(nextActionNode)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
   if(typeOfActionNode.type === 'audioSlideSet') {
-    console.log(nextActionNode);
+    console.log('audioSlideSet');
+    // console.log('nextActionNode :')
+    // console.log(nextActionNode)
+    // console.log('nextStageNodes :')
+    // console.log(nextStageNodes)
     useReadAudioActiveSlideSet(nextActionNode.audio)
     handleSlideClick(nextActionNode.okTransition)
-    console.log(typeOfActionNode.okTransition);
+    // console.log(typeOfActionNode.okTransition)
   }
-  else {
+  else if (typeOfActionNode.type === 'displaySlideSet') {
+    console.log('displaySlideSet');
+    displaySlideSet(okTransition)
+  }
+  else  {
     console.log('else');
   }
 }

@@ -26,8 +26,10 @@ export function findNextStageNodes(okTransition) {
 
 export function findNextActionNode(nextStageNodes) {
   const storyStore = useStoryStore();
+  // console.log(nextStageNodes)
   for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
     .stageNodes) {
+      console.log(stageNode.uuid)
       if (stageNode.uuid === nextStageNodes) {
         return stageNode;
       }
@@ -36,11 +38,35 @@ export function findNextActionNode(nextStageNodes) {
 
 export function detectTypeOfStageNode(actionNode) {
   if(actionNode.controlSettings.autoplay === true && actionNode.homeTransition === null) {
-    console.log(actionNode);
+    // console.log(actionNode);
     return { type : 'audioSlideSet', okTransition : actionNode.okTransition };
   }
   else if(actionNode.controlSettings.autoplay === false && actionNode.homeTransition === null && actionNode.image !== null) {
-    console.log(actionNode);
-    return { type : 'audioSlideSet', okTransition : actionNode.okTransition }
+    console.log(actionNode.okTransition);
+    return { type : 'displaySlideSet', okTransition : actionNode.okTransition }
   }
+}
+
+export function displaySlideSet(okTransition) {
+  const storyStore = useStoryStore();
+  var actionNodeIds = [];
+  for (var actionNode of storyStore.stories[storyStore.activeStoryIndex].actionNodes) {
+    if (actionNode.id === okTransition.actionNode) {
+      actionNodeIds = actionNode.options
+    }
+  }
+
+  var stageNodeIds = [];
+  console.log(actionNodeIds);
+  for (var stageOption of actionNodeIds) {
+    for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
+      .stageNodes) {
+        // console.log(stageNode);
+      if (stageNode.uuid === stageOption) {
+        stageNode.storyName = storyStore.stories[storyStore.activeStoryIndex].name;
+        stageNodeIds.push(stageNode);
+      }
+    }
+  }
+  storyStore.activeSlides = stageNodeIds
 }
