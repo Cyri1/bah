@@ -9,6 +9,7 @@ export const useStoryStore = defineStore('StoryStore', {
       activeStoryIndex: null,
       swiper: {},
       slidesVisible: true,
+      homeTransition: null,
       activeAudioSlideHowl: {},
       activeAudioSlideSetHowl: {},
       storyAudioHowl: {},
@@ -31,7 +32,6 @@ export const useStoryStore = defineStore('StoryStore', {
           }
         }
       }
-      console.log(indexSlides);
       this.activeSlides = indexSlides;
     },
   },

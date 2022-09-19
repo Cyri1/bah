@@ -29,7 +29,6 @@ export function findNextActionNode(nextStageNodes) {
   // console.log(nextStageNodes)
   for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
     .stageNodes) {
-      console.log(stageNode.uuid)
       if (stageNode.uuid === nextStageNodes) {
         return stageNode;
       }
@@ -37,13 +36,16 @@ export function findNextActionNode(nextStageNodes) {
 }
 
 export function detectTypeOfStageNode(actionNode) {
-  if(actionNode.controlSettings.autoplay === true && actionNode.homeTransition === null) {
-    // console.log(actionNode);
+  console.log('detectTypeOfStageNode : ');
+  console.log(actionNode);
+  if(actionNode.controlSettings.autoplay === true && actionNode.controlSettings.pause === false) {
     return { type : 'audioSlideSet', okTransition : actionNode.okTransition };
   }
-  else if(actionNode.controlSettings.autoplay === false && actionNode.homeTransition === null && actionNode.image !== null) {
-    console.log(actionNode.okTransition);
+  else if(actionNode.controlSettings.autoplay === false && actionNode.image !== null) {
     return { type : 'displaySlideSet', okTransition : actionNode.okTransition }
+  }
+  else if(actionNode.controlSettings.autoplay === true && actionNode.controlSettings.pause === true) {
+    return { type : 'audioStory', okTransition : actionNode.okTransition }
   }
 }
 
@@ -57,7 +59,7 @@ export function displaySlideSet(okTransition) {
   }
 
   var stageNodeIds = [];
-  console.log(actionNodeIds);
+  // console.log(actionNodeIds);
   for (var stageOption of actionNodeIds) {
     for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
       .stageNodes) {

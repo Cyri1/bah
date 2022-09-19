@@ -57,8 +57,7 @@ import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
-// import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory } from '../composables/readAudio';
-import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, initHowlers } from '../composables/readAudio';
+import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 
@@ -83,6 +82,8 @@ storyStore.$subscribe((mutation) => {
 function debug() {
   console.log(storyStore.stories)
   console.log(storyStore.activeSlides)
+  console.log(storyStore.activeAudioSlideSetHowl)
+  console.log(storyStore.homeTransition)
 }
 
 
@@ -96,7 +97,9 @@ function onRealIndexChange() {
 }
 
 function storeActiveStoryIndex(index) {
+  if (storyStore.activeStoryIndex === null) {
     storyStore.activeStoryIndex = index;
+  }
 }
 
 function handleSlideClick(okTransition) {
@@ -105,22 +108,29 @@ function handleSlideClick(okTransition) {
   var nextStageNodes = findNextStageNodes(okTransition)
   var nextActionNode = findNextActionNode(nextStageNodes)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
-  if(typeOfActionNode.type === 'audioSlideSet') {
+  if (typeOfActionNode.type === 'audioSlideSet') {
     console.log('audioSlideSet');
-    // console.log('nextActionNode :')
-    // console.log(nextActionNode)
-    // console.log('nextStageNodes :')
-    // console.log(nextStageNodes)
     useReadAudioActiveSlideSet(nextActionNode.audio)
     handleSlideClick(nextActionNode.okTransition)
-    // console.log(typeOfActionNode.okTransition)
   }
   else if (typeOfActionNode.type === 'displaySlideSet') {
-    console.log('displaySlideSet');
+    console.log('displaySlideSet')
+    console.log(nextActionNode)
+    storyStore.homeTransition = nextActionNode.homeTransition
     displaySlideSet(okTransition)
+    storyStore.activeAudioSlideSetHowl.on('end', function () {
+      storyStore.swiper.emit('realIndexChange')
+    })
   }
-  else  {
-    console.log('else');
+  else if (typeOfActionNode.type === 'audioStory') {
+    storyStore.homeTransition = nextActionNode.homeTransition
+    useReadAudioStory(nextActionNode.audio)
+    storyStore.storyAudioHowl.on('end', function () {
+      console.log('story ended');
+    })
+  }
+  else {
+    console.log('else')
   }
 }
 
