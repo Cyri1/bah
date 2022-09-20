@@ -7,7 +7,7 @@
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" @click="stop" icon-only color="warning" size="large">
+            <ion-button class="big-buttons" @click="homeButton" icon-only color="warning" size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="true" color="primary">
@@ -84,6 +84,16 @@ function debug() {
   console.log(storyStore.activeSlides)
   console.log(storyStore.activeAudioSlideSetHowl)
   console.log(storyStore.homeTransition)
+}
+
+function homeButton() {
+  if(storyStore.homeTransition === null) {
+    storyStore.activeStoryIndex = null
+    storyStore.fillIndexSlides()
+  }
+  else {
+    handleSlideClick(storyStore.homeTransition)
+  }
 }
 
 
