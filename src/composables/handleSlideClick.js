@@ -36,8 +36,6 @@ export function findNextActionNode(nextStageNodes) {
 }
 
 export function detectTypeOfStageNode(actionNode) {
-  console.log('detectTypeOfStageNode : ');
-  console.log(actionNode);
   if(actionNode.controlSettings.autoplay === true && actionNode.controlSettings.pause === false) {
     return { type : 'audioSlideSet', okTransition : actionNode.okTransition };
   }
@@ -51,6 +49,7 @@ export function detectTypeOfStageNode(actionNode) {
 
 export function displaySlideSet(okTransition) {
   const storyStore = useStoryStore();
+  // storyStore.activeSlides = [];
   var actionNodeIds = [];
   for (var actionNode of storyStore.stories[storyStore.activeStoryIndex].actionNodes) {
     if (actionNode.id === okTransition.actionNode) {
@@ -59,11 +58,9 @@ export function displaySlideSet(okTransition) {
   }
 
   var stageNodeIds = [];
-  // console.log(actionNodeIds);
   for (var stageOption of actionNodeIds) {
     for (var stageNode of storyStore.stories[storyStore.activeStoryIndex]
       .stageNodes) {
-        // console.log(stageNode);
       if (stageNode.uuid === stageOption) {
         stageNode.storyName = storyStore.stories[storyStore.activeStoryIndex].name;
         stageNodeIds.push(stageNode);

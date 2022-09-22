@@ -71,8 +71,9 @@ storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
     storyStore.fillIndexSlides()
   }
-  if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set') {
-    storyStore.swiper.slideToLoop(0, 100, true)
+  if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set' && mutation.events.oldValue === 0) {
+    console.log(mutation.events);
+    storyStore.swiper.slideToLoop(0, 100, false)
     storyStore.swiper.emit('realIndexChange')
   }
 })
@@ -103,6 +104,7 @@ function onSwiper(swiper) {
 }
 
 function onRealIndexChange() {
+  console.log("onRealIndexChange");
   useReadAudioActiveSlide()
 }
 
@@ -114,28 +116,27 @@ function storeActiveStoryIndex(index) {
 
 function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
-  console.log(okTransition)
+  // console.log(okTransition)
   var nextStageNodes = findNextStageNodes(okTransition)
   var nextActionNode = findNextActionNode(nextStageNodes)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
   if (typeOfActionNode.type === 'audioSlideSet') {
     console.log('audioSlideSet');
+    storyStore.homeTransition = nextActionNode.homeTransition
     useReadAudioActiveSlideSet(nextActionNode.audio)
     handleSlideClick(nextActionNode.okTransition)
   }
   else if (typeOfActionNode.type === 'displaySlideSet') {
     console.log('displaySlideSet')
-    console.log(nextActionNode)
-    storyStore.homeTransition = nextActionNode.homeTransition
     displaySlideSet(okTransition)
-    storyStore.activeAudioSlideSetHowl.on('end', function () {
+    storyStore.activeAudioSlideSetHowl.once('end', function () {
       storyStore.swiper.emit('realIndexChange')
     })
   }
   else if (typeOfActionNode.type === 'audioStory') {
     storyStore.homeTransition = nextActionNode.homeTransition
     useReadAudioStory(nextActionNode.audio)
-    storyStore.storyAudioHowl.on('end', function () {
+    storyStore.storyAudioHowl.once('end', function () {
       console.log('story ended');
     })
   }
