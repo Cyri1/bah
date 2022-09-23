@@ -27,7 +27,7 @@ export const useStoryStore = defineStore('StoryStore', {
       for (var story of this.stories) {
         for (var stageNode of story.stageNodes) {
           if (stageNode.squareOne) {
-            stageNode.storyName = story.name;
+            stageNode.name = story.name;
             indexSlides.push(stageNode);
           }
         }

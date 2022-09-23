@@ -16,16 +16,16 @@
           </ion-col>
           <ion-col size="8">
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
-              @swiper="onSwiper" @realIndexChange="onRealIndexChange">
+              @swiper="onSwiper" @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
-                  :src="useConvertPath(slide.storyName + '/assets/' + slide.image)">
+                  :src="useConvertPath(slide.name + '/assets/' + slide.image)">
                 </ion-img>
               </swiper-slide>
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pause" class="big-buttons" icon-only color="warning" size="large">
+            <ion-button @click="pauseButton" class="big-buttons" icon-only color="warning" size="large">
               <ion-icon :icon="pauseSharp" size="large"></ion-icon>
             </ion-button>
           </ion-col>
@@ -72,7 +72,6 @@ storyStore.$subscribe((mutation) => {
     storyStore.fillIndexSlides()
   }
   if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set' && mutation.events.oldValue === 0) {
-    console.log(mutation.events);
     storyStore.swiper.slideToLoop(0, 100, false)
     storyStore.swiper.emit('realIndexChange')
   }
@@ -83,29 +82,30 @@ storyStore.$subscribe((mutation) => {
 function debug() {
   console.log(storyStore.stories)
   console.log(storyStore.activeSlides)
-  console.log(storyStore.activeAudioSlideSetHowl)
-  console.log(storyStore.homeTransition)
+  console.log(storyStore.swiper);
 }
 
 function homeButton() {
-  if(storyStore.homeTransition === null) {
+  storyStore.activeAudioSlideHowl.stop()
+  storyStore.activeAudioSlideSetHowl.stop()
+  storyStore.storyAudioHowl.stop()
+  storyStore.slidesVisible = true
+  if (storyStore.homeTransition === null) {
     storyStore.activeStoryIndex = null
     storyStore.fillIndexSlides()
+    storyStore.swiper.slideToLoop(0, 0, true)
   }
   else {
     handleSlideClick(storyStore.homeTransition)
   }
 }
 
-
+function pauseButton() {
+  return storyStore.storyAudioHowl.playing() ? storyStore.storyAudioHowl.pause() : storyStore.storyAudioHowl.play();
+}
 
 function onSwiper(swiper) {
   storyStore.swiper = swiper
-}
-
-function onRealIndexChange() {
-  console.log("onRealIndexChange");
-  useReadAudioActiveSlide()
 }
 
 function storeActiveStoryIndex(index) {
@@ -116,28 +116,30 @@ function storeActiveStoryIndex(index) {
 
 function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
-  // console.log(okTransition)
   var nextStageNodes = findNextStageNodes(okTransition)
   var nextActionNode = findNextActionNode(nextStageNodes)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
+  console.log(nextActionNode)
+  console.log(typeOfActionNode)
   if (typeOfActionNode.type === 'audioSlideSet') {
     console.log('audioSlideSet');
-    storyStore.homeTransition = nextActionNode.homeTransition
     useReadAudioActiveSlideSet(nextActionNode.audio)
+    storyStore.homeTransition = nextActionNode.homeTransition
+    storyStore.activeAudioSlideSetHowl.once('end', function () {
+      storyStore.swiper.emit('realIndexChange')
+    })
     handleSlideClick(nextActionNode.okTransition)
   }
   else if (typeOfActionNode.type === 'displaySlideSet') {
     console.log('displaySlideSet')
     displaySlideSet(okTransition)
-    storyStore.activeAudioSlideSetHowl.once('end', function () {
-      storyStore.swiper.emit('realIndexChange')
-    })
   }
   else if (typeOfActionNode.type === 'audioStory') {
-    storyStore.homeTransition = nextActionNode.homeTransition
     useReadAudioStory(nextActionNode.audio)
+    storyStore.slidesVisible = false
     storyStore.storyAudioHowl.once('end', function () {
-      console.log('story ended');
+      handleSlideClick(nextActionNode.okTransition)
+      storyStore.slidesVisible = true
     })
   }
   else {
