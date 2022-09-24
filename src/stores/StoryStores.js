@@ -7,6 +7,7 @@ export const useStoryStore = defineStore('StoryStore', {
       stories: [],
       activeSlides: [],
       activeStoryIndex: null,
+      isAudioActiveSlideSetPlaying: false,
       swiper: {},
       slidesVisible: true,
       homeTransition: null,

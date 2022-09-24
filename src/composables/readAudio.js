@@ -2,6 +2,7 @@ import { Howl } from 'howler';
 import { useConvertPath } from './convertPath';
 import { useStoryStore } from '../stores/StoryStores';
 
+
 export function initHowlers() {
   const storyStore = useStoryStore();
   storyStore.activeAudioSlideHowl = new Howl({ src: [null], html5: true })
@@ -12,8 +13,9 @@ export function initHowlers() {
 export function useReadAudioActiveSlide() {
   console.log('read audio active slide');
   const storyStore = useStoryStore();
-  console.log(storyStore.swiper.realIndex);
-  console.log(storyStore.activeSlides[storyStore.swiper.realIndex]);
+  if (storyStore.isAudioActiveSlideSetPlaying) {
+    return
+  }
   var convertedPath = useConvertPath(storyStore.activeSlides[storyStore.swiper.realIndex].name + '/assets/' +
   storyStore.activeSlides[storyStore.swiper.realIndex].audio
   );
@@ -28,6 +30,7 @@ export function useReadAudioActiveSlide() {
 export function useReadAudioActiveSlideSet(audio) {
   console.log('read audio active slide set');
   const storyStore = useStoryStore();
+  storyStore.isAudioActiveSlideSetPlaying = true
   var convertedPath = useConvertPath(storyStore.activeSlides[storyStore.swiper.realIndex].name + '/assets/' + audio);
   storyStore.activeAudioSlideHowl.stop();
   storyStore.activeAudioSlideSetHowl.unload();

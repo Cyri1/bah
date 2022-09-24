@@ -60,13 +60,16 @@ import { useStoryStore } from '../stores/StoryStores';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
-
 const modules = [EffectFlip];
 
 onMounted(() => {
   storyStore.fillStoriesIndex()
   initHowlers();
 });
+
+window.screen.orientation.lock("landscape");
+window.plugins.insomnia.keepAwake();
+
 storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
     storyStore.fillIndexSlides()
@@ -125,14 +128,22 @@ function handleSlideClick(okTransition) {
     console.log('audioSlideSet');
     useReadAudioActiveSlideSet(nextActionNode.audio)
     storyStore.homeTransition = nextActionNode.homeTransition
+    storyStore.swiper.slideToLoop(0, 0, false)
     storyStore.activeAudioSlideSetHowl.once('end', function () {
-      storyStore.swiper.emit('realIndexChange')
+    storyStore.isAudioActiveSlideSetPlaying = false
+    storyStore.swiper.emit('realIndexChange')
     })
     handleSlideClick(nextActionNode.okTransition)
   }
   else if (typeOfActionNode.type === 'displaySlideSet') {
     console.log('displaySlideSet')
     displaySlideSet(okTransition)
+    storyStore.swiper.emit('realIndexChange')
+  }
+  else if (typeOfActionNode.type === 'endOfStory') {
+    console.log('endOfStory')
+    displaySlideSet(okTransition)
+    storyStore.swiper.emit('realIndexChange')
   }
   else if (typeOfActionNode.type === 'audioStory') {
     useReadAudioStory(nextActionNode.audio)

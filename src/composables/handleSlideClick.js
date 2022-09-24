@@ -42,8 +42,15 @@ export function detectTypeOfStageNode(actionNode) {
   else if(actionNode.controlSettings.autoplay === false && actionNode.image !== null) {
     return { type : 'displaySlideSet', okTransition : actionNode.okTransition }
   }
+  else if(actionNode.controlSettings.autoplay === false && actionNode.image == null) {
+    return { type : 'endOfStory', okTransition : actionNode.okTransition }
+  }
   else if(actionNode.controlSettings.autoplay === true && actionNode.controlSettings.pause === true) {
     return { type : 'audioStory', okTransition : actionNode.okTransition }
+  }
+  else {
+    console.log('no match')
+    console.log(actionNode);
   }
 }
 
