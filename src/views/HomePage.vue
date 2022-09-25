@@ -65,10 +65,9 @@ const modules = [EffectFlip];
 onMounted(() => {
   storyStore.fillStoriesIndex()
   initHowlers();
+  window.screen.orientation.lock("landscape");
+  window.plugins.insomnia.keepAwake();
 });
-
-window.screen.orientation.lock("landscape");
-window.plugins.insomnia.keepAwake();
 
 storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
@@ -119,6 +118,7 @@ function storeActiveStoryIndex(index) {
 
 function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
+  console.log(okTransition)
   var nextStageNodes = findNextStageNodes(okTransition)
   var nextActionNode = findNextActionNode(nextStageNodes)
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
