@@ -118,14 +118,25 @@ function storeActiveStoryIndex(index) {
 
 function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
+  console.log('searching nextStageNode with okTransition...')
   console.log(okTransition)
+  console.log('/////////////////////')
   var nextStageNodes = findNextStageNodes(okTransition)
+  console.log('found nextStageNodes :')
+  console.log(nextStageNodes)
+  console.log('/////////////////////')
+  console.log('searching nextActionNode with nextStageNodes...')
   var nextActionNode = findNextActionNode(nextStageNodes)
-  var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
+  console.log('found nextActionNode  :')
   console.log(nextActionNode)
+  console.log('/////////////////////')
+  console.log('detecting type of actionNode...')
+  var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
+  console.log('detected type of action node :')
   console.log(typeOfActionNode)
+  console.log('/////////////////////')
+
   if (typeOfActionNode.type === 'audioSlideSet') {
-    console.log('audioSlideSet');
     useReadAudioActiveSlideSet(nextActionNode.audio)
     storyStore.homeTransition = nextActionNode.homeTransition
     storyStore.swiper.slideToLoop(0, 0, false)
@@ -136,25 +147,28 @@ function handleSlideClick(okTransition) {
     handleSlideClick(nextActionNode.okTransition)
   }
   else if (typeOfActionNode.type === 'displaySlideSet') {
-    console.log('displaySlideSet')
     displaySlideSet(okTransition)
+    storyStore.slidesVisible = true
     storyStore.swiper.emit('realIndexChange')
   }
   else if (typeOfActionNode.type === 'endOfStory') {
-    console.log('endOfStory')
-    displaySlideSet(okTransition)
-    storyStore.swiper.emit('realIndexChange')
+    homeButton()
+    storyStore.slidesVisible = true
   }
   else if (typeOfActionNode.type === 'audioStory') {
     useReadAudioStory(nextActionNode.audio)
     storyStore.slidesVisible = false
     storyStore.storyAudioHowl.once('end', function () {
-      handleSlideClick(nextActionNode.okTransition)
-      storyStore.slidesVisible = true
+      if(nextActionNode.okTransition !== null) {
+        handleSlideClick(nextActionNode.okTransition)
+      } else {
+        homeButton()
+        storyStore.slidesVisible = true
+      }
     })
   }
   else {
-    console.log('else')
+    console.log('no match')
   }
 }
 

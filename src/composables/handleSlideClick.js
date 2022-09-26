@@ -19,7 +19,7 @@ export function findNextStageNodes(okTransition) {
   for (var actionNode of storyStore.stories[storyStore.activeStoryIndex]
     .actionNodes) {
     if (actionNode.id === okTransition.actionNode) {
-      return actionNode.options[okTransition.optionIndex];
+      return actionNode.options[okTransition.optionIndex < 0 ? 0 : okTransition.optionIndex];
     }
   }
 }
@@ -58,8 +58,8 @@ export function detectTypeOfStageNode(actionNode) {
     ) {
     return { type : 'displaySlideSet', okTransition : actionNode.okTransition }
   }
-  else if(actionNode.controlSettings.autoplay === false && actionNode.image == null) {
-    return { type : 'endOfStory', okTransition : actionNode.okTransition }
+  else if(actionNode.okTransition === null) {
+    return { type : 'endOfStory', okTransition : null }
   }
   else if(
     actionNode.audio !== null &&
@@ -84,7 +84,7 @@ export function detectTypeOfStageNode(actionNode) {
     return { type : 'audioSlideSet', okTransition : actionNode.okTransition }
   }
   else {
-    console.log('no match')
+    console.log('actionNode doesnt match with any types :')
     console.log(actionNode);
   }
 }
