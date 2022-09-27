@@ -62,13 +62,22 @@ export function detectTypeOfStageNode(actionNode) {
     return { type : 'endOfStory', okTransition : null }
   }
   else if(
-    actionNode.audio !== null &&
+    (actionNode.audio !== null &&
     actionNode.controlSettings.autoplay === true &&
     actionNode.controlSettings.home === false &&
     actionNode.controlSettings.ok === false &&
     actionNode.controlSettings.pause === true &&
     actionNode.controlSettings.wheel === false &&
+    actionNode.image === null)
+    || (
+    actionNode.audio !== null &&
+    actionNode.controlSettings.autoplay === true &&
+    actionNode.controlSettings.home === true &&
+    actionNode.controlSettings.ok === false &&
+    actionNode.controlSettings.pause === true &&
+    actionNode.controlSettings.wheel === false &&
     actionNode.image === null
+    )
     ) {
     return { type : 'audioStory', okTransition : actionNode.okTransition }
   }
