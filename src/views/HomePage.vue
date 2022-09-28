@@ -96,6 +96,7 @@ function homeButton() {
     storyStore.activeStoryIndex = null
     storyStore.fillIndexSlides()
     storyStore.swiper.slideToLoop(0, 0, true)
+    storyStore.swiper.emit('realIndexChange')
   }
   else {
     handleSlideClick(storyStore.homeTransition)
@@ -120,16 +121,16 @@ function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
   console.log('searching nextStageNode with okTransition...')
   console.log(okTransition)
-  console.log('/////////////////////')
+  console.log('......................')
   var nextStageNodes = findNextStageNodes(okTransition)
   console.log('found nextStageNodes :')
   console.log(nextStageNodes)
-  console.log('/////////////////////')
+  console.log('......................')
   console.log('searching nextActionNode with nextStageNodes...')
   var nextActionNode = findNextActionNode(nextStageNodes)
   console.log('found nextActionNode  :')
   console.log(nextActionNode)
-  console.log('/////////////////////')
+  console.log('......................')
   console.log('detecting type of actionNode...')
   var typeOfActionNode = detectTypeOfStageNode(nextActionNode)
   console.log('detected type of action node :')
@@ -149,7 +150,7 @@ function handleSlideClick(okTransition) {
   else if (typeOfActionNode.type === 'displaySlideSet') {
     displaySlideSet(okTransition)
     storyStore.slidesVisible = true
-    storyStore.swiper.emit('realIndexChange')
+    storyStore.swiper.slideToLoop(0, 0, true)
   }
   else if (typeOfActionNode.type === 'endOfStory') {
     homeButton()
@@ -158,6 +159,7 @@ function handleSlideClick(okTransition) {
   else if (typeOfActionNode.type === 'audioStory') {
     useReadAudioStory(nextActionNode.audio)
     storyStore.slidesVisible = false
+    storyStore.homeTransition = nextActionNode.homeTransition
     storyStore.storyAudioHowl.once('end', function () {
       if(nextActionNode.okTransition !== null) {
         handleSlideClick(nextActionNode.okTransition)
