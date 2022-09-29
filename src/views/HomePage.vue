@@ -13,6 +13,9 @@
             <button @click="debug" v-show="true" color="primary">
               log datas
             </button>
+            <button @click="audioToEnd" v-show="true" color="primary">
+              Audio to end
+            </button>
           </ion-col>
           <ion-col size="8">
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
@@ -87,10 +90,17 @@ function debug() {
   console.log(storyStore.swiper);
 }
 
+function audioToEnd() {
+  console.log(storyStore.storyAudioHowl.seek())
+  storyStore.storyAudioHowl.seek(storyStore.storyAudioHowl.duration() - 3)
+}
+
 function homeButton() {
   storyStore.activeAudioSlideHowl.stop()
   storyStore.activeAudioSlideSetHowl.stop()
-  storyStore.storyAudioHowl.stop()
+  storyStore.storyAudioHowl.unload()
+  storyStore.storyAudioHowl._queue = []
+  storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
   if (storyStore.homeTransition === null) {
     storyStore.activeStoryIndex = null
