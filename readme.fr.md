@@ -1,5 +1,5 @@
 # Boîte à histoires :
-*Read this in other languages: [English](README.md), [Français](README.fr.md)*
+*Read this in other languages: [English](reademe.md), [Français](readme.fr.md)*
 ## Comment utiliser l'appli :
 - Télécharger des histoires, toutes les informations à propos de comment télécharger de nouvelles histoires sont disponibles sur ce serveur Discord : https://monurl.ca/lunii.creations 
 - Dézipper les histoires dans le dossier Documents/packs/.
