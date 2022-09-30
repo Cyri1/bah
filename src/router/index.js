@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import HomePage from '../views/HomePage.vue'
+import PreferencesPage from '../views/PreferencesPage.vue'
 
 const routes = [
   {
@@ -10,7 +11,33 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: HomePage
-  }
+  },
+  {
+    path: '/preferences',
+    redirect: '/preferences/tab1',
+  },
+  {
+    path: '/preferences/',
+    component: PreferencesPage,
+    children: [
+      {
+        path: '',
+        redirect: 'tab1',
+      },
+      {
+        path: 'tab1',
+        component: () => import('../views/PrefTab1.vue'),
+      },
+      {
+        path: 'tab2',
+        component: () => import('../views/PrefTab2.vue'),
+      },
+      {
+        path: 'tab3',
+        component: () => import('../views/PrefTab3.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({

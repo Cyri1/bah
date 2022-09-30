@@ -2,7 +2,8 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" icon-only color="warning" v-show="true" size="small">
+        <ion-button class="preferences" icon-only color="warning" v-show="true"
+          @click="() => router.push('/preferences/tab1')" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
@@ -40,6 +41,7 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { useRouter } from 'vue-router';
 import {
   IonImg,
   IonButton,
@@ -49,8 +51,8 @@ import {
   IonGrid,
   IonRow,
   alertController,
+  IonIcon,
 } from "@ionic/vue";
-import { IonIcon } from "@ionic/vue";
 import { home } from "ionicons/icons";
 import { pauseSharp } from "ionicons/icons";
 import { settingsOutline } from "ionicons/icons";
@@ -65,6 +67,7 @@ import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory,
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 const storyStore = useStoryStore();
 const modules = [EffectFlip];
+const router = useRouter();
 
 onMounted(() => {
   storyStore.fillStoriesIndex()
@@ -83,14 +86,14 @@ storyStore.$subscribe((mutation) => {
   }
   if (mutation.events.key === 'errors') {
     (async () => {
-        const alert = await alertController.create({
-          header: 'Erreur(s) lors de la lecture des packs d\'histoires :',
-          message: storyStore.errors.join('<br><br>'),
-          buttons: ['OK'],
-          cssClass:'alert-size',
-        });
-        await alert.present();
-      })();
+      const alert = await alertController.create({
+        header: 'Erreur(s) lors de la lecture des packs d\'histoires :',
+        message: storyStore.errors.join('<br><br>'),
+        buttons: ['OK'],
+        cssClass: 'alert-size',
+      });
+      await alert.present();
+    })();
   }
 })
 
@@ -164,8 +167,8 @@ function handleSlideClick(okTransition) {
     storyStore.homeTransition = nextActionNode.homeTransition
     storyStore.swiper.slideToLoop(0, 0, false)
     storyStore.activeAudioSlideSetHowl.once('end', function () {
-    storyStore.isAudioActiveSlideSetPlaying = false
-    storyStore.swiper.emit('realIndexChange')
+      storyStore.isAudioActiveSlideSetPlaying = false
+      storyStore.swiper.emit('realIndexChange')
     })
     handleSlideClick(nextActionNode.okTransition)
   }
@@ -183,7 +186,7 @@ function handleSlideClick(okTransition) {
     storyStore.slidesVisible = false
     storyStore.homeTransition = nextActionNode.homeTransition
     storyStore.storyAudioHowl.once('end', function () {
-      if(nextActionNode.okTransition !== null) {
+      if (nextActionNode.okTransition !== null) {
         handleSlideClick(nextActionNode.okTransition)
       } else {
         homeButton()
@@ -198,7 +201,7 @@ function handleSlideClick(okTransition) {
 
 </script>
 
-<style>
+<style scoped>
 ion-content {
   --background: #0ec6d2;
 }
@@ -206,6 +209,7 @@ ion-content {
 .main-row {
   height: 100vh;
 }
+
 .alert-size {
   --min-width: 90%;
 }
