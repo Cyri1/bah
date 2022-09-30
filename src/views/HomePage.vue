@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" icon-only color="warning" v-show="false" size="small">
+        <ion-button class="preferences" icon-only color="warning" v-show="true" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
@@ -48,6 +48,7 @@ import {
   IonCol,
   IonGrid,
   IonRow,
+  alertController,
 } from "@ionic/vue";
 import { IonIcon } from "@ionic/vue";
 import { home } from "ionicons/icons";
@@ -79,6 +80,17 @@ storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set' && mutation.events.oldValue === 0) {
     storyStore.swiper.slideToLoop(0, 100, false)
     storyStore.swiper.emit('realIndexChange')
+  }
+  if (mutation.events.key === 'errors') {
+    (async () => {
+        const alert = await alertController.create({
+          header: 'Erreur(s) lors de la lecture des packs d\'histoires :',
+          message: storyStore.errors.join('<br><br>'),
+          buttons: ['OK'],
+          cssClass:'alert-size',
+        });
+        await alert.present();
+      })();
   }
 })
 
@@ -193,6 +205,9 @@ ion-content {
 
 .main-row {
   height: 100vh;
+}
+.alert-size {
+  --min-width: 90%;
 }
 
 .preferences {

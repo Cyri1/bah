@@ -5,6 +5,7 @@ export const useStoryStore = defineStore('StoryStore', {
   state: () => {
     return {
       stories: [],
+      errors: [],
       activeSlides: [],
       activeStoryIndex: null,
       isAudioActiveSlideSetPlaying: false,
@@ -19,7 +20,11 @@ export const useStoryStore = defineStore('StoryStore', {
   actions: {
     fillStoriesIndex() {
       storiesIndex().then((result) => {
-        this.stories = result;
+        if (result.errors) {
+          this.errors = result.data;
+        } else {
+          this.stories = result.data;
+        }
       });
     },
     fillIndexSlides() {
