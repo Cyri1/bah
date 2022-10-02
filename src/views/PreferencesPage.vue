@@ -51,7 +51,7 @@ onMounted(() => {
   
 <style scoped>
 ion-toolbar {
-    --background: #616161;
-    --color: lightgrey;
+    --background: #f1f0f0;
+    --color: rgb(100, 100, 100);
 }
 </style>
