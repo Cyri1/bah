@@ -1,13 +1,18 @@
 <template>
   <ion-page>
 
-    <ion-content class="ion-padding ion-margin-bottom">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga omnis nobis deserunt
-      id a eos quis consequatur veniam dolor odio laboriosam placeat ipsam sed quisquam explicabo natus dignissimos ab
-      non qui, error, commodi ratione consequuntur voluptate quibusdam! Eveniet, voluptas? Eaque eos omnis, quia nihil
-      natus odit. Eaque autem beatae quae labore placeat officiis unde inventore voluptate fuga quas, enim illum!
-      Ratione eos delectus quaerat accusamus tempora ab quibusdam temporibus repellat voluptatem. Maiores vitae numquam
-      nemo, blanditiis voluptatum ad atque omnis magnam, voluptate consequatur quo delectus. Vitae, maiores impedit
-      saepe dolore nostrum, officiis, dolorum vero rem inventore tenetur perferendis ab iure.</ion-content>
+    <ion-content class="ion-padding ion-margin-bottom">
+      <button @click="debug" v-show="true" color="primary">
+        log datas
+      </button>
+      <button @click="test" v-show="true" color="primary">
+        filter
+      </button>
+      <ag-grid-vue class="ag-theme-alpine" style="height: 100%" :columnDefs="storyStore.columnDefs"
+        :rowData="storyStore.unofficialStore" :rowClassRules="rowClassRules" :defaultColDef="defaultColDef"
+        :suppressMovableColumns="true" :rowHeight="25" @cell-clicked="cellWasClicked" @grid-ready="onGridReady">
+      </ag-grid-vue>
+    </ion-content>
   </ion-page>
 </template>
   
@@ -16,9 +21,48 @@ import {
   IonContent,
   IonPage,
 } from "@ionic/vue";
+import { useStoryStore } from '../stores/StoryStores';
+import { AgGridVue } from "ag-grid-vue3";  // the AG Grid Vue Component
+import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
+import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
+
+const storyStore = useStoryStore();
+storyStore.loadUnofficialStoreData()
+
+function debug() {
+  console.log(storyStore.columnDefs)
+  console.log(storyStore.unofficialStore)
+}
+
+function test() {
+  console.log(storyStore.agGrid);
+  storyStore.agGrid.api.setFilterModel({
+    age: {
+      filterType: 'number',
+      type: 'lessThan',
+      filter: 3
+    }
+  })
+}
+function onGridReady(instance) {
+  storyStore.agGrid = instance
+}
+
+
 
 </script>
   
 <style scoped>
+.ag-theme-alpine {
+  --ag-grid-size: 10px;
+  --ag-list-item-height: 40px;
+}
 
+.rag-green {
+  background-color: aquamarine;
+}
+
+.rag-red {
+  background-color: indianred;
+}
 </style>

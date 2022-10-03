@@ -65,6 +65,7 @@ import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
+
 const storyStore = useStoryStore();
 const modules = [EffectFlip];
 const router = useRouter();
@@ -72,7 +73,6 @@ const router = useRouter();
 onMounted(() => {
   storyStore.fillStoriesIndex()
   initHowlers();
-  window.screen.orientation.lock("landscape");
   window.plugins.insomnia.keepAwake();
 });
 

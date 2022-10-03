@@ -5,6 +5,9 @@ export const useStoryStore = defineStore('StoryStore', {
   state: () => {
     return {
       stories: [],
+      unofficialStore: [],
+      agGrid: {},
+      columnDefs: [{ field: 'title' }, { field: 'age', maxWidth: 25 }, { field: 'smallThumbUrl' }, { field: 'downloadUrl' }],
       errors: [],
       activeSlides: [],
       activeStoryIndex: null,
@@ -39,6 +42,11 @@ export const useStoryStore = defineStore('StoryStore', {
         }
       }
       this.activeSlides = indexSlides;
+    },
+    async loadUnofficialStoreData() {
+      let response = await fetch('https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php');
+      let data = await response.json();
+      this.unofficialStore = data
     },
   },
 });

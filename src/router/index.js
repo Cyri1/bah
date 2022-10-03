@@ -10,11 +10,19 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: HomePage
+    component: HomePage,
+    beforeEnter: () => {
+      window.screen.orientation.lock("landscape");
+      return true
+    },
   },
   {
     path: '/preferences',
     redirect: '/preferences/tab1',
+    beforeEnter: () => {
+      window.screen.orientation.lock("portrait");
+      return true
+    },
   },
   {
     path: '/preferences/',
