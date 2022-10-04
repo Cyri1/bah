@@ -6,8 +6,9 @@ export const useStoryStore = defineStore('StoryStore', {
     return {
       stories: [],
       unofficialStore: [],
-      agGrid: {},
-      columnDefs: [{ field: 'title' }, { field: 'age', maxWidth: 25 }, { field: 'smallThumbUrl' }, { field: 'downloadUrl' }],
+      downloadedPacks: [],
+      isLoading: false,
+      isDone: false,
       errors: [],
       activeSlides: [],
       activeStoryIndex: null,
@@ -24,6 +25,7 @@ export const useStoryStore = defineStore('StoryStore', {
     fillStoriesIndex() {
       storiesIndex().then((result) => {
         if (result.errors) {
+          console.log(result.errors);
           this.errors = result.data;
         } else {
           this.stories = result.data;

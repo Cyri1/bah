@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content class="iion-padding ion-margin-bottom">
+    <ion-content class="ion-padding ion-margin-bottom">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum debitis in repudiandae modi ad a laborum nobis
       magni explicabo expedita rerum assumenda itaque consequuntur neque nesciunt eum, nulla sapiente. Ut illo optio
       natus ratione facilis quae maiores tempora unde, voluptatibus vitae aperiam officia temporibus harum ad corporis.

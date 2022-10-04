@@ -11,10 +11,10 @@
             <ion-button class="big-buttons" @click="homeButton" icon-only color="warning" size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <button @click="debug" v-show="true" color="primary">
+            <button @click="debug" v-show="false" color="primary">
               log datas
             </button>
-            <button @click="audioToEnd" v-show="true" color="primary">
+            <button @click="audioToEnd" v-show="false" color="primary">
               Audio to end
             </button>
           </ion-col>
@@ -96,8 +96,6 @@ storyStore.$subscribe((mutation) => {
     })();
   }
 })
-
-
 
 function debug() {
   console.log(storyStore.stories)
