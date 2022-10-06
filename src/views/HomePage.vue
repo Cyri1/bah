@@ -78,11 +78,7 @@ onMounted(() => {
 
 storyStore.$subscribe((mutation) => {
   if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
-    storyStore.fillIndexSlides()
-  }
-  if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set' && mutation.events.oldValue === 0) {
-    storyStore.swiper.slideToLoop(0, 100, false)
-    storyStore.swiper.emit('realIndexChange')
+console.log('blalvb');
   }
   if (mutation.events.key === 'errors') {
     (async () => {

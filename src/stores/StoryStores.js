@@ -30,6 +30,11 @@ export const useStoryStore = defineStore('StoryStore', {
         } else {
           this.stories = result.data;
         }
+      }).then(()=>{
+        this.fillIndexSlides()
+      }).then(()=>{
+        this.swiper.slideToLoop(0, 100, false)
+        this.swiper.emit('realIndexChange')
       });
     },
     fillIndexSlides() {

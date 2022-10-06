@@ -29,7 +29,7 @@
         </ion-content>
       </ion-modal>
       <DataTable class="display compact" :columns="columns" :data="storyStore.unofficialStore"
-        :options="{ select: true, info: fals, lengthChange:false }" ref="table">
+        :options="{ select: true, info: false, lengthChange:false }" ref="table">
         <thead>
           <tr>
             <th></th>
@@ -48,6 +48,7 @@
 <script setup>
 import {
   IonContent,
+  IonPage,
   IonToast,
   IonIcon,
   IonButton,
@@ -91,7 +92,7 @@ const columns = [
 ];
 
 onMounted(() => {
-  listInstalledPacks()
+  listAvailablePacks()
 });
 
 function debug() {
@@ -115,25 +116,31 @@ function installPack(file) {
   );
 }
 
-async function listInstalledPacks() {
+async function listAvailablePacks() {
   storyStore.downloadedPacks = [];
   try {
-    var downloadDirContent = await Filesystem.readdir({
+    Filesystem.readdir({
       path: '/sdcard/Download/',
-    });
+    }).then((result) => {
+      for (let file of result.files) {
+        if (file.name.includes('.zip')) {
+          storyStore.downloadedPacks.push(file.name)
+        }
+      }
+      console.log(storyStore.downloadedPacks);
+    })  ;
   } catch (err) {
     console.log('error reading main dir ' + err);
   }
-  for (let file of downloadDirContent.files) {
-    if (file.name.includes('.zip')) {
-      storyStore.downloadedPacks.push(file.name)
-    }
-  }
-  console.log(storyStore.downloadedPacks);
 }
 
 </script>
   
 <style scoped>
 @import 'datatables.net-dt';
+ion-toolbar {
+    --background: #f1f0f0;
+    --color: rgb(100, 100, 100);
+}
+
 </style>

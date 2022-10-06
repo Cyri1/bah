@@ -28,5 +28,8 @@ import {
 </script>
   
 <style scoped>
-
+ion-toolbar {
+    --background: #f1f0f0;
+    --color: rgb(100, 100, 100);
+}
 </style>
