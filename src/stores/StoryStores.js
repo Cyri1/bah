@@ -7,6 +7,7 @@ export const useStoryStore = defineStore('StoryStore', {
       stories: [],
       unofficialStore: [],
       downloadedPacks: [],
+      installedPacks: [],
       isLoading: false,
       isDone: false,
       errors: [],
@@ -25,7 +26,7 @@ export const useStoryStore = defineStore('StoryStore', {
     fillStoriesIndex() {
       storiesIndex().then((result) => {
         if (result.errors) {
-          console.log(result.errors);
+          console.log(result.data);
           this.errors = result.data;
         } else {
           this.stories = result.data;

@@ -30,6 +30,7 @@
     "@ionic/vue": "^6.0.0",
     "@ionic/vue-router": "^6.0.0",
     "@trapezedev/configure": "^5.0.0",
+    "cordova-open-native-settings": "^1.5.5",
     "cordova-plugin-file": "^7.0.0",
     "cordova-plugin-insomnia": "^4.3.0",
     "cordova-plugin-screen-orientation": "^3.0.2",

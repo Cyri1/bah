@@ -62,6 +62,7 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
+import { usePermissionsCheck } from '../composables/permissionsCheck';
 import { useStoryStore } from '../stores/StoryStores';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
@@ -69,17 +70,46 @@ import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displayS
 const storyStore = useStoryStore();
 const modules = [EffectFlip];
 const router = useRouter();
+  onMounted(() => {
+    usePermissionsCheck().then((result) => {
+      console.log(result);
+      if (!result) {
+        (async () => {
+          const alert = await alertController.create({
+            header: 'Permissions insuffisantes',
+            subHeader: 'L\'application à besoin de permissions supplémentaires pour fonctionner.',
+            message: `Veuillez accorder l'autorisation "<strong>Autoriser la gestion de tous les fichiers</strong>".`,
+            buttons: [
+              {
+                text: 'Ouvrir les paramètres de l\'appli',
+                handler: () => {
+                  window.cordova.plugins.settings.open("application_details", function () { })
+                },
+              },
+              {
+                text: 'OK',
+              },
+            ],
+            cssClass: 'alert-size',
+          });
+          await alert.present();
+        })();
+      }
+    })
+    storyStore.fillStoriesIndex()
+    initHowlers();
+    window.plugins.insomnia.keepAwake();
+  })
 
-onMounted(() => {
-  storyStore.fillStoriesIndex()
-  initHowlers();
-  window.plugins.insomnia.keepAwake();
-});
+
+router.afterEach((to) => {
+  if (to.name === 'Home') {
+    console.log(to);
+    storyStore.fillStoriesIndex()
+  }
+})
 
 storyStore.$subscribe((mutation) => {
-  if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
-console.log('blalvb');
-  }
   if (mutation.events?.key === 'errors') {
     (async () => {
       const alert = await alertController.create({

@@ -13,7 +13,7 @@ export function initHowlers() {
 export function useReadAudioActiveSlide() {
   console.log('read audio active slide');
   const storyStore = useStoryStore();
-  if (storyStore.isAudioActiveSlideSetPlaying) {
+  if (storyStore.isAudioActiveSlideSetPlaying || storyStore.activeSlides.length === 0 ) {
     return
   }
   var convertedPath = useConvertPath(storyStore.activeSlides[storyStore.swiper.realIndex].name + '/assets/' +

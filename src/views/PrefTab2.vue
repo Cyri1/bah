@@ -2,7 +2,16 @@
 
   <ion-page>
     <ion-content class="ion-padding ion-margin-bottom">
-Coming soon...
+      <ion-title color="danger">Under construction</ion-title>
+      <ion-item v-for="(file, index) in storyStore.installedPacks" color="light" :key="index">
+        <ion-label>{{file.name}}</ion-label>
+        <ion-button slot="end">
+          <ion-icon slot="icon-only" :icon="trashOutline"></ion-icon>
+        </ion-button>
+        <ion-button slot="end">
+          <ion-icon slot="icon-only" :icon="bookmarkOutline"></ion-icon>
+        </ion-button>
+      </ion-item>
     </ion-content>
   </ion-page>
 </template>
@@ -12,35 +21,27 @@ import { onMounted } from "vue";
 import {
   IonContent,
   IonPage,
+  IonItem,
+  IonButton,
+  IonLabel,
+  IonIcon,
+  IonTitle,
 } from "@ionic/vue";
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { useListInstalledPacks } from '../composables/listInstalledPacks';
+import { trashOutline, bookmarkOutline } from "ionicons/icons";
 import { useStoryStore } from '../stores/StoryStores';
 
 const storyStore = useStoryStore();
-
 onMounted(() => {
-  listAvailablePacks()
+  useListInstalledPacks()
 });
 
-async function listAvailablePacks() {
-  const directory = Directory.Documents;
-  storyStore.installedPacks = [];
-  try {
-    var downloadDirContent = await Filesystem.readdir({
-      directory: directory,
-    });
-  } catch (err) {
-    console.log('error reading main dir ' + err);
-  }
-  for (let file of downloadDirContent.files) {
-    console.log(file);
-  }
-}
+
 </script>
 <style scoped>
 ion-content {
   --background: #f8f8f8;
-  --color:black;
+  --color: black;
 
 }
 </style>
