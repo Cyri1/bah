@@ -49,6 +49,7 @@
 import {
   IonPage,
   IonContent,
+  IonPage,
   IonToast,
   IonIcon,
   IonButton,
@@ -92,7 +93,7 @@ const columns = [
 ];
 
 onMounted(() => {
-  listInstalledPacks()
+  listAvailablePacks()
 });
 
 function debug() {
@@ -116,21 +117,22 @@ function installPack(file) {
   );
 }
 
-async function listInstalledPacks() {
+async function listAvailablePacks() {
   storyStore.downloadedPacks = [];
   try {
-    var downloadDirContent = await Filesystem.readdir({
+    Filesystem.readdir({
       path: '/sdcard/Download/',
-    });
+    }).then((result) => {
+      for (let file of result.files) {
+        if (file.name.includes('.zip')) {
+          storyStore.downloadedPacks.push(file.name)
+        }
+      }
+      console.log(storyStore.downloadedPacks);
+    })  ;
   } catch (err) {
     console.log('error reading main dir ' + err);
   }
-  for (let file of downloadDirContent.files) {
-    if (file.name.includes('.zip')) {
-      storyStore.downloadedPacks.push(file.name)
-    }
-  }
-  console.log(storyStore.downloadedPacks);
 }
 
 </script>
