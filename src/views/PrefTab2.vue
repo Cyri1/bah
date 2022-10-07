@@ -2,7 +2,7 @@
 
   <ion-page>
     <ion-content class="ion-padding ion-margin-bottom">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto autem ut asperiores maxime hic consectetur quo repudiandae molestias dolorem fugiat.
+Coming soon...
     </ion-content>
   </ion-page>
 </template>
@@ -16,5 +16,9 @@ import {
 </script>
   
 <style scoped>
+ion-content {
+  --background: #f8f8f8;
+  --color:black;
 
+}
 </style>

@@ -77,14 +77,14 @@ onMounted(() => {
 });
 
 storyStore.$subscribe((mutation) => {
-  if (mutation.events.key === 'stories' && mutation.events.type === 'set') {
+  if (mutation.events?.key === 'stories' && mutation.events?.type === 'set') {
     storyStore.fillIndexSlides()
   }
-  if (mutation.events.key === 'previousTranslate' && mutation.events.type === 'set' && mutation.events.oldValue === 0) {
+  if (mutation.events?.key === 'previousTranslate' && mutation.events?.type === 'set' && mutation.events?.oldValue === 0) {
     storyStore.swiper.slideToLoop(0, 100, false)
     storyStore.swiper.emit('realIndexChange')
   }
-  if (mutation.events.key === 'errors') {
+  if (mutation.events?.key === 'errors') {
     (async () => {
       const alert = await alertController.create({
         header: 'Erreur(s) lors de la lecture des packs d\'histoires :',
@@ -140,8 +140,18 @@ function storeActiveStoryIndex(index) {
   }
 }
 
+var oldOkTransition;
 function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
+  if ((okTransition?.actionNode === oldOkTransition?.actionNode) && (okTransition?.optionIndex === oldOkTransition?.optionIndex)) {
+    console.log('preventing home button loop')
+    storyStore.homeTransition = null
+    homeButton()
+    return
+  }
+  console.log(okTransition)
+  console.log(oldOkTransition)
+  oldOkTransition = okTransition;
   console.log('searching nextStageNode with okTransition...')
   console.log(okTransition)
   console.log('......................')

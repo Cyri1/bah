@@ -54,4 +54,7 @@ ion-toolbar {
     --background: #f1f0f0;
     --color: rgb(100, 100, 100);
 }
+ion-content {
+  --background: #f8f8f8;
+}
 </style>

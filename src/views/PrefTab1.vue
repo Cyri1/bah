@@ -4,7 +4,7 @@
       <ion-loading :is-open="storyStore.isLoading" message="Installation en cours...">
       </ion-loading>
       <ion-toast :is-open="storyStore.isDone" message="Pack installé" :duration="2500"
-        @didDismiss="storyStore.isDone = false"></ion-toast>
+        @didDismiss="storyStore.isDone = false" :position="middle"></ion-toast>
       <button @click="debug" v-show="false" color="primary">
         log datas
       </button>
@@ -28,8 +28,8 @@
           </ion-item>
         </ion-content>
       </ion-modal>
-      <DataTable class="display compact" :columns="columns" :data="storyStore.unofficialStore"
-        :options="{ select: true, info: fals, lengthChange:false }" ref="table">
+      <DataTable class="display compact nomargin" :columns="columns" :data="storyStore.unofficialStore"
+        :options="{ pagingType:'simple', dom:'<p<t>i>', autoWidth:false }" ref="table">
         <thead>
           <tr>
             <th></th>
@@ -47,6 +47,7 @@
   
 <script setup>
 import {
+  IonPage,
   IonContent,
   IonToast,
   IonIcon,
@@ -136,4 +137,9 @@ async function listInstalledPacks() {
   
 <style scoped>
 @import 'datatables.net-dt';
+ion-content {
+  --background: #f8f8f8;
+  --color:black;
+}
+
 </style>
