@@ -1,14 +1,13 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :class="'theme-bg-'+ storyStore.theme" :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" icon-only color="warning" v-show="true"
-          @click="() => router.push('/preferences/tab1')" size="small">
+        <ion-button class="preferences" :class="'theme-buttons-'+ storyStore.theme" icon-only @click="() => router.push('/preferences/tab1')" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" @click="homeButton" icon-only color="warning" size="large">
+            <ion-button class="big-buttons" :class="'theme-buttons-'+ storyStore.theme" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
@@ -29,7 +28,7 @@
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" icon-only color="warning" size="large">
+            <ion-button @click="pauseButton" class="big-buttons" :class="'theme-buttons-'+ storyStore.theme" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large"></ion-icon>
             </ion-button>
           </ion-col>
@@ -63,14 +62,16 @@ import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
 import { usePermissionsCheck } from '../composables/permissionsCheck';
-import { useStoryStore } from '../stores/StoryStores';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
+import { useStoryStore } from '../stores/StoryStores';
 
 const storyStore = useStoryStore();
+
 const modules = [EffectFlip];
 const router = useRouter();
   onMounted(() => {
+    storyStore.loadTheme()
     usePermissionsCheck().then((result) => {
       console.log(result);
       if (!result) {
@@ -236,6 +237,7 @@ function handleSlideClick(okTransition) {
 </script>
 
 <style scoped>
+
 ion-content {
   --background: #0ec6d2;
 }
@@ -268,8 +270,4 @@ ion-content {
   --padding-top: 45px;
 }
 
-ion-img::part(image) {
-  filter: blur(1px);
-  box-shadow: inset 0 0 0 1000px rgb(108, 255, 230);
-}
 </style>

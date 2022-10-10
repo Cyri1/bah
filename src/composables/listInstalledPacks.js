@@ -5,7 +5,6 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 export async function useListInstalledPacks() {
     const storyStore = useStoryStore();
     const directory = Directory.Documents;
-
     storyStore.installedPacks = [];
     try {
       Filesystem.readdir({
@@ -19,8 +18,7 @@ export async function useListInstalledPacks() {
         }
       });
     } catch (err) {
-      console.log('error reading main dir ' + err);
+      console.log('error reading packs dir ' + err);
     }
-    console.log(storyStore.installedPacks);
   }
   

@@ -10,7 +10,7 @@ export async function usePermissionsCheck() {
       encoding: Encoding.UTF8,
     });
   } catch (err) {
-    console.log(err);
+    console.log('permission check'+err);
     checkPermissionsSuccess = false;
   }
   try {
@@ -20,7 +20,7 @@ export async function usePermissionsCheck() {
       encoding: Encoding.UTF8,
     });
   } catch (err) {
-    console.log(err);
+    console.log('permission check'+err);
     checkPermissionsSuccess = false;
   }
   try {
@@ -29,7 +29,7 @@ export async function usePermissionsCheck() {
       directory: Directory.Documents,
     });
   } catch (err) {
-    console.log(err);
+    console.log('permission check'+err);
     checkPermissionsSuccess = false;
   }
   return checkPermissionsSuccess;
