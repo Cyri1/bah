@@ -1,13 +1,13 @@
 <template>
   <ion-page>
-    <ion-content :class="'theme-bg-'+ storyStore.theme" :fullscreen="true">
+    <ion-content color="secondary" :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" :class="'theme-buttons-'+ storyStore.theme" icon-only @click="() => router.push('/preferences/tab1')" size="small">
+        <ion-button class="preferences" color="warning" icon-only @click="() => router.push('/preferences/tab1')" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" :class="'theme-buttons-'+ storyStore.theme" @click="homeButton" icon-only size="large">
+            <ion-button class="big-buttons" color="warning" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
@@ -28,7 +28,7 @@
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" :class="'theme-buttons-'+ storyStore.theme" icon-only size="large">
+            <ion-button @click="pauseButton" class="big-buttons" color="favorite" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large"></ion-icon>
             </ion-button>
           </ion-col>
@@ -236,10 +236,23 @@ function handleSlideClick(okTransition) {
 
 </script>
 
-<style scoped>
+<style>
+:root {
+  --ion-color-favorite: #69bb7b;
+  --ion-color-favorite-rgb: 105, 187, 123;
+  --ion-color-favorite-contrast: #ffffff;
+  --ion-color-favorite-contrast-rgb: 255, 255, 255;
+  --ion-color-favorite-shade: #5ca56c;
+  --ion-color-favorite-tint: #78c288;
+}
 
-ion-content {
-  --background: #0ec6d2;
+.ion-color-favorite {
+  --ion-color-base: var(--ion-color-favorite);
+  --ion-color-base-rgb: var(--ion-color-favorite-rgb);
+  --ion-color-contrast: var(--ion-color-favorite-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-favorite-contrast-rgb);
+  --ion-color-shade: var(--ion-color-favorite-shade);
+  --ion-color-tint: var(--ion-color-favorite-tint);
 }
 
 .main-row {

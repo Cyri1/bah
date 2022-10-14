@@ -7,6 +7,7 @@ export const useStoryStore = defineStore('StoryStore', {
     return {
       stories: [],
       theme: null,
+      contributorPwd: null,
       unofficialStore: [],
       downloadedPacks: [],
       installedPacks: [],
@@ -62,8 +63,9 @@ export const useStoryStore = defineStore('StoryStore', {
       })
     },
     async loadUnofficialStoreData() {
+      let contributorPwd = await Preferences.get({ key: 'contributorPwd' })
       let response = await fetch(
-        'https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php'
+        'https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php?contributorPwd='+contributorPwd.value
       );
       let data = await response.json();
       this.unofficialStore = data;

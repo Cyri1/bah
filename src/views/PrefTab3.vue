@@ -7,7 +7,8 @@
       </button>
       <ion-item>
         <ion-label position="floating">Mot de passe contributeur :</ion-label>
-        <ion-input placeholder="Entrer le mot de passe"></ion-input>
+        <ion-input @ionBlur="changeContributorPwd" type="password" :value="storyStore.contributorPwd"
+          placeholder="Entrer le mot de passe"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Choix du thème :</ion-label>
@@ -37,16 +38,34 @@ import {
   IonToggle,
   IonInput,
 } from "@ionic/vue";
+import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
 const storyStore = useStoryStore();
 
+
+onMounted(() => {
+  Preferences.get({ key: 'contributorPwd' }).then((result) => {
+    storyStore.contributorPwd = result.value;
+  })
+})
+
+
 function changeTheme(event) {
   Preferences.set({
     key: 'theme',
-    value: event.detail.value,
+    value: event.srcElement.value,
   })
   console.log(event);
+}
+
+function changeContributorPwd(event) {
+  Preferences.set({
+    key: 'contributorPwd',
+    value: event.srcElement.value,
+  })
+  storyStore.contributorPwd = event.srcElement.value
+  console.log(storyStore.contributorPwd);
 }
 
 function debug() {
