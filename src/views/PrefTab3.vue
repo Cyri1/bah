@@ -12,10 +12,10 @@
       </ion-item>
       <ion-item>
         <ion-label>Choix du thème :</ion-label>
-        <ion-select @ionChange="changeTheme" placeholder="Make a Selection">
+        <ion-select @ionChange="changeTheme" placeholder="Choisissez un thème">
           <ion-select-option value="lunii">Lunii</ion-select-option>
           <ion-select-option value="spiderman">Spiderman</ion-select-option>
-          <ion-select-option value="reine_des_neiges">Reine_des_neiges</ion-select-option>
+          <ion-select-option value="rdn">Reine des neiges</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
