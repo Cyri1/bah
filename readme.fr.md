@@ -1,6 +1,7 @@
 # Boîte à histoires :
 *Lire dans une autre langue: [English](readme.md), [Français](readme.fr.md)*
 ## Comment utiliser l'appli :
+- Télécharger l'app à partir de : https://github.com/Cyri1/bah/releases/latest (accepter l'installation à partir de sources inconnues)
 - Télécharger des histoires, toutes les informations à propos de comment télécharger de nouvelles histoires sont disponibles sur ce serveur Discord : https://monurl.ca/lunii.creations 
 - Ajouter des histoires :
   - Dézipper les histoires téléchargées dans le dossier Documents/packs/.
