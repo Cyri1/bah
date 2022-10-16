@@ -104,7 +104,6 @@ const router = useRouter();
 
 router.afterEach((to) => {
   if (to.name === 'Home') {
-    console.log(to);
     storyStore.fillStoriesIndex()
     storyStore.loadTheme()
   }

@@ -60,6 +60,13 @@ export const useStoryStore = defineStore('StoryStore', {
     loadTheme() {
       Preferences.get({ key: 'theme' }).then((result) => {
         this.theme = result.value;
+        if(!result.value) {
+          this.theme = 'lunii'
+        }
+        else {
+          this.theme = result.value;
+        }
+
       })
     },
     async loadUnofficialStoreData() {
