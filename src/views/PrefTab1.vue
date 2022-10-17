@@ -120,3 +120,4 @@ function installPack(file) {
   
 <style scoped>
 @import 'datatables.net-dt';
+</style>
