@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content class="ion-padding ion-margin-bottom">
+    <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-title color="danger">Under construction</ion-title>
       <button @click="debug" v-show="false" color="primary">
         log prefs
@@ -56,7 +56,7 @@ function changeTheme(event) {
     key: 'theme',
     value: event.srcElement.value,
   })
-  console.log(event);
+  storyStore.loadTheme()
 }
 
 function changeContributorPwd(event) {
@@ -74,10 +74,3 @@ function debug() {
 
 
 </script>
-  
-<style scoped>
-ion-content {
-  --background: #f8f8f8;
-  --color: black;
-}
-</style>

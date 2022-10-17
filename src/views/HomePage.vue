@@ -71,8 +71,8 @@ const storyStore = useStoryStore();
 const modules = [EffectFlip];
 const router = useRouter();
   onMounted(() => {
+    storyStore.loadTheme()
     usePermissionsCheck().then((result) => {
-      console.log(result);
       if (!result) {
         (async () => {
           const alert = await alertController.create({
@@ -105,7 +105,6 @@ const router = useRouter();
 router.afterEach((to) => {
   if (to.name === 'Home') {
     storyStore.fillStoriesIndex()
-    storyStore.loadTheme()
   }
 })
 

@@ -1,7 +1,7 @@
 <template>
 
   <ion-page>
-    <ion-content class="ion-padding ion-margin-bottom">
+    <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-title color="danger">Under construction</ion-title>
       <ion-item v-for="(file, index) in storyStore.installedPacks" color="light" :key="index">
         <ion-label>{{file.name}}</ion-label>
@@ -38,10 +38,3 @@ onMounted(() => {
 
 
 </script>
-<style scoped>
-ion-content {
-  --background: #f8f8f8;
-  --color: black;
-
-}
-</style>

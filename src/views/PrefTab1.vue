@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content class="ion-padding ion-margin-bottom">
+    <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-loading :is-open="storyStore.isLoading" message="Installation en cours...">
       </ion-loading>
       <ion-toast :is-open="storyStore.isDone" message="Pack installé" :duration="2500"
@@ -14,14 +14,14 @@
       <ion-button id="open-modal" @click="useListDownloadedPacks" expand="block">Installer un pack téléchargé</ion-button>
       <ion-modal ref="modal" trigger="open-modal">
         <ion-header>
-          <ion-toolbar>
+          <ion-toolbar color="light">
             <ion-buttons slot="start">
               <ion-back-button default-href="#" @click="cancel"></ion-back-button>
             </ion-buttons>
             <ion-title>Liste des fichiers</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding">
+        <ion-content class="ion-padding"  color="light">
           <ion-item v-for="(file, index) in storyStore.downloadedPacks" color="light" :key="index">
             <ion-label>{{file.name}}</ion-label>
             <ion-button @click="showLoading, installPack(file)">Installer</ion-button>
@@ -29,7 +29,7 @@
         </ion-content>
       </ion-modal>
       <DataTable class="display compact nomargin" :columns="columns" :data="storyStore.unofficialStore"
-        :options="{ pagingType:'simple', dom:'<p<t>i>', autoWidth:false }" ref="table">
+        :options="{ pagingType:'simple', dom:'<pf<t>i>', autoWidth:false }" ref="table">
         <thead>
           <tr>
             <th></th>
@@ -120,9 +120,3 @@ function installPack(file) {
   
 <style scoped>
 @import 'datatables.net-dt';
-
-ion-content {
-  --background: #f8f8f8;
-  --color: black;
-}
-</style>

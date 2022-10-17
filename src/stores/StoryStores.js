@@ -59,13 +59,18 @@ export const useStoryStore = defineStore('StoryStore', {
     },
     loadTheme() {
       Preferences.get({ key: 'theme' }).then((result) => {
-        this.theme = result.value;
-      })
+        if (result.value === null) {
+          this.theme = 'lunii';
+        } else {
+          this.theme = result.value;
+        }
+      });
     },
     async loadUnofficialStoreData() {
-      let contributorPwd = await Preferences.get({ key: 'contributorPwd' })
+      let contributorPwd = await Preferences.get({ key: 'contributorPwd' });
       let response = await fetch(
-        'https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php?contributorPwd='+contributorPwd.value
+        'https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php?contributorPwd=' +
+          contributorPwd.value
       );
       let data = await response.json();
       this.unofficialStore = data;

@@ -3,7 +3,7 @@
     <ion-page>
         <ion-tabs>
             <ion-header>
-                <ion-toolbar>
+                <ion-toolbar color="light">
                     <ion-buttons slot="start">
                         <ion-back-button default-href="../home"></ion-back-button>
                     </ion-buttons>
@@ -48,13 +48,3 @@ onMounted(() => {
 });
 
 </script>
-  
-<style scoped>
-ion-toolbar {
-    --background: #f1f0f0;
-    --color: rgb(100, 100, 100);
-}
-ion-content {
-  --background: #f8f8f8;
-}
-</style>
