@@ -59,7 +59,7 @@ export const useStoryStore = defineStore('StoryStore', {
     },
     loadTheme() {
       Preferences.get({ key: 'theme' }).then((result) => {
-        if (result.value === null) {
+        if (!result.value) {
           this.theme = 'lunii';
         } else {
           this.theme = result.value;
