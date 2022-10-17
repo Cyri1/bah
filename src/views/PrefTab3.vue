@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content class="ion-padding ion-margin-bottom">
       <ion-title color="danger">Under construction</ion-title>
-      <button @click="debug" v-show="true" color="primary">
+      <button @click="debug" v-show="false" color="primary">
         log prefs
       </button>
       <ion-item>
