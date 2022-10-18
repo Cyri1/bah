@@ -28,7 +28,6 @@
     </ion-page>
 </template>
 <script setup>
-import { onMounted } from "vue";
 import {
     IonPage,
     IonButtons,
@@ -42,9 +41,5 @@ import {
     IonTabs,
     IonRouterOutlet,
 } from "@ionic/vue";
-
-onMounted(() => {
-    window.screen.orientation.lock("portrait");
-});
 
 </script>

@@ -19,14 +19,14 @@ const routes = [
   {
     path: '/preferences',
     redirect: '/preferences/tab1',
-    beforeEnter: () => {
-      window.screen.orientation.lock("portrait");
-      return true
-    },
   },
   {
     path: '/preferences/',
     component: PreferencesPage,
+    beforeEnter: () => {
+      window.screen.orientation.lock("portrait");
+      return true
+    },
     children: [
       {
         path: '',

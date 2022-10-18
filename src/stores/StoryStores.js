@@ -6,7 +6,7 @@ export const useStoryStore = defineStore('StoryStore', {
   state: () => {
     return {
       stories: [],
-      theme: 'lunii',
+      theme: null,
       contributorPwd: null,
       unofficialStore: [],
       downloadedPacks: [],
@@ -60,8 +60,10 @@ export const useStoryStore = defineStore('StoryStore', {
     loadTheme() {
       Preferences.get({ key: 'theme' }).then((result) => {
         if (!result.value) {
+          console.log('loadTheme null');
           this.theme = 'lunii';
         } else {
+          console.log('loadTheme value');
           this.theme = result.value;
         }
       });

@@ -43,20 +43,18 @@ import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
 const storyStore = useStoryStore();
 
-
 onMounted(() => {
   Preferences.get({ key: 'contributorPwd' }).then((result) => {
     storyStore.contributorPwd = result.value;
   })
 })
 
-
 function changeTheme(event) {
   Preferences.set({
     key: 'theme',
     value: event.srcElement.value,
   })
-  storyStore.loadTheme()
+  storyStore.theme = event.srcElement.value;
 }
 
 function changeContributorPwd(event) {
@@ -65,7 +63,6 @@ function changeContributorPwd(event) {
     value: event.srcElement.value,
   })
   storyStore.contributorPwd = event.srcElement.value
-  console.log(storyStore.contributorPwd);
 }
 
 function debug() {

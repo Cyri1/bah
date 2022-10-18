@@ -2,7 +2,8 @@
   <ion-page>
     <ion-content :color="storyStore.theme+'prim'" :fullscreen="true">
       <ion-grid>
-        <ion-button class="preferences" :color="storyStore.theme+'sec'" icon-only @click="() => router.push('/preferences/tab1')" size="small">
+        <ion-button class="preferences" :color="storyStore.theme+'sec'" icon-only
+          @click="() => router.push('/preferences/tab1')" size="small">
           <ion-icon :icon="settingsOutline" size="small"></ion-icon>
         </ion-button>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
@@ -10,7 +11,7 @@
             <ion-button class="big-buttons" :color="storyStore.theme+'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <button @click="debug" v-show="false" color="primary">
+            <button @click="debug" v-show="true" color="primary">
               log datas
             </button>
             <button @click="audioToEnd" v-show="false" color="primary">
@@ -39,7 +40,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onBeforeMount } from "vue";
 import { useRouter } from 'vue-router';
 import {
   IonImg,
@@ -66,40 +67,45 @@ import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory,
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
 
+import { Preferences } from '@capacitor/preferences';
+
+
 const storyStore = useStoryStore();
 
 const modules = [EffectFlip];
 const router = useRouter();
-  onMounted(() => {
-    storyStore.loadTheme()
-    usePermissionsCheck().then((result) => {
-      if (!result) {
-        (async () => {
-          const alert = await alertController.create({
-            header: 'Permissions insuffisantes',
-            subHeader: 'L\'application à besoin de permissions supplémentaires pour fonctionner.',
-            message: `Veuillez accorder l'autorisation "<strong>Autoriser la gestion de tous les fichiers</strong>".`,
-            buttons: [
-              {
-                text: 'Ouvrir les paramètres de l\'appli',
-                handler: () => {
-                  window.cordova.plugins.settings.open("application_details", function () { })
-                },
+onBeforeMount(() => {
+  storyStore.loadTheme()
+})
+onMounted(() => {
+  usePermissionsCheck().then((result) => {
+    if (!result) {
+      (async () => {
+        const alert = await alertController.create({
+          header: 'Permissions insuffisantes',
+          subHeader: 'L\'application à besoin de permissions supplémentaires pour fonctionner.',
+          message: `Veuillez accorder l'autorisation "<strong>Autoriser la gestion de tous les fichiers</strong>".`,
+          buttons: [
+            {
+              text: 'Ouvrir les paramètres de l\'appli',
+              handler: () => {
+                window.cordova.plugins.settings.open("application_details", function () { })
               },
-              {
-                text: 'OK',
-              },
-            ],
-            cssClass: 'alert-size',
-          });
-          await alert.present();
-        })();
-      }
-    })
-    storyStore.fillStoriesIndex()
-    initHowlers();
-    window.plugins.insomnia.keepAwake();
+            },
+            {
+              text: 'OK',
+            },
+          ],
+          cssClass: 'alert-size',
+        });
+        await alert.present();
+      })();
+    }
   })
+  storyStore.fillStoriesIndex()
+  initHowlers();
+  window.plugins.insomnia.keepAwake();
+})
 
 
 router.afterEach((to) => {
@@ -123,9 +129,10 @@ storyStore.$subscribe((mutation) => {
 })
 
 function debug() {
-  console.log(storyStore.stories)
-  console.log(storyStore.activeSlides)
-  console.log(storyStore.swiper);
+  console.log(storyStore)
+  Preferences.get({ key: 'theme' }).then((result) => {
+    console.log(result.value);
+  });
 }
 
 function audioToEnd() {
@@ -235,7 +242,6 @@ function handleSlideClick(okTransition) {
 </script>
 
 <style>
-
 .main-row {
   height: 100vh;
 }
@@ -263,5 +269,4 @@ function handleSlideClick(okTransition) {
   --padding-bottom: 45px;
   --padding-top: 45px;
 }
-
 </style>
