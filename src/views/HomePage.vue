@@ -11,10 +11,10 @@
             <ion-button class="big-buttons" :color="storyStore.theme+'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <button @click="debug" v-show="true" color="primary">
+            <button @click="debug" v-show="false" color="primary">
               log datas
             </button>
-            <button @click="audioToEnd" v-show="false" color="primary">
+            <button @click="audioToEnd" v-show="true" color="primary">
               Audio to end
             </button>
           </ion-col>
@@ -27,13 +27,17 @@
                 </ion-img>
               </swiper-slide>
             </swiper>
+            <ion-range :pin="true" :max="storyStore.storyAudioHowl.duration()" :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveEnd="onIonKnobMoveEnd" :pin-formatter="pinFormatter" :color="storyStore.theme+'sec'"></ion-range>
           </ion-col>
           <ion-col size="2">
             <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme+'sec'" icon-only size="large">
-              <ion-icon :icon="pauseSharp" size="large"></ion-icon>
-            </ion-button>
+              <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
+              <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
+            </ion-button>>
           </ion-col>
         </ion-row>
+        <ion-img class="img-theme1" :src="'./assets/theme/'+storyStore.theme+'1.png'"></ion-img>
+        <ion-img class="img-theme2" :src="'./assets/theme/'+storyStore.theme+'2.png'"></ion-img>
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -44,6 +48,7 @@ import { onMounted, onBeforeMount } from "vue";
 import { useRouter } from 'vue-router';
 import {
   IonImg,
+  IonRange,
   IonButton,
   IonContent,
   IonPage,
@@ -53,9 +58,7 @@ import {
   alertController,
   IonIcon,
 } from "@ionic/vue";
-import { home } from "ionicons/icons";
-import { pauseSharp } from "ionicons/icons";
-import { settingsOutline } from "ionicons/icons";
+import { home, playOutline, pauseSharp, settingsOutline } from "ionicons/icons";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/effect-flip";
@@ -75,6 +78,7 @@ const storyStore = useStoryStore();
 const modules = [EffectFlip];
 const router = useRouter();
 onBeforeMount(() => {
+  initHowlers();
   storyStore.loadTheme()
 })
 onMounted(() => {
@@ -103,7 +107,6 @@ onMounted(() => {
     }
   })
   storyStore.fillStoriesIndex()
-  initHowlers();
   window.plugins.insomnia.keepAwake();
 })
 
@@ -137,13 +140,22 @@ function debug() {
 
 function audioToEnd() {
   console.log(storyStore.storyAudioHowl.seek())
-  storyStore.storyAudioHowl.seek(storyStore.storyAudioHowl.duration() - 3)
+  // storyStore.storyAudioHowl.seek(storyStore.storyAudioHowl.duration() - 3)
+}
+
+function onIonKnobMoveEnd({ detail }) {
+  storyStore.storyAudioHowl.seek(detail.value)
+}
+
+function pinFormatter(value) {
+  return `${value} sec`
 }
 
 function homeButton() {
   storyStore.activeAudioSlideHowl.stop()
   storyStore.activeAudioSlideSetHowl.stop()
   storyStore.storyAudioHowl.unload()
+  storyStore.howlerIsPlaying = false
   storyStore.storyAudioHowl._queue = []
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
@@ -159,7 +171,14 @@ function homeButton() {
 }
 
 function pauseButton() {
-  return storyStore.storyAudioHowl.playing() ? storyStore.storyAudioHowl.pause() : storyStore.storyAudioHowl.play();
+  if(storyStore.storyAudioHowl.playing()) {
+    storyStore.storyAudioHowl.pause()
+    storyStore.howlerIsPlaying = true
+  }
+  else {
+    storyStore.storyAudioHowl.play()
+    storyStore.howlerIsPlaying = false
+  }
 }
 
 function onSwiper(swiper) {
@@ -225,6 +244,9 @@ function handleSlideClick(okTransition) {
     useReadAudioStory(nextActionNode.audio)
     storyStore.slidesVisible = false
     storyStore.homeTransition = nextActionNode.homeTransition
+    setInterval(function() {
+      storyStore.howlerCurrentPos = storyStore.storyAudioHowl.seek()
+    }, 1000)
     storyStore.storyAudioHowl.once('end', function () {
       if (nextActionNode.okTransition !== null) {
         handleSlideClick(nextActionNode.okTransition)
@@ -249,6 +271,21 @@ function handleSlideClick(okTransition) {
 .alert-size {
   --min-width: 90%;
 }
+
+.img-theme1 {
+  position: absolute;
+  bottom: 0px;
+  left: 10px;
+  z-index: -1;
+}
+
+.img-theme2 {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  z-index: -1;
+}
+
 
 .preferences {
   position: absolute;
