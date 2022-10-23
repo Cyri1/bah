@@ -1,11 +1,20 @@
 <template>
   <ion-page>
     <ion-content :color="storyStore.theme+'prim'" :fullscreen="true">
-      <ion-grid>
-        <ion-button class="preferences" :color="storyStore.theme+'sec'" icon-only
-          @click="() => router.push('/preferences/tab1')" size="small">
-          <ion-icon :icon="settingsOutline" size="small"></ion-icon>
-        </ion-button>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="10">
+            <ion-range class="audio-timeline" :pin="true" :max="storyStore.storyAudioHowl.duration()"
+              :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveEnd="onIonKnobMoveEnd"
+              :pin-formatter="pinFormatter" :color="storyStore.theme+'sec'"></ion-range>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button class="preferences" :color="storyStore.theme+'sec'" icon-only
+              @click="() => router.push('/preferences/tab1')" size="small">
+              <ion-icon :icon="settingsOutline" size="small"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
         <ion-row class="ion-align-items-center ion-justify-content-center main-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
             <ion-button class="big-buttons" :color="storyStore.theme+'sec'" @click="homeButton" icon-only size="large">
@@ -13,9 +22,6 @@
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
               log datas
-            </button>
-            <button @click="audioToEnd" v-show="true" color="primary">
-              Audio to end
             </button>
           </ion-col>
           <ion-col size="8">
@@ -27,17 +33,24 @@
                 </ion-img>
               </swiper-slide>
             </swiper>
-            <ion-range :pin="true" :max="storyStore.storyAudioHowl.duration()" :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveEnd="onIonKnobMoveEnd" :pin-formatter="pinFormatter" :color="storyStore.theme+'sec'"></ion-range>
           </ion-col>
           <ion-col size="2">
             <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme+'sec'" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
-            </ion-button>>
+            </ion-button>
           </ion-col>
         </ion-row>
-        <ion-img class="img-theme1" :src="'./assets/theme/'+storyStore.theme+'1.png'"></ion-img>
-        <ion-img class="img-theme2" :src="'./assets/theme/'+storyStore.theme+'2.png'"></ion-img>
+        <ion-row>
+          <ion-col size="2">
+            <ion-img class="img-theme1" :src="'./assets/theme/'+storyStore.theme+'1.png'"></ion-img>
+          </ion-col>
+          <ion-col size="8">
+          </ion-col>
+          <ion-col size="2">
+            <ion-img class="img-theme2" :src="'./assets/theme/'+storyStore.theme+'2.png'"></ion-img>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-content>
   </ion-page>
@@ -138,11 +151,6 @@ function debug() {
   });
 }
 
-function audioToEnd() {
-  console.log(storyStore.storyAudioHowl.seek())
-  // storyStore.storyAudioHowl.seek(storyStore.storyAudioHowl.duration() - 3)
-}
-
 function onIonKnobMoveEnd({ detail }) {
   storyStore.storyAudioHowl.seek(detail.value)
 }
@@ -171,7 +179,7 @@ function homeButton() {
 }
 
 function pauseButton() {
-  if(storyStore.storyAudioHowl.playing()) {
+  if (storyStore.storyAudioHowl.playing()) {
     storyStore.storyAudioHowl.pause()
     storyStore.howlerIsPlaying = true
   }
@@ -244,7 +252,7 @@ function handleSlideClick(okTransition) {
     useReadAudioStory(nextActionNode.audio)
     storyStore.slidesVisible = false
     storyStore.homeTransition = nextActionNode.homeTransition
-    setInterval(function() {
+    setInterval(function () {
       storyStore.howlerCurrentPos = storyStore.storyAudioHowl.seek()
     }, 1000)
     storyStore.storyAudioHowl.once('end', function () {
@@ -264,8 +272,14 @@ function handleSlideClick(okTransition) {
 </script>
 
 <style>
+.audio-timeline {
+  --bar-height: 8px;
+  --bar-border-radius: 8px;
+  --knob-size: 40px;
+}
+
 .main-row {
-  height: 100vh;
+  flex: 1;
 }
 
 .alert-size {
@@ -281,7 +295,7 @@ function handleSlideClick(okTransition) {
 
 .img-theme2 {
   position: absolute;
-  bottom: 0px;
+  bottom: 0px;*ù
   right: 10px;
   z-index: -1;
 }
