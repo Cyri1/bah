@@ -295,7 +295,7 @@ function handleSlideClick(okTransition) {
 
 .img-theme2 {
   position: absolute;
-  bottom: 0px;*ù
+  bottom: 0px;
   right: 10px;
   z-index: -1;
 }
