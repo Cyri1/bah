@@ -66,9 +66,7 @@ import { usePermissionsCheck } from '../composables/permissionsCheck';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
-
 import { Preferences } from '@capacitor/preferences';
-
 
 const storyStore = useStoryStore();
 
@@ -238,7 +236,6 @@ function handleSlideClick(okTransition) {
     console.log('no match')
   }
 }
-
 </script>
 
 <style>
