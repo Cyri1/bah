@@ -1,23 +1,22 @@
 <template>
   <ion-page>
-    <ion-content :color="storyStore.theme+'prim'" :fullscreen="true">
-      <ion-grid class="ion-no-padding">
-        <ion-row>
+    <ion-content :color="storyStore.theme + 'prim'" :fullscreen="true">
+      <ion-grid class="ion-no-padding full-height">
+        <ion-row class="top-row">
           <ion-col size="10">
-            <ion-range class="audio-timeline" :pin="true" :max="storyStore.storyAudioHowl.duration()"
-              :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveEnd="onIonKnobMoveEnd"
-              :pin-formatter="pinFormatter" :color="storyStore.theme+'sec'"></ion-range>
+            <AudioRange>
+            </AudioRange>
           </ion-col>
           <ion-col size="2">
-            <ion-button class="preferences" :color="storyStore.theme+'sec'" icon-only
+            <ion-button class="preferences" :color="storyStore.theme + 'sec'" icon-only
               @click="() => router.push('/preferences/tab1')" size="small">
               <ion-icon :icon="settingsOutline" size="small"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-row class="ion-align-items-center ion-justify-content-center main-row">
+        <ion-row class="ion-align-items-center middle-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" :color="storyStore.theme+'sec'" @click="homeButton" icon-only size="large">
+            <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
@@ -35,20 +34,18 @@
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme+'sec'" icon-only size="large">
+            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col size="2">
-            <ion-img class="img-theme1" :src="'./assets/theme/'+storyStore.theme+'1.png'"></ion-img>
+        <ion-row class="bottom-row">
+          <ion-col size="6">
+            <ion-img class="img-theme1" :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
           </ion-col>
-          <ion-col size="8">
-          </ion-col>
-          <ion-col size="2">
-            <ion-img class="img-theme2" :src="'./assets/theme/'+storyStore.theme+'2.png'"></ion-img>
+          <ion-col size="6">
+            <ion-img class="img-theme2" :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -59,9 +56,9 @@
 <script setup>
 import { onMounted, onBeforeMount } from "vue";
 import { useRouter } from 'vue-router';
+import AudioRange from '../components/AudioRange.vue'
 import {
   IonImg,
-  IonRange,
   IonButton,
   IonContent,
   IonPage,
@@ -121,7 +118,6 @@ onMounted(() => {
   window.plugins.insomnia.keepAwake();
 })
 
-
 router.afterEach((to) => {
   if (to.name === 'Home') {
     storyStore.fillStoriesIndex()
@@ -147,14 +143,6 @@ function debug() {
   Preferences.get({ key: 'theme' }).then((result) => {
     console.log(result.value);
   });
-}
-
-function onIonKnobMoveEnd({ detail }) {
-  storyStore.storyAudioHowl.seek(detail.value)
-}
-
-function pinFormatter(value) {
-  return `${value} sec`
 }
 
 function homeButton() {
@@ -269,14 +257,21 @@ function handleSlideClick(okTransition) {
 </script>
 
 <style>
-.audio-timeline {
-  --bar-height: 8px;
-  --bar-border-radius: 8px;
-  --knob-size: 40px;
+
+.top-row {
+  height: 10%;
 }
 
-.main-row {
-  flex: 1;
+.middle-row {
+  height: 80%;
+}
+
+.bottom-row {
+  height: 10%;
+}
+
+.full-height {
+  height: 100vh;
 }
 
 .alert-size {
