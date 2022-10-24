@@ -1,6 +1,6 @@
 {
 	"appId": "com.bah.app",
-	"appName": "Boîte à Hitoires",
+	"appName": "Boîte à Histoires",
 	"webDir": "dist",
 	"bundledWebRuntime": false
 }
