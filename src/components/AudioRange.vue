@@ -3,7 +3,10 @@
     <ion-grid>
         <ion-row>
             <ion-col size="2">
-                <ion-badge class="margin-10" :color="storyStore.theme + 'sec'">00:00/00:00</ion-badge>
+                <ion-badge class="margin-10" :color="storyStore.theme + 'sec'">
+                {{ new Date(storyStore.howlerCurrentPos * 1000).toISOString().substring(14, 19)}}/
+                {{ new Date(storyStore.storyAudioHowl.duration() * 1000).toISOString().substring(14, 19)}}
+                </ion-badge>
             </ion-col>
             <ion-col>
                 <ion-range class="audio-timeline" :pin="true" :max="storyStore.storyAudioHowl.duration()"
@@ -68,5 +71,4 @@ ion-range::part(pin) {
     margin-left: 10px;
     margin-top: 10px;
 }
-
 </style>
