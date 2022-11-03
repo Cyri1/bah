@@ -74,7 +74,7 @@ export const useStoryStore = defineStore('StoryStore', {
     async loadUnofficialStoreData() {
       let contributorPwd = await Preferences.get({ key: 'contributorPwd' });
       let response = await fetch(
-        'https://unofficial-store.000webhostapp.com/jajznebjkzae5a1ze514c5sw1ca.php?contributorPwd=' +
+        'https://unofficial-store.000webhostapp.com/data.php?pwd=' +
           contributorPwd.value
       );
       let data = await response.json();
