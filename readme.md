@@ -13,8 +13,8 @@
   
 ## Unsupported features (for now) : 
 - iOS
-- <del>Histoires interactives</del> ✔ Supported !
-- <del>Téléchargement direct des histoires depuis un store custom</del> ✔ Supported !
+- <del>Interactives stories</del> ✔ Supported !
+- <del>Direct dowload from custom store</del> ✔ Supported !
 - Auto update app
 - Set favorites stories
 
