@@ -4,7 +4,7 @@
       <ion-grid class="ion-no-padding full-height">
         <ion-row class="top-row">
           <ion-col size="10">
-            <AudioRange>
+            <AudioRange v-show="false">
             </AudioRange>
           </ion-col>
           <ion-col size="2">
