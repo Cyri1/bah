@@ -8,6 +8,7 @@ export const useStoryStore = defineStore('StoryStore', {
       stories: [],
       theme: null,
       contributorPwd: null,
+      audioTimelineVisible: null,
       unofficialStore: [],
       downloadedPacks: [],
       installedPacks: [],
@@ -60,14 +61,19 @@ export const useStoryStore = defineStore('StoryStore', {
       }
       this.activeSlides = indexSlides;
     },
-    loadTheme() {
+    setPreferences() {
       Preferences.get({ key: 'theme' }).then((result) => {
         if (!result.value) {
-          console.log('loadTheme null');
           this.theme = 'lunii';
         } else {
-          console.log('loadTheme value');
           this.theme = result.value;
+        }
+      });
+      Preferences.get({ key: 'audioTimelineVisible' }).then((result) => {
+        if (!result.value) {
+          this.audioTimelineVisible = false;
+        } else {
+          this.audioTimelineVisible = true
         }
       });
     },

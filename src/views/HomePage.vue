@@ -4,7 +4,7 @@
       <ion-grid class="ion-no-padding full-height">
         <ion-row class="top-row">
           <ion-col size="10">
-            <AudioRange v-show="false">
+            <AudioRange v-show="storyStore.audioTimelineVisible">
             </AudioRange>
           </ion-col>
           <ion-col size="2">
@@ -87,7 +87,7 @@ const modules = [EffectFlip];
 const router = useRouter();
 onBeforeMount(() => {
   initHowlers();
-  storyStore.loadTheme()
+  storyStore.setPreferences()
 })
 onMounted(() => {
   usePermissionsCheck().then((result) => {
