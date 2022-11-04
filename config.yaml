@@ -1,6 +1,6 @@
 platforms:
   android:
-    versionName: 1.0.0
+    versionName: 0.3.1-beta
     incrementVersionCode: true
     manifest:
       - file: AndroidManifest.xml
