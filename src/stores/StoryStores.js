@@ -8,7 +8,7 @@ export const useStoryStore = defineStore('StoryStore', {
       stories: [],
       theme: null,
       contributorPwd: null,
-      audioTimelineVisible: null,
+      timelineVisible: null,
       unofficialStore: [],
       downloadedPacks: [],
       installedPacks: [],
@@ -68,12 +68,13 @@ export const useStoryStore = defineStore('StoryStore', {
         } else {
           this.theme = result.value;
         }
-      });
-      Preferences.get({ key: 'audioTimelineVisible' }).then((result) => {
+      })
+      Preferences.get({ key: 'timelineVisible' }).then((result) => {
+        console.log(result.value);
         if (!result.value) {
-          this.audioTimelineVisible = false;
+          this.timelineVisible = false
         } else {
-          this.audioTimelineVisible = true
+          this.timelineVisible = result.value
         }
       });
     },

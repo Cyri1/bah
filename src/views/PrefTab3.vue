@@ -1,27 +1,44 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding ion-margin-bottom" color="light">
-      <ion-title color="danger">Under construction</ion-title>
       <button @click="debug" v-show="false" color="primary">
         log prefs
       </button>
-      <ion-item>
-        <ion-label position="floating">Mot de passe contributeur :</ion-label>
-        <ion-input @ionBlur="changeContributorPwd" type="password" :value="storyStore.contributorPwd"
-          placeholder="Entrer le mot de passe"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Choix du thème :</ion-label>
-        <ion-select @ionChange="changeTheme" placeholder="Choisissez un thème">
-          <ion-select-option value="lunii">Lunii</ion-select-option>
-          <ion-select-option value="spiderman">Spiderman</ion-select-option>
-          <ion-select-option value="rdn">Reine des neiges</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Option XXX</ion-label>
-        <ion-toggle slot="end"></ion-toggle>
-      </ion-item>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Paramètres de l'interface :</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label>Afficher la timeline :</ion-label>
+              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible"></ion-toggle>
+            </ion-item>
+            <ion-item>
+              <ion-label>Choix du thème :</ion-label>
+              <ion-select @ionChange="changeTheme" placeholder="Choisissez un thème">
+                <ion-select-option value="lunii">Lunii</ion-select-option>
+                <ion-select-option value="spiderman">Spiderman</ion-select-option>
+                <ion-select-option value="rdn">Reine des neiges</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Paramètres du store :</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Mot de passe contributeur :</ion-label>
+              <ion-input @ionBlur="changeContributorPwd" type="password" :value="storyStore.contributorPwd"
+                placeholder="Entrer le mot de passe"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
     </ion-content>
   </ion-page>
 </template>
@@ -30,7 +47,11 @@
 import {
   IonContent,
   IonPage,
-  IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonList,
   IonItem,
   IonSelect,
   IonSelectOption,
@@ -65,8 +86,16 @@ function changeContributorPwd(event) {
   storyStore.contributorPwd = event.srcElement.value
 }
 
+function activeTimeline(event) {
+  Preferences.set({
+    key: 'timelineVisible',
+    value: event.detail.checked,
+  })
+  storyStore.timelineVisible = event.detail.checked
+}
+
 function debug() {
-  console.log(storyStore.theme);
+  console.log(storyStore.timelineVisible);
 }
 
 

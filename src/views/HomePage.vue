@@ -4,7 +4,7 @@
       <ion-grid class="ion-no-padding full-height">
         <ion-row class="top-row">
           <ion-col size="10">
-            <AudioRange v-show="storyStore.audioTimelineVisible">
+            <AudioRange v-show="storyStore.timelineVisible && !storyStore.slidesVisible">
             </AudioRange>
           </ion-col>
           <ion-col size="2">
@@ -16,7 +16,8 @@
         </ion-row>
         <ion-row class="ion-align-items-center middle-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
+            <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only
+              size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
@@ -30,11 +31,12 @@
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
                   :src="useConvertPath(slide.name + '/assets/' + slide.image)">
                 </ion-img>
-              </swiper-slide>
+              </swiper-slide>cvg
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only size="large">
+            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only
+              size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
@@ -257,7 +259,6 @@ function handleSlideClick(okTransition) {
 </script>
 
 <style>
-
 .top-row {
   height: 10%;
 }
