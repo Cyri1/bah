@@ -70,8 +70,8 @@ export const useStoryStore = defineStore('StoryStore', {
         }
       })
       Preferences.get({ key: 'timelineVisible' }).then((result) => {
-        console.log(result.value);
-        if (!result.value) {
+        console.log(result);
+        if (result.value === null) {
           this.timelineVisible = false
         } else {
           this.timelineVisible = result.value

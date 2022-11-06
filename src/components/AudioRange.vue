@@ -4,7 +4,7 @@
         <ion-row>
             <ion-col size="2">
                 <ion-badge class="margin-10" :color="storyStore.theme + 'sec'">
-                {{ new Date(storyStore.howlerCurrentPos * 1000).toISOString().substring(14, 19)}}/
+                    {{ new Date(storyStore.howlerCurrentPos * 1000).toISOString().substring(14, 19)}}/
                 {{ new Date(storyStore.storyAudioHowl.duration() * 1000).toISOString().substring(14, 19)}}
                 </ion-badge>
             </ion-col>
@@ -44,7 +44,7 @@ function onIonKnobMoveEnd({ detail }) {
 }
 
 function pinFormatter(value) {
-    return `${value} sec`
+    return new Date(value * 1000).toISOString().substring(14, 19)
 }
 
 </script>

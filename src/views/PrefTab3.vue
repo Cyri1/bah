@@ -1,9 +1,6 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding ion-margin-bottom" color="light">
-      <button @click="debug" v-show="false" color="primary">
-        log prefs
-      </button>
       <ion-card>
         <ion-card-header>
           <ion-card-title>Paramètres de l'interface :</ion-card-title>
@@ -84,19 +81,33 @@ function changeContributorPwd(event) {
     value: event.srcElement.value,
   })
   storyStore.contributorPwd = event.srcElement.value
+
+  Preferences.get({ key: 'contributorPwd' }).then((result) => {
+    console.log(result);
+  });
+
 }
 
-function activeTimeline(event) {
+function activeTimeline(event) { // ion-toggle @ionChange="activeTimeline"
   Preferences.set({
     key: 'timelineVisible',
-    value: event.detail.checked,
+    value: String(event.detail.checked),
   })
+  Preferences.get({ key: 'timelineVisible' }).then((result) => {
+    console.log(result); // toggle {value: "true"} {value: "false"}
+  });
+
+  // Now if i do :
+
+  Preferences.set({
+    key: 'timelineVisible',
+    value: event.detail.checked, // boolean 
+  })
+  Preferences.get({ key: 'timelineVisible' }).then((result) => {
+    console.log(result); // always {value: null}
+  });
+
   storyStore.timelineVisible = event.detail.checked
 }
-
-function debug() {
-  console.log(storyStore.timelineVisible);
-}
-
 
 </script>
