@@ -6,7 +6,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "capacitor-assets": "capacitor-assets",
-    "postbuild": "ionic cap add android && npx trapeze run config.yaml -y && npm run capacitor-assets generate  -- --android --iconBackgroundColor '#0ec6d2' --iconBackgroundColorDark '#0ec6d2' --splashBackgroundColor '#0ec6d2' --splashBackgroundColorDark '#0ec6d2' && npx cap sync && npx cap open android",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
