@@ -74,7 +74,7 @@ export const useStoryStore = defineStore('StoryStore', {
         if (result.value === null) {
           this.timelineVisible = false
         } else {
-          this.timelineVisible = result.value
+          this.timelineVisible = JSON.parse(result.value.toLowerCase())
         }
       });
     },

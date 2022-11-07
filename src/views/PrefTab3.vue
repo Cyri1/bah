@@ -88,25 +88,11 @@ function changeContributorPwd(event) {
 
 }
 
-function activeTimeline(event) { // ion-toggle @ionChange="activeTimeline"
+function activeTimeline(event) { 
   Preferences.set({
     key: 'timelineVisible',
     value: String(event.detail.checked),
   })
-  Preferences.get({ key: 'timelineVisible' }).then((result) => {
-    console.log(result); // toggle {value: "true"} {value: "false"}
-  });
-
-  // Now if i do :
-
-  Preferences.set({
-    key: 'timelineVisible',
-    value: event.detail.checked, // boolean 
-  })
-  Preferences.get({ key: 'timelineVisible' }).then((result) => {
-    console.log(result); // always {value: null}
-  });
-
   storyStore.timelineVisible = event.detail.checked
 }
 
