@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/Cyri1/bah/compare/0.3.1...0.3.2) (2022-11-07)
+
+
+### Bug Fixes
+
+* test ([c231c1f](https://github.com/Cyri1/bah/commit/c231c1fa20ab033dcd18e163214d0a03608bd92e))
+
 ### [0.3.1](https://github.com/Cyri1/bah/compare/v0.2.1-beta...v0.3.1) (2022-11-07)
 
 
