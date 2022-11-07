@@ -9,9 +9,9 @@
                 </ion-badge>
             </ion-col>
             <ion-col>
-                <ion-range class="audio-timeline" :pin="true" :max="storyStore.storyAudioHowl.duration()"
+                <ion-range class="audio-timeline" :pin="false" :max="storyStore.storyAudioHowl.duration()"
                     :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveStart="onIonKnobMoveStart"
-                    @ionKnobMoveEnd="onIonKnobMoveEnd" :pin-formatter="pinFormatter" :color="storyStore.theme + 'sec'">
+                    @ionKnobMoveEnd="onIonKnobMoveEnd" :color="storyStore.theme + 'sec'">
                 </ion-range>
             </ion-col>
         </ion-row>
@@ -41,10 +41,6 @@ function onIonKnobMoveEnd({ detail }) {
     storyStore.storyAudioHowl.seek(detail.value)
     storyStore.storyAudioHowl.play()
     storyStore.howlerIsPlaying = false
-}
-
-function pinFormatter(value) {
-    return new Date(value * 1000).toISOString().substring(14, 19)
 }
 
 </script>
