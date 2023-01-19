@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/Cyri1/bah/compare/0.3.6...0.3.7) (2023-01-19)
+
+
+### Bug Fixes
+
+* store url ([1a4f048](https://github.com/Cyri1/bah/commit/1a4f0482eaa6feca2eea4c2c9acfecd530ea01d2))
+* store url ([dba0c77](https://github.com/Cyri1/bah/commit/dba0c77ef004f379e051fc34fee887ae006ab1b7))
+
 ### [0.3.6](https://github.com/Cyri1/bah/compare/0.3.5...0.3.6) (2022-11-09)
 
 ### [0.3.5](https://github.com/Cyri1/bah/compare/0.3.4...0.3.5) (2022-11-07)
