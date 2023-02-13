@@ -1,0 +1,3 @@
+In Path > C:\Users\[user]\AppData\Local\Android\Sdk\platform-tools
+ANDROID_HOME > C:\Users\[user]\AppData\Local\Android\Sdk
+ANDROID_SDK_ROOT > C:\Users\[user]\AppData\Local\Android\Sdk
