@@ -6,6 +6,7 @@ export const useStoryStore = defineStore('StoryStore', {
   state: () => {
     return {
       stories: [],
+      unfavoriteStories: [],
       theme: null,
       contributorPwd: null,
       timelineVisible: null,
@@ -59,7 +60,14 @@ export const useStoryStore = defineStore('StoryStore', {
           }
         }
       }
-      this.activeSlides = indexSlides;
+      //remove unfavorited stories from indexSlides
+      var indexSlidesWithoutUnfavorited = [];
+      for(let storySlide of indexSlides) {
+        if(!this.unfavoriteStories.includes(storySlide.name)) {
+          indexSlidesWithoutUnfavorited.push(storySlide);
+        }
+      }
+      this.activeSlides = indexSlidesWithoutUnfavorited;
     },
     setPreferences() {
       Preferences.get({ key: 'theme' }).then((result) => {
@@ -70,11 +78,20 @@ export const useStoryStore = defineStore('StoryStore', {
         }
       })
       Preferences.get({ key: 'timelineVisible' }).then((result) => {
-        console.log(result);
         if (result.value === null) {
           this.timelineVisible = false
         } else {
           this.timelineVisible = JSON.parse(result.value.toLowerCase())
+        }
+      });
+      Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
+        if (result.value === null) {
+          Preferences.set({
+            key: 'unfavoriteStories',
+            value: JSON.stringify([]),
+          })
+        } else {
+          this.unfavoriteStories = JSON.parse(result.value)
         }
       });
     },

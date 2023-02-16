@@ -31,7 +31,7 @@
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
                   :src="useConvertPath(slide.name + '/assets/' + slide.image)">
                 </ion-img>
-              </swiper-slide>cvg
+              </swiper-slide>
             </swiper>
           </ion-col>
           <ion-col size="2">

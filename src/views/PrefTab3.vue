@@ -20,6 +20,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
+          <ion-button v-show="false" slot="start" @click="activeSleepMode">Activer le mode dodo</ion-button>
         </ion-card-content>
       </ion-card>
       <ion-card>
@@ -55,6 +56,7 @@ import {
   IonLabel,
   IonToggle,
   IonInput,
+  IonButton,
 } from "@ionic/vue";
 import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';
@@ -94,6 +96,10 @@ function activeTimeline(event) {
     value: String(event.detail.checked),
   })
   storyStore.timelineVisible = event.detail.checked
+}
+
+function activeSleepMode() { 
+
 }
 
 </script>

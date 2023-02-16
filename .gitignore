@@ -4,3 +4,4 @@ ios
 android
 dist
 resources/android/**/*
+env
