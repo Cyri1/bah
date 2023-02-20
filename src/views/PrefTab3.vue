@@ -20,7 +20,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <ion-button v-show="false" slot="start" @click="activeSleepMode">Activer le mode dodo</ion-button>
+          <ion-button v-show="false" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
         </ion-card-content>
       </ion-card>
       <ion-card>
@@ -37,12 +37,34 @@
           </ion-list>
         </ion-card-content>
       </ion-card>
+      <ion-modal :is-open="isOpen">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Mode sommeil</ion-title>
+          <ion-buttons slot="end">
+            <ion-button @click="setOpen(false)">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
+          reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
+          dicta.
+        </p>
+      </ion-content>
+    </ion-modal>
     </ion-content>
   </ion-page>
 </template>
   
 <script setup>
 import {
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   IonContent,
   IonPage,
   IonCard,
@@ -98,8 +120,5 @@ function activeTimeline(event) {
   storyStore.timelineVisible = event.detail.checked
 }
 
-function activeSleepMode() { 
-
-}
 
 </script>
