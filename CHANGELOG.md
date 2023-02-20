@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](https://github.com/Cyri1/bah/compare/0.3.9...0.3.10) (2023-02-20)
+
+
+### Bug Fixes
+
+* debug fav feature + some stories doesnt work ([c102a8b](https://github.com/Cyri1/bah/commit/c102a8bd61b86e3045f205cd23614d4f8d494a9e))
+
 ### [0.3.9](https://github.com/Cyri1/bah/compare/0.3.8...0.3.9) (2023-01-19)
 
 
