@@ -8,16 +8,14 @@
             </AudioRange>
           </ion-col>
           <ion-col size="2">
-            <ion-button class="preferences" :color="storyStore.theme + 'sec'" icon-only
-              @click="() => router.push('/preferences/tab1')" size="small">
+            <ion-button class="preferences" :color="storyStore.theme + 'sec'" icon-only @click="prefButton" size="small">
               <ion-icon :icon="settingsOutline" size="small"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="ion-align-items-center middle-row">
           <ion-col class="ion-align-items-center ion-text-center" size="2">
-            <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only
-              size="large">
+            <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <button @click="debug" v-show="false" color="primary">
@@ -25,8 +23,8 @@
             </button>
           </ion-col>
           <ion-col size="8">
-            <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'"
-              @swiper="onSwiper" @realIndexChange="useReadAudioActiveSlide()">
+            <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
+              @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
                   :src="useConvertPath(slide.name + '/assets/' + slide.image)">
@@ -35,8 +33,7 @@
             </swiper>
           </ion-col>
           <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only
-              size="large">
+            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
@@ -123,6 +120,7 @@ onMounted(() => {
 router.afterEach((to) => {
   if (to.name === 'Home') {
     storyStore.fillStoriesIndex()
+    homeButton()
   }
 })
 
@@ -166,6 +164,10 @@ function homeButton() {
   }
 }
 
+function prefButton() {
+  router.push('/preferences/tab1')
+}
+
 function pauseButton() {
   if (storyStore.storyAudioHowl.playing()) {
     storyStore.storyAudioHowl.pause()
@@ -192,6 +194,15 @@ function handleSlideClick(okTransition) {
   console.log('////HANDLING CLICK////')
   if ((okTransition?.actionNode === oldOkTransition?.actionNode) && (okTransition?.optionIndex === oldOkTransition?.optionIndex)) {
     console.log('preventing home button loop')
+    console.log('actionNode :')
+    console.log(okTransition?.actionNode)
+    console.log('old actionNode :')
+    console.log(oldOkTransition?.actionNode)
+    console.log('/*/*/*/*/*/*/*/*/*/*/*/*')
+    console.log('optionIndex :')
+    console.log(okTransition?.optionIndex)
+    console.log('old optionIndex :')
+    console.log(oldOkTransition?.optionIndex)
     storyStore.homeTransition = null
     homeButton()
     return

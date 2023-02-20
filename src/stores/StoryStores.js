@@ -85,14 +85,7 @@ export const useStoryStore = defineStore('StoryStore', {
         }
       });
       Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
-        if (result.value === null) {
-          Preferences.set({
-            key: 'unfavoriteStories',
-            value: JSON.stringify([]),
-          })
-        } else {
           this.unfavoriteStories = JSON.parse(result.value)
-        }
       });
     },
     async loadUnofficialStoreData() {

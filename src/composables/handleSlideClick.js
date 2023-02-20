@@ -69,6 +69,13 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === true &&
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === false &&
+      actionNode.image !== null) ||
+    (actionNode.audio !== null && // test purpose
+      actionNode.controlSettings.autoplay === false &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === true &&
+      actionNode.controlSettings.pause === false &&
+      actionNode.controlSettings.wheel === false &&
       actionNode.image !== null)
   ) {
     return { type: 'displaySlideSet', okTransition: actionNode.okTransition };
@@ -81,7 +88,7 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === true &&
       actionNode.image === null)
-    ) {
+  ) {
     return { type: 'endOfStory', okTransition: null };
   } else if (
     (actionNode.audio !== null &&
