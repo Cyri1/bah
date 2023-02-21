@@ -20,7 +20,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <ion-button v-show="false" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
+          <ion-button v-show="true" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
         </ion-card-content>
       </ion-card>
       <ion-card>
@@ -37,23 +37,23 @@
           </ion-list>
         </ion-card-content>
       </ion-card>
-      <ion-modal :is-open="isOpen">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Mode sommeil</ion-title>
-          <ion-buttons slot="end">
-            <ion-button @click="setOpen(false)">Fermer</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
-          reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
-          dicta.
-        </p>
-      </ion-content>
-    </ion-modal>
+      <ion-modal :is-open="storyStore.sleepModeModalIsOpen">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Mode sommeil</ion-title>
+            <ion-buttons slot="end">
+              <ion-button @click="setOpen(false)">Fermer</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
+            reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
+            dicta.
+          </p>
+        </ion-content>
+      </ion-modal>
     </ion-content>
   </ion-page>
 </template>
@@ -83,6 +83,8 @@ import {
 import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
+import { useListStoryNodes } from '../composables/listStoryNodes';
+
 const storyStore = useStoryStore();
 
 onMounted(() => {
@@ -112,7 +114,7 @@ function changeContributorPwd(event) {
 
 }
 
-function activeTimeline(event) { 
+function activeTimeline(event) {
   Preferences.set({
     key: 'timelineVisible',
     value: String(event.detail.checked),
@@ -120,5 +122,9 @@ function activeTimeline(event) {
   storyStore.timelineVisible = event.detail.checked
 }
 
+function setOpen(isOpen) {
+  storyStore.sleepModeModalIsOpen = isOpen;
+  console.log(useListStoryNodes());
+}
 
 </script>

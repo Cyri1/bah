@@ -10,6 +10,7 @@ export const useStoryStore = defineStore('StoryStore', {
       theme: null,
       contributorPwd: null,
       timelineVisible: null,
+      sleepModeModalIsOpen: false,
       unofficialStore: [],
       downloadedPacks: [],
       installedPacks: [],
@@ -60,14 +61,7 @@ export const useStoryStore = defineStore('StoryStore', {
           }
         }
       }
-      //remove unfavorited stories from indexSlides
-      var indexSlidesWithoutUnfavorited = [];
-      for(let storySlide of indexSlides) {
-        if(!this.unfavoriteStories.includes(storySlide.name)) {
-          indexSlidesWithoutUnfavorited.push(storySlide);
-        }
-      }
-      this.activeSlides = indexSlidesWithoutUnfavorited;
+      this.activeSlides = indexSlides;
     },
     setPreferences() {
       Preferences.get({ key: 'theme' }).then((result) => {
