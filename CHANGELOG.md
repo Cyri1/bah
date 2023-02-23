@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.15](https://github.com/Cyri1/bah/compare/0.3.14...0.3.15) (2023-02-23)
+
+
+### Bug Fixes
+
+* hide sleep mode ([ac82ba6](https://github.com/Cyri1/bah/commit/ac82ba60a486a0fe7e771866bed9a51b23c9fcaa))
+
 ### [0.3.14](https://github.com/Cyri1/bah/compare/0.3.12...0.3.14) (2023-02-23)
 
 
