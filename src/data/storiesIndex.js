@@ -1,8 +1,6 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { useStoryStore } from '../stores/StoryStores';
 
 export async function storiesIndex() {
-  const storyStore = useStoryStore();
   const directory = Directory.Documents;
   var jsonStories = [];
   var errors = [];
@@ -73,9 +71,7 @@ export async function storiesIndex() {
         try {
           var jsonStory = await JSON.parse(readStoryJson.data);
           jsonStory['name'] = storyDir.name;
-          if(!storyStore.unfavoriteStories.includes(storyDir.name)) { // remove unfav
-            jsonStories.push(jsonStory);
-          }
+          jsonStories.push(jsonStory);
         } catch (err) {
           errors.push(
             'Le fichier story.json de l\'histoire "' +
