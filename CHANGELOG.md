@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.14](https://github.com/Cyri1/bah/compare/0.3.12...0.3.14) (2023-02-23)
+
+
+### Bug Fixes
+
+* stories not appearing ([95c7b7f](https://github.com/Cyri1/bah/commit/95c7b7fb4e6555de3b6b9fa8299e7872b9653b19))
+* stories not appearing ([b0d6976](https://github.com/Cyri1/bah/commit/b0d69769c649fa7bc9ff92ba85cb03f28cfe3bd8))
+
 ### [0.3.12](https://github.com/Cyri1/bah/compare/0.3.11...0.3.12) (2023-02-21)
 
 
