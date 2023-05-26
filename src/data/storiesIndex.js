@@ -73,7 +73,7 @@ export async function storiesIndex() {
         try {
           var jsonStory = await JSON.parse(readStoryJson.data);
           jsonStory['name'] = storyDir.name;
-          if(!storyStore.unfavoriteStories.includes(storyDir.name)) { // remove unfav
+          if(!storyStore.unfavoriteStories?.includes(storyDir.name)) { // remove unfav
             jsonStories.push(jsonStory);
           }
         } catch (err) {
