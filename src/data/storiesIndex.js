@@ -1,6 +1,8 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { useStoryStore } from '../stores/StoryStores';
 
 export async function storiesIndex() {
+  const storyStore = useStoryStore();
   const directory = Directory.Documents;
   var jsonStories = [];
   var errors = [];
