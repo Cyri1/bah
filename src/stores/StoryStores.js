@@ -36,10 +36,13 @@ export const useStoryStore = defineStore('StoryStore', {
       storiesIndex()
         .then((result) => {
           if (result.errors) {
-            console.log(result.data);
             this.errors = result.data;
           } else {
-            this.stories = result.data;
+            var arr = this.unfavoriteStories;
+            var filteredData = result.data.filter(function (el) {
+              return !arr.includes(el.name);
+            });
+            this.stories = filteredData;
           }
         })
         .then(() => {
@@ -70,16 +73,20 @@ export const useStoryStore = defineStore('StoryStore', {
         } else {
           this.theme = result.value;
         }
-      })
+      });
       Preferences.get({ key: 'timelineVisible' }).then((result) => {
         if (result.value === null) {
-          this.timelineVisible = false
+          this.timelineVisible = false;
         } else {
-          this.timelineVisible = JSON.parse(result.value.toLowerCase())
+          this.timelineVisible = JSON.parse(result.value.toLowerCase());
         }
       });
       Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
-          this.unfavoriteStories = JSON.parse(result.value)
+        if (result.value === null) {
+          this.unfavoriteStories = [];
+        } else {
+          this.unfavoriteStories = JSON.parse(result.value);
+        }
       });
     },
     async loadUnofficialStoreData() {

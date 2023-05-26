@@ -20,7 +20,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <ion-button v-show="true" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
+          <ion-button v-show="false" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
         </ion-card-content>
       </ion-card>
       <ion-card>
