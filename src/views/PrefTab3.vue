@@ -20,7 +20,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <ion-button v-show="false" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
+          <ion-button v-show="true" slot="start" @click="setOpen(true)">Activer le mode sommeil</ion-button>
         </ion-card-content>
       </ion-card>
       <ion-card>
@@ -47,11 +47,14 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
-            reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
-            dicta.
-          </p>
+          <ion-accordion-group>
+            <ion-accordion value="first">
+              <ion-item  slot="header" color="light">
+                <ion-label>First Accordion</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">First Content</div>
+            </ion-accordion>
+          </ion-accordion-group>
         </ion-content>
       </ion-modal>
     </ion-content>
@@ -79,6 +82,8 @@ import {
   IonToggle,
   IonInput,
   IonButton,
+  IonAccordion,
+  IonAccordionGroup,
 } from "@ionic/vue";
 import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';

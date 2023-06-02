@@ -35,7 +35,19 @@ export function useListStoryNodes() {
   }
   var parsednodeList = [];
   for (var node of nodeList) {
-    parsednodeList.push({'name': node.name, 'node': node})
+    parsednodeList.push({ name: node.name, node: node });
   }
+
   console.log(parsednodeList);
+  let storiesTitle = [...new Set(parsednodeList.map(el => el.node.name))];
+
+  for (var title of storiesTitle) {
+    parsednodeList.map(function (node) {
+      console.log(node);
+      if (node.name === title) {
+        console.log('yes');
+      }
+    })
+  }
+
 }
