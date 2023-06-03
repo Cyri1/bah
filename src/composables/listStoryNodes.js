@@ -33,21 +33,10 @@ export function useListStoryNodes() {
       }
     }
   }
-  var parsednodeList = [];
-  for (var node of nodeList) {
-    parsednodeList.push({ name: node.name, node: node });
-  }
 
-  console.log(parsednodeList);
-  let storiesTitle = [...new Set(parsednodeList.map(el => el.node.name))];
-
-  for (var title of storiesTitle) {
-    parsednodeList.map(function (node) {
-      console.log(node);
-      if (node.name === title) {
-        console.log('yes');
-      }
-    })
-  }
+  const sortedStories = nodeList.reduce(
+    (entryMap, e) => entryMap.set(e.name, [...entryMap.get(e.name)||[], e]),
+    new Map());
+    console.log(sortedStories);
 
 }
