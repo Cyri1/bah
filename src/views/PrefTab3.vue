@@ -129,7 +129,8 @@ function activeTimeline(event) {
 
 function setOpen(isOpen) {
   storyStore.sleepModeModalIsOpen = isOpen;
-  console.log(useListStoryNodes());
+  const nodesList = useListStoryNodes()
+  console.log(nodesList);
 }
 
 </script>

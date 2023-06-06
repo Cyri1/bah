@@ -38,5 +38,5 @@ export function useListStoryNodes() {
     (entryMap, e) => entryMap.set(e.name, [...entryMap.get(e.name)||[], e]),
     new Map());
     console.log(sortedStories);
-
+  return sortedStories
 }

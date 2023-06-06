@@ -66,6 +66,9 @@ import { onMounted } from "vue";
 import { downloadOutline } from "ionicons/icons";
 import { useStoryStore } from '../stores/StoryStores';
 import DataTable from 'datatables.net-vue3';
+import DataTablesLib from 'datatables.net';
+DataTable.use(DataTablesLib);
+
 import { useListDownloadedPacks } from '../composables/listDownloadedPacks';
 
 const storyStore = useStoryStore();
