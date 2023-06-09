@@ -37,6 +37,5 @@ export function useListStoryNodes() {
   const sortedStories = nodeList.reduce(
     (entryMap, e) => entryMap.set(e.name, [...entryMap.get(e.name)||[], e]),
     new Map());
-    console.log(sortedStories);
-  return sortedStories
+    storyStore.sortedStories = sortedStories
 }

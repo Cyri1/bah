@@ -11,6 +11,8 @@ export const useStoryStore = defineStore('StoryStore', {
       contributorPwd: null,
       timelineVisible: null,
       sleepModeModalIsOpen: false,
+      sortedStories: [],
+      selectedStories: [],
       unofficialStore: [],
       downloadedPacks: [],
       installedPacks: [],
