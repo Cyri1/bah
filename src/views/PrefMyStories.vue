@@ -1,13 +1,20 @@
 <template>
-
   <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button default-href="../home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mes histoires :</ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-item color="light">
         <ion-text>Supprimez des packs d'histoires en cliquant sur <ion-icon color="danger" :icon="trash"></ion-icon> ou
           choisissez les packs qui apparaitront <ion-icon color="warning" :icon="bookmark"></ion-icon> ou non <ion-icon
             color="warning" :icon="bookmarkOutline"></ion-icon> dans le déroulé :
-            <br>
-            <br>
+          <br>
+          <br>
         </ion-text>
       </ion-item>
       <ion-item v-for="(file, index) in storyStore.installedPacks" color="light" :key="index">
@@ -31,6 +38,11 @@
 <script setup>
 import { onMounted } from "vue";
 import {
+  IonHeader,
+  IonButtons,
+  IonBackButton,
+  IonToolbar,
+  IonTitle,
   IonContent,
   IonPage,
   IonItem,

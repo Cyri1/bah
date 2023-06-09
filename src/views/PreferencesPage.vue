@@ -2,26 +2,22 @@
 <template>
     <ion-page>
         <ion-tabs>
-            <ion-header>
-                <ion-toolbar color="light">
-                    <ion-buttons slot="start">
-                        <ion-back-button default-href="../home"></ion-back-button>
-                    </ion-buttons>
-                    <ion-title>Préférences :</ion-title>
-                </ion-toolbar>
-            </ion-header>
             <ion-router-outlet></ion-router-outlet>
             <ion-tab-bar slot="bottom">
-                <ion-tab-button tab="tab1" href="tab1">
-                    <ion-label>Store Externe</ion-label>
+                <ion-tab-button tab="download" href="download">
+                    <ion-icon :icon="downloadOutline" />
                 </ion-tab-button>
 
-                <ion-tab-button tab="tab2" href="tab2">
-                    <ion-label>Histoires enregistrées</ion-label>
+                <ion-tab-button tab="mystories" href="mystories">
+                    <ion-icon :icon="libraryOutline" />
                 </ion-tab-button>
 
-                <ion-tab-button tab="tab3" href="tab3">
-                    <ion-label>Préférences</ion-label>
+                <ion-tab-button tab="sleepmode" href="sleepmode">
+                    <ion-icon :icon="moonOutline" />
+                </ion-tab-button>
+
+                <ion-tab-button tab="settings" href="settings">
+                    <ion-icon :icon="settingsOutline" />
                 </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>
@@ -30,16 +26,12 @@
 <script setup>
 import {
     IonPage,
-    IonButtons,
-    IonBackButton,
-    IonTitle,
-    IonToolbar,
-    IonHeader,
-    IonLabel,
     IonTabBar,
     IonTabButton,
     IonTabs,
     IonRouterOutlet,
+    IonIcon
 } from "@ionic/vue";
+import { downloadOutline, libraryOutline, settingsOutline, moonOutline } from "ionicons/icons";
 
 </script>

@@ -1,5 +1,13 @@
 <template>
   <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button default-href="../home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Télécharger et installer un pack :</ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-loading :is-open="storyStore.isLoading" message="Installation en cours...">
       </ion-loading>
@@ -21,15 +29,15 @@
             <ion-title>Liste des fichiers</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding"  color="light">
+        <ion-content class="ion-padding" color="light">
           <ion-item v-for="(file, index) in storyStore.downloadedPacks" color="light" :key="index">
-            <ion-label>{{file.name}}</ion-label>
+            <ion-label>{{ file.name }}</ion-label>
             <ion-button @click="showLoading, installPack(file)">Installer</ion-button>
           </ion-item>
         </ion-content>
       </ion-modal>
       <DataTable class="display compact nomargin" :columns="columns" :data="storyStore.unofficialStore"
-        :options="{ pagingType:'simple', dom:'<pf<t>i>', autoWidth:false }" ref="table">
+        :options="{ pagingType: 'simple', dom: '<pf<t>i>', autoWidth: false }" ref="table">
         <thead>
           <tr>
             <th></th>
@@ -48,12 +56,12 @@
 <script setup>
 import {
   IonContent,
+  IonButtons,
+  IonBackButton,
   IonPage,
   IonToast,
   IonIcon,
   IonButton,
-  IonBackButton,
-  IonButtons,
   IonModal,
   IonHeader,
   IonToolbar,

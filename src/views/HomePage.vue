@@ -164,7 +164,7 @@ function homeButton() {
 }
 
 function prefButton() {
-  router.push('/preferences/tab1')
+  router.push('/preferences/download')
 }
 
 function pauseButton() {

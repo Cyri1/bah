@@ -18,7 +18,7 @@ const routes = [
   },
   {
     path: '/preferences',
-    redirect: '/preferences/tab1',
+    redirect: '/preferences/download',
   },
   {
     path: '/preferences/',
@@ -30,19 +30,23 @@ const routes = [
     children: [
       {
         path: '',
-        redirect: 'tab1',
+        redirect: 'download',
       },
       {
-        path: 'tab1',
-        component: () => import('../views/PrefTab1.vue'),
+        path: 'download',
+        component: () => import('../views/PrefDownload.vue'),
       },
       {
-        path: 'tab2',
-        component: () => import('../views/PrefTab2.vue'),
+        path: 'mystories',
+        component: () => import('../views/PrefMyStories.vue'),
       },
       {
-        path: 'tab3',
-        component: () => import('../views/PrefTab3.vue'),
+        path: 'sleepmode',
+        component: () => import('../views/PrefSleepMode.vue'),
+      },
+      {
+        path: 'settings',
+        component: () => import('../views/PrefSettings.vue'),
       },
     ],
   },
