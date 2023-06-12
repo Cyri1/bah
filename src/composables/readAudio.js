@@ -8,6 +8,8 @@ export function initHowlers() {
   storyStore.activeAudioSlideHowl = new Howl({ src: [null], html5: true })
   storyStore.activeAudioSlideSetHowl = new Howl({ src: [null], html5: true, autoplay: true })
   storyStore.storyAudioHowl = new Howl({ src: [null], html5: true })
+  storyStore.storyAudioSleepModeHowl = new Howl({ src: [null], html5: true })
+  storyStore.storyAudioSleepModeSlideHowl = new Howl({ src: [null], html5: true })
 }
 
 export function useReadAudioActiveSlide() {
@@ -52,4 +54,18 @@ export function useReadAudioStory(audio) {
   storyStore.storyAudioHowl._src = convertedPath
   storyStore.storyAudioHowl.load();
   storyStore.storyAudioHowl.play();
+}
+
+export function useReadAudioSleepModeStory(audio) {
+  console.log('Sleep mode : read story');
+  console.log(audio);
+}
+export function useReadAudioSleepModeSlide(audio) {
+  const storyStore = useStoryStore();
+  storyStore.storyAudioSleepModeSlideHowl.stop();
+  storyStore.storyAudioSleepModeSlideHowl.unload();
+  storyStore.storyAudioSleepModeSlideHowl._queue = []
+  storyStore.storyAudioSleepModeSlideHowl._src = audio
+  storyStore.storyAudioSleepModeSlideHowl.load();
+  storyStore.storyAudioSleepModeSlideHowl.play();
 }

@@ -9,6 +9,9 @@ export function useListStoryNodes() {
       if (stageNode.image) {
         if (detectTypeOfStageNode(stageNode)?.type === 'displaySlideSet') {
           var okTransition = detectTypeOfStageNode(stageNode)?.okTransition;
+          var audioSlide = stageNode.audio;
+          console.log('slide set node : ');
+          console.log(stageNode);
           for (var actionNode of story.actionNodes) {
             if (actionNode.id === okTransition.actionNode) {
               var nextStageNodes =
@@ -23,6 +26,7 @@ export function useListStoryNodes() {
                   ) {
                     stageNodedisplaySlideSet.name = story.name;
                     stageNodedisplaySlideSet.icon = stageNode.image;
+                    stageNodedisplaySlideSet.audioSlide = audioSlide;
                     nodeList.push(stageNodedisplaySlideSet);
                   }
                 }

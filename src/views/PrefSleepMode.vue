@@ -5,6 +5,9 @@
         <ion-buttons slot="start">
           <ion-back-button default-href="../home"></ion-back-button>
         </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button size="large" slot="end">test<ion-icon color="success" :icon="play" /></ion-button>
+        </ion-buttons>
         <ion-title>Mode nuit :</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -16,7 +19,8 @@
           </ion-item>
           <div class="ion-padding" slot="content">
             <span class="wrapper" v-for="(story, index) in node[1]" :key="index">
-              <input type="checkbox" @click="selectStory(useConvertPath(node[0] + '/assets/' + story.audio), $event)"
+              <input type="checkbox"
+                @click="selectStory(useConvertPath(node[0] + '/assets/' + story.audio), $event), readAudioSlide(useConvertPath(node[0] + '/assets/' + story.audioSlide), $event)"
                 class="checkbox-input" :id="node[0] + '-' + index" />
               <label :for="node[0] + '-' + index">
                 <img :src="useConvertPath(node[0] + '/assets/' + story.icon)" />
@@ -33,10 +37,12 @@
 import { useListStoryNodes } from '../composables/listStoryNodes';
 import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
+import { useReadAudioSleepModeStory, useReadAudioSleepModeSlide } from '../composables/readAudio';
 import {
   IonHeader,
   IonButtons,
   IonBackButton,
+  IonButton,
   IonToolbar,
   IonTitle,
   IonAccordion,
@@ -44,13 +50,14 @@ import {
   IonItem,
   IonLabel,
   IonPage,
+  IonIcon,
   IonContent
 } from "@ionic/vue";
+import { play } from "ionicons/icons";
 
 import { onMounted } from "vue";
 
 const storyStore = useStoryStore();
-
 onMounted(() => {
   useListStoryNodes()
   console.log(storyStore.sortedStories);
@@ -69,6 +76,13 @@ function selectStory(audioPath, event) {
 
   }
   console.log(storyStore.selectedStories);
+}
+
+function readAudioSlide(audioPath, event) {
+  useReadAudioSleepModeStory(audioPath)
+  if (event.srcElement.checked) {
+    useReadAudioSleepModeSlide(audioPath)
+  }
 }
 
 </script>
