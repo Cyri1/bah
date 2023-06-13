@@ -6,7 +6,7 @@
           <ion-back-button default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button size="large" slot="end">test<ion-icon color="success" :icon="play" /></ion-button>
+            <ion-button size="large" slot="end" @click="playStories()">test<ion-icon color="success" :icon="play" /></ion-button>
         </ion-buttons>
         <ion-title>Mode nuit :</ion-title>
       </ion-toolbar>
@@ -37,7 +37,7 @@
 import { useListStoryNodes } from '../composables/listStoryNodes';
 import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
-import { useReadAudioSleepModeStory, useReadAudioSleepModeSlide } from '../composables/readAudio';
+import { useReadAudioSleepModeStories, useReadAudioSleepModeSlide } from '../composables/readAudio';
 import {
   IonHeader,
   IonButtons,
@@ -60,7 +60,6 @@ import { onMounted } from "vue";
 const storyStore = useStoryStore();
 onMounted(() => {
   useListStoryNodes()
-  console.log(storyStore.sortedStories);
 })
 
 function selectStory(audioPath, event) {
@@ -75,14 +74,16 @@ function selectStory(audioPath, event) {
     console.log('removing = ' + audioPath);
 
   }
-  console.log(storyStore.selectedStories);
 }
 
 function readAudioSlide(audioPath, event) {
-  useReadAudioSleepModeStory(audioPath)
   if (event.srcElement.checked) {
     useReadAudioSleepModeSlide(audioPath)
   }
+}
+
+function playStories() {
+  useReadAudioSleepModeStories()
 }
 
 </script>
