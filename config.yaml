@@ -5,8 +5,8 @@ platforms:
         target: manifest/application
         attrs:
           android:requestLegacyExternalStorage: "true"
-          xmlns:tools: "http://schemas.android.com/tools"
-          tools:replace: "android:usesCleartextTraffic"
+          # xmlns:tools: "http://schemas.android.com/tools"
+          # tools:replace: "android:usesCleartextTraffic"
 
       - file: AndroidManifest.xml
         target: manifest

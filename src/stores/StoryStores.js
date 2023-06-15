@@ -31,6 +31,7 @@ export const useStoryStore = defineStore('StoryStore', {
       activeAudioSlideHowl: {},
       activeAudioSlideSetHowl: {},
       storyAudioHowl: {},
+      countTimeHowl: {},
       storyAudioSleepModeHowl: {},
       storyAudioSleepModeSlideHowl: {},
     };

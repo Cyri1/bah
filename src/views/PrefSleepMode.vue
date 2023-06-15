@@ -37,7 +37,7 @@
 import { useListStoryNodes } from '../composables/listStoryNodes';
 import { useConvertPath } from '../composables/convertPath';
 import { useStoryStore } from '../stores/StoryStores';
-import { useReadAudioSleepModeStories, useReadAudioSleepModeSlide } from '../composables/readAudio';
+import { useReadAudioSleepModeStories, useReadAudioSleepModeSlide, useCountTime } from '../composables/readAudio';
 import {
   IonHeader,
   IonButtons,
@@ -72,8 +72,8 @@ function selectStory(audioPath, event) {
     let index = storyStore.selectedStories.indexOf(audioPath);
     storyStore.selectedStories.splice(index, 1);
     console.log('removing = ' + audioPath);
-
   }
+  useCountTime(storyStore.selectedStories)
 }
 
 function readAudioSlide(audioPath, event) {

@@ -11,6 +11,7 @@ export function initHowlers() {
     autoplay: true,
   });
   storyStore.storyAudioHowl = new Howl({ src: [null], html5: true });
+  storyStore.countTimeHowl = new Howl({ src: [null], html5: true });
   storyStore.storyAudioSleepModeHowl = new Howl({ src: [null], html5: true });
   storyStore.storyAudioSleepModeSlideHowl = new Howl({
     src: [null],
@@ -28,9 +29,9 @@ export function useReadAudioActiveSlide() {
     return;
   }
   var convertedPath = useConvertPath(
-    storyStore.activeSlides[storyStore.swiper.realIndex].name +
+    storyStore.activeSlides[storyStore.swiper.realIndex]?.name +
       '/assets/' +
-      storyStore.activeSlides[storyStore.swiper.realIndex].audio
+      storyStore.activeSlides[storyStore.swiper.realIndex]?.audio
   );
   storyStore.activeAudioSlideHowl.stop();
   storyStore.activeAudioSlideHowl.unload();
@@ -45,7 +46,7 @@ export function useReadAudioActiveSlideSet(audio) {
   const storyStore = useStoryStore();
   storyStore.isAudioActiveSlideSetPlaying = true;
   var convertedPath = useConvertPath(
-    storyStore.activeSlides[storyStore.swiper.realIndex].name +
+    storyStore.activeSlides[storyStore.swiper.realIndex]?.name +
       '/assets/' +
       audio
   );
@@ -77,28 +78,37 @@ export function useReadAudioStory(audio) {
 
 export function useReadAudioSleepModeStories() {
   const storyStore = useStoryStore();
-  console.log('Playing audio list : ');
-  console.log(storyStore.selectedStories);
-
   var playlist = storyStore.selectedStories;
-  storyStore.storyAudioSleepModeHowl.stop();
-  storyStore.storyAudioSleepModeHowl.unload();
-  storyStore.storyAudioSleepModeHowl._queue = [];
-  storyStore.storyAudioSleepModeHowl._src = playlist;
 
-  function autoplay(i, playlist) {
-    storyStore.storyAudioSleepModeHowl.once('end',function () {
-      if (i + 1 == playlist.length) {
-        console.log('Playlist end');
-      } else {
-        console.log('Playlist end');
-        autoplay(i + 1, playlist);
-      }
-    });
+  console.log('Loaded playlist list : ');
+  console.log(playlist);
+
+  var i = 0;
+  storyStore.storyAudioSleepModeHowl.on('end', function () {
+    i++;
+    if (i === playlist.length) {
+      console.log('Playlist end');
+      return;
+    } else {
+      console.log('Playlist next audio');
+      storyStore.storyAudioSleepModeHowl.stop();
+      storyStore.storyAudioSleepModeHowl.unload();
+      storyStore.storyAudioSleepModeHowl._queue = [];
+      storyStore.storyAudioSleepModeHowl._src = playlist[i];
+      storyStore.storyAudioSleepModeHowl.load();
+      storyStore.storyAudioSleepModeHowl.play();
+    }
+  });
+
+  if (i === 0) {
+    console.log('Playlist first audio');
+    storyStore.storyAudioSleepModeHowl.stop();
+    storyStore.storyAudioSleepModeHowl.unload();
+    storyStore.storyAudioSleepModeHowl._queue = [];
+    storyStore.storyAudioSleepModeHowl._src = playlist[0];
     storyStore.storyAudioSleepModeHowl.load();
     storyStore.storyAudioSleepModeHowl.play();
   }
-  autoplay(0, playlist);
 }
 
 export function useReadAudioSleepModeSlide(audio) {
@@ -109,4 +119,13 @@ export function useReadAudioSleepModeSlide(audio) {
   storyStore.storyAudioSleepModeSlideHowl._src = audio;
   storyStore.storyAudioSleepModeSlideHowl.load();
   storyStore.storyAudioSleepModeSlideHowl.play();
+}
+
+export function useCountTime(audioArr) {
+  for (let audio of audioArr) {
+    var howlCounter = new Howl({ src: [audio], html5: true });
+    howlCounter.on('load', function () {
+      console.log(howlCounter.duration());
+    });
+  }
 }
