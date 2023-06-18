@@ -1,6 +1,7 @@
 import { Howl } from 'howler';
 import { useConvertPath } from './convertPath';
 import { useStoryStore } from '../stores/StoryStores';
+import { ScreenBrightness } from '@capacitor-community/screen-brightness';
 
 export function initHowlers() {
   const storyStore = useStoryStore();
@@ -11,7 +12,6 @@ export function initHowlers() {
     autoplay: true,
   });
   storyStore.storyAudioHowl = new Howl({ src: [null], html5: true });
-  storyStore.countTimeHowl = new Howl({ src: [null], html5: true });
   storyStore.storyAudioSleepModeHowl = new Howl({ src: [null], html5: true });
   storyStore.storyAudioSleepModeSlideHowl = new Howl({
     src: [null],
@@ -88,6 +88,11 @@ export function useReadAudioSleepModeStories() {
     i++;
     if (i === playlist.length) {
       console.log('Playlist end');
+      (async () => {
+        const brightness = -1;
+        await ScreenBrightness.setBrightness({ brightness });
+        console.log(await ScreenBrightness.getBrightness());
+      })();
       return;
     } else {
       console.log('Playlist next audio');
@@ -102,6 +107,13 @@ export function useReadAudioSleepModeStories() {
 
   if (i === 0) {
     console.log('Playlist first audio');
+    (async () => {
+      const brightness = 0.1;
+      await ScreenBrightness.setBrightness({ brightness });
+      console.log(await ScreenBrightness.getBrightness());
+    })();
+
+    // nothing else
     storyStore.storyAudioSleepModeHowl.stop();
     storyStore.storyAudioSleepModeHowl.unload();
     storyStore.storyAudioSleepModeHowl._queue = [];
@@ -121,11 +133,17 @@ export function useReadAudioSleepModeSlide(audio) {
   storyStore.storyAudioSleepModeSlideHowl.play();
 }
 
-export function useCountTime(audioArr) {
-  for (let audio of audioArr) {
-    var howlCounter = new Howl({ src: [audio], html5: true });
-    howlCounter.on('load', function () {
-      console.log(howlCounter.duration());
-    });
-  }
+export function useCountTime(audio, action) {
+  const storyStore = useStoryStore();
+  var howlCounter = new Howl({
+    src: [audio],
+    html5: true,
+    onload: () => {
+      if (action === 'add') {
+        storyStore.sleepModeTotalTime += howlCounter.duration();
+      } else if (action === 'remove') {
+        storyStore.sleepModeTotalTime -= howlCounter.duration();
+      }
+    },
+  });
 }

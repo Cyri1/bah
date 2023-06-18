@@ -6,7 +6,7 @@
           <ion-back-button default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button size="large" slot="end" @click="playStories()">test<ion-icon color="success" :icon="play" /></ion-button>
+            <ion-button size="large" slot="end" @click="playStories()">{{  new Date(storyStore.sleepModeTotalTime * 1000).toISOString().substring(11, 16)}}<ion-icon color="success" :icon="play" /></ion-button>
         </ion-buttons>
         <ion-title>Mode nuit :</ion-title>
       </ion-toolbar>
@@ -54,26 +54,26 @@ import {
   IonContent
 } from "@ionic/vue";
 import { play } from "ionicons/icons";
-
 import { onMounted } from "vue";
 
 const storyStore = useStoryStore();
 onMounted(() => {
   useListStoryNodes()
+  storyStore.selectedStories = []
+  storyStore.sleepModeTotalTime = 0
 })
 
 function selectStory(audioPath, event) {
-  console.log('selected = ' + event.srcElement.checked);
   if (event.srcElement.checked) {
-    console.log('adding = ' + audioPath);
+    useCountTime(audioPath, 'add')
     storyStore.selectedStories.push(audioPath)
   }
   else {
     let index = storyStore.selectedStories.indexOf(audioPath);
+    useCountTime(audioPath, 'remove')
     storyStore.selectedStories.splice(index, 1);
-    console.log('removing = ' + audioPath);
   }
-  useCountTime(storyStore.selectedStories)
+  console.log(storyStore.selectedStories);
 }
 
 function readAudioSlide(audioPath, event) {
