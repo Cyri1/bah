@@ -6,7 +6,8 @@
           <ion-back-button default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button size="large" slot="end" @click="playStories()">test<ion-icon color="success" :icon="play" /></ion-button>
+          <ion-button size="large" slot="end" @click="playStories()">{{ new Date(storyStore.sleepModeTotalTime *
+            1000).toISOString().substring(11, 16) }}<ion-icon color="success" :icon="play" /></ion-button>
         </ion-buttons>
         <ion-title>Mode nuit :</ion-title>
       </ion-toolbar>
@@ -30,6 +31,20 @@
         </ion-accordion>
       </ion-accordion-group>
     </ion-content>
+    <ion-modal :is-open="storyStore.storyAudioSleepModeHowl.playing()">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Mode nuit en cours...</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-grid>
+          <ion-row class="ion-align-items-center ion-justify-content-center full-height">
+            <ion-button expand="block" size="large" shape="round" @click="stopStories()">STOP</ion-button>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ion-modal>
   </ion-page>
 </template>
   
@@ -45,35 +60,38 @@ import {
   IonButton,
   IonToolbar,
   IonTitle,
+  IonGrid,
+  IonRow,
   IonAccordion,
   IonAccordionGroup,
   IonItem,
   IonLabel,
   IonPage,
   IonIcon,
+  IonModal,
   IonContent
 } from "@ionic/vue";
 import { play } from "ionicons/icons";
-
 import { onMounted } from "vue";
 
 const storyStore = useStoryStore();
 onMounted(() => {
   useListStoryNodes()
+  storyStore.selectedStories = []
+  storyStore.sleepModeTotalTime = 0
 })
 
 function selectStory(audioPath, event) {
-  console.log('selected = ' + event.srcElement.checked);
   if (event.srcElement.checked) {
-    console.log('adding = ' + audioPath);
+    useCountTime(audioPath, 'add')
     storyStore.selectedStories.push(audioPath)
   }
   else {
     let index = storyStore.selectedStories.indexOf(audioPath);
+    useCountTime(audioPath, 'remove')
     storyStore.selectedStories.splice(index, 1);
-    console.log('removing = ' + audioPath);
   }
-  useCountTime(storyStore.selectedStories)
+  console.log(storyStore.selectedStories);
 }
 
 function readAudioSlide(audioPath, event) {
@@ -84,6 +102,9 @@ function readAudioSlide(audioPath, event) {
 
 function playStories() {
   useReadAudioSleepModeStories()
+}
+function stopStories() {
+  storyStore.storyAudioSleepModeHowl.stop()
 }
 
 </script>
@@ -119,5 +140,9 @@ function playStories() {
   transform: scale(0.8);
   z-index: -1;
   box-shadow: 9px 6px 8px orange;
+}
+
+.full-height {
+  min-height: 100%;
 }
 </style>
