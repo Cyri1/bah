@@ -10,7 +10,8 @@ export const useStoryStore = defineStore('StoryStore', {
       theme: null,
       contributorPwd: null,
       timelineVisible: null,
-      sleepModeModalIsOpen: false,
+      storiesListModalIsOpen: false,
+      remoteStoriesLists: [],
       sortedStories: [],
       selectedStories: [],
       unofficialStore: [],
@@ -95,10 +96,12 @@ export const useStoryStore = defineStore('StoryStore', {
       });
     },
     async loadUnofficialStoreData() {
-      let contributorPwd = await Preferences.get({ key: 'contributorPwd' });
+      let lists = await Preferences.get({ key: 'storiesLists' });
+      console.log('lists: ');
+      console.log(lists);
+
       let response = await fetch(
-        'https://hostmyscripts.000webhostapp.com/data.php?pwd=' +
-          contributorPwd.value
+        'https://hostmyscripts.000webhostapp.com/data.php?pwd=contribz'
       );
       let data = await response.json();
       this.unofficialStore = data;

@@ -16,12 +16,11 @@
         <ion-card-content>
           <ion-list>
             <ion-item>
-              <ion-label>Afficher la timeline :</ion-label>
-              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible"></ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la
+                timeline :</ion-toggle>
             </ion-item>
             <ion-item>
-              <ion-label>Choix du thème :</ion-label>
-              <ion-select @ionChange="changeTheme" placeholder="Choisissez un thème">
+              <ion-select label="Choix du thème :" @ionChange="changeTheme" placeholder="Choisissez un thème">
                 <ion-select-option value="lunii">Lunii</ion-select-option>
                 <ion-select-option value="spiderman">Spiderman</ion-select-option>
                 <ion-select-option value="rdn">Reine des neiges</ion-select-option>
@@ -35,22 +34,42 @@
           <ion-card-title>Paramètres du store :</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-list>
-            <ion-item>
-              <ion-label position="floating">Mot de passe contributeur :</ion-label>
-              <ion-input @ionBlur="changeContributorPwd" type="password" :value="storyStore.contributorPwd"
-                placeholder="Entrer le mot de passe"></ion-input>
-            </ion-item>
-          </ion-list>
+          <ion-button size="small" @click="storiesListModalIsOpen(true)">Ajouter une liste d'histoire au
+            store</ion-button>
         </ion-card-content>
       </ion-card>
     </ion-content>
+    <ion-modal :is-open="storyStore.storiesListModalIsOpen">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Ajouter des histoires au store</ion-title>
+          <ion-buttons slot="end">
+            <ion-button @click="storiesListModalIsOpen(false)">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input id="url" label="URL de la liste d'histoire :" label-placement="floating"
+            placeholder="Copier l'url ici..."></ion-input>
+        </ion-item>
+        <ion-button size="small" @click="addList">Ajouter</ion-button>
+        <ion-item v-for="(url, index) in storyStore.remoteStoriesLists" :key="index">
+          <ion-label class="ion-text-wrap">
+            <ion-button size="small" color="danger" @click="remList(index)" shape="round">X</ion-button> {{ url }}
+          </ion-label>
+        </ion-item>
+      </ion-content>
+    </ion-modal>
   </ion-page>
 </template>
   
 <script setup>
 import {
   IonHeader,
+  IonModal,
+  IonLabel,
+  IonInput,
   IonButtons,
   IonBackButton,
   IonToolbar,
@@ -58,6 +77,7 @@ import {
   IonContent,
   IonPage,
   IonCard,
+  IonButton,
   IonCardHeader,
   IonCardContent,
   IonCardTitle,
@@ -65,21 +85,19 @@ import {
   IonItem,
   IonSelect,
   IonSelectOption,
-  IonLabel,
   IonToggle,
-  IonInput,
 } from "@ionic/vue";
-import { onMounted } from "vue";
+//import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
 
 const storyStore = useStoryStore();
 
-onMounted(() => {
-  Preferences.get({ key: 'contributorPwd' }).then((result) => {
-    storyStore.contributorPwd = result.value;
-  })
-})
+//onMounted(() => {
+// Preferences.get({ key: 'contributorPwd' }).then((result) => {
+//   storyStore.contributorPwd = result.value;
+// })
+//})
 
 function changeTheme(event) {
   Preferences.set({
@@ -89,17 +107,48 @@ function changeTheme(event) {
   storyStore.theme = event.srcElement.value;
 }
 
-function changeContributorPwd(event) {
-  Preferences.set({
-    key: 'contributorPwd',
-    value: event.srcElement.value,
-  })
-  storyStore.contributorPwd = event.srcElement.value
+// function changeContributorPwd(event) {
+//   Preferences.set({
+//     key: 'contributorPwd',
+//     value: event.srcElement.value,
+//   })
+//   storyStore.contributorPwd = event.srcElement.value
 
-  Preferences.get({ key: 'contributorPwd' }).then((result) => {
+//   Preferences.get({ key: 'contributorPwd' }).then((result) => {
+//     console.log(result);
+//   });
+
+// }
+
+function storiesListModalIsOpen(isOpen) {
+  storyStore.storiesListModalIsOpen = isOpen
+}
+
+function addList() {
+  storyStore.remoteStoriesLists.push(document.getElementById('url').value)
+  document.getElementById('url').value = '';
+
+  Preferences.set({
+    key: 'storiesLists',
+    value: JSON.stringify(storyStore.remoteStoriesLists),
+  })
+  Preferences.get({ key: 'storiesLists' }).then((result) => {
     console.log(result);
   });
 
+}
+
+function remList(index) {
+  storyStore.remoteStoriesLists.splice(index, 1)
+
+  Preferences.set({
+    key: 'storiesLists',
+    value: JSON.stringify(storyStore.remoteStoriesLists),
+  })
+  Preferences.get({ key: 'storiesLists' }).then((result) => {
+    console.log(result);
+  });
+  
 }
 
 function activeTimeline(event) {
