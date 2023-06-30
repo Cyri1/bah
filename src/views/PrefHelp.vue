@@ -20,7 +20,7 @@
       <p>Vous avez des idées d'amélioration ou vous avez découvert un bug, vous pouvez créer un post sur le GitHub du projet : <a target="_blank" href="https://github.com/Cyri1/bah/issues">https://github.com/Cyri1/bah/issues</a></p>
 
       <h2>Un petit merci :</h2>
-      <p>L'application vous a éviter les pleurs de vos enfants lorsque votre boite à histoire préférée est tombée en panne et vous souhaitez me remercier, voici comment faire : </p>
+      <p>L'application vous a éviter les pleurs de votre enfant lorsque sa boite à histoires préférée est tombée en panne et vous souhaitez me remercier, voici comment faire : </p>
       <ul>
         <li>Créez une <a target="_blank" href="https://www.amazon.fr/Ch%C3%A8que-cadeau-Amazon-fr-mail-Amazon-marine/dp/B07S2GM42J/ref=sr_1_2?qid=1687510645&s=gift-cards&sr=1-2">carte cadeau Amazon</a> (15cts minimum)</li>
         <li>Choisir le mode de livraison "E-mail"</li>

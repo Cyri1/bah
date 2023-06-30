@@ -34,7 +34,7 @@
           <ion-card-title>Paramètres du store :</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-button size="small" @click="storiesListModalIsOpen(true)">Ajouter une liste d'histoire au
+          <ion-button size="small" @click="storiesListModalIsOpen(true)">Ajouter une liste d'histoires au
             store</ion-button>
         </ion-card-content>
       </ion-card>
@@ -87,13 +87,10 @@ import {
   IonSelectOption,
   IonToggle,
 } from "@ionic/vue";
-//import { onMounted } from "vue";
 import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
 
 const storyStore = useStoryStore();
-
-
 
 function changeTheme(event) {
   Preferences.set({
@@ -102,19 +99,6 @@ function changeTheme(event) {
   })
   storyStore.theme = event.srcElement.value;
 }
-
-// function changeContributorPwd(event) {
-//   Preferences.set({
-//     key: 'contributorPwd',
-//     value: event.srcElement.value,
-//   })
-//   storyStore.contributorPwd = event.srcElement.value
-
-//   Preferences.get({ key: 'contributorPwd' }).then((result) => {
-//     console.log(result);
-//   });
-
-// }
 
 function storiesListModalIsOpen(isOpen) {
   storyStore.storiesListModalIsOpen = isOpen
