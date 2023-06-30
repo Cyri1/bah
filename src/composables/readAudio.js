@@ -79,6 +79,7 @@ export function useReadAudioStory(audio) {
 export function useReadAudioSleepModeStories() {
   const storyStore = useStoryStore();
   var playlist = storyStore.selectedStories;
+  storyStore.storyAudioSleepModeSlideHowl.stop();
 
   console.log('Loaded playlist list : ');
   console.log(playlist);

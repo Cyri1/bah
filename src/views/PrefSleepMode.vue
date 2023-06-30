@@ -21,7 +21,7 @@
           <div class="ion-padding" slot="content">
             <span class="wrapper" v-for="(story, index) in node[1]" :key="index">
               <input type="checkbox"
-                @click="selectStory(useConvertPath(node[0] + '/assets/' + story.audio), $event), readAudioSlide(useConvertPath(node[0] + '/assets/' + story.audioSlide), $event)"
+                @click="selectStory(story, node[0] , $event)"
                 class="checkbox-input" :id="node[0] + '-' + index" />
               <label :for="node[0] + '-' + index">
                 <img :src="useConvertPath(node[0] + '/assets/' + story.icon)" />
@@ -81,10 +81,15 @@ onMounted(() => {
   storyStore.sleepModeTotalTime = 0
 })
 
-function selectStory(audioPath, event) {
+function selectStory(story, name, event) {
+
+  var audioPath = useConvertPath(name + '/assets/' + story.audio)
+  var audioSlidePath = useConvertPath(name + '/assets/' + story.audioSlide)
+ 
   if (event.srcElement.checked) {
     useCountTime(audioPath, 'add')
     storyStore.selectedStories.push(audioPath)
+    useReadAudioSleepModeSlide(audioSlidePath)
   }
   else {
     let index = storyStore.selectedStories.indexOf(audioPath);
@@ -94,11 +99,6 @@ function selectStory(audioPath, event) {
   console.log(storyStore.selectedStories);
 }
 
-function readAudioSlide(audioPath, event) {
-  if (event.srcElement.checked) {
-    useReadAudioSleepModeSlide(audioPath)
-  }
-}
 
 function playStories() {
   useReadAudioSleepModeStories()
