@@ -93,11 +93,7 @@ import { useStoryStore } from '../stores/StoryStores';
 
 const storyStore = useStoryStore();
 
-//onMounted(() => {
-// Preferences.get({ key: 'contributorPwd' }).then((result) => {
-//   storyStore.contributorPwd = result.value;
-// })
-//})
+
 
 function changeTheme(event) {
   Preferences.set({
@@ -145,10 +141,6 @@ function remList(index) {
     key: 'storiesLists',
     value: JSON.stringify(storyStore.remoteStoriesLists),
   })
-  Preferences.get({ key: 'storiesLists' }).then((result) => {
-    console.log(result);
-  });
-  
 }
 
 function activeTimeline(event) {

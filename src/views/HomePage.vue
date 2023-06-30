@@ -18,9 +18,6 @@
             <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <button @click="debug" v-show="false" color="primary">
-              log datas
-            </button>
           </ion-col>
           <ion-col size="8">
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
@@ -78,7 +75,6 @@ import { usePermissionsCheck } from '../composables/permissionsCheck';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
-import { Preferences } from '@capacitor/preferences';
 
 const storyStore = useStoryStore();
 
@@ -136,13 +132,6 @@ storyStore.$subscribe((mutation) => {
     })();
   }
 })
-
-function debug() {
-  console.log(storyStore)
-  Preferences.get({ key: 'theme' }).then((result) => {
-    console.log(result.value);
-  });
-}
 
 function homeButton() {
   storyStore.activeAudioSlideHowl.stop()

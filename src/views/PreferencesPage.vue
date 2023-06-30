@@ -19,6 +19,10 @@
                 <ion-tab-button tab="settings" href="settings">
                     <ion-icon :icon="settingsOutline" />
                 </ion-tab-button>
+
+                <ion-tab-button tab="help" href="help">
+                    <ion-icon :icon="helpOutline" />
+                </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>
     </ion-page>
@@ -32,6 +36,6 @@ import {
     IonRouterOutlet,
     IonIcon
 } from "@ionic/vue";
-import { downloadOutline, libraryOutline, settingsOutline, moonOutline } from "ionicons/icons";
+import { downloadOutline, libraryOutline, settingsOutline, moonOutline, helpOutline } from "ionicons/icons";
 
 </script>

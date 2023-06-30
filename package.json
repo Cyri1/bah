@@ -19,7 +19,6 @@
     "@capacitor-community/screen-brightness": "5.0.0",
     "@capacitor/android": "5.0.4",
     "@capacitor/app": "^5.0.0",
-    "@capacitor/assets": "2.0.4",
     "@capacitor/core": "^5.0.0",
     "@capacitor/device": "^5.0.0",
     "@capacitor/dialog": "^5.0.0",
@@ -48,6 +47,7 @@
     "vue-router": "4.2.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "2.0.4",
     "@capacitor/cli": "^5.0.0",
     "@ionic/cli": "7.1.1",
     "@vue/cli-plugin-babel": "5.0.8",

@@ -48,6 +48,10 @@ const routes = [
         path: 'settings',
         component: () => import('../views/PrefSettings.vue'),
       },
+      {
+        path: 'help',
+        component: () => import('../views/PrefHelp.vue'),
+      },
     ],
   },
 ]

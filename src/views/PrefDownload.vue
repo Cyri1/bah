@@ -13,12 +13,6 @@
       </ion-loading>
       <ion-toast :is-open="storyStore.isDone" message="Pack installé" :duration="2500"
         @didDismiss="storyStore.isDone = false" position="middle"></ion-toast>
-      <button @click="debug" v-show="false" color="primary">
-        log datas
-      </button>
-      <button @click="test" v-show="false" color="primary">
-        filter
-      </button>
       <ion-button id="open-modal" @click="useListDownloadedPacks" expand="block">Installer un pack téléchargé</ion-button>
       <ion-modal ref="modal" trigger="open-modal">
         <ion-header>
@@ -36,8 +30,7 @@
           </ion-item>
         </ion-content>
       </ion-modal>
-      <DataTable class="display compact nomargin" :columns="columns" :data="storyStore.unofficialStore"
-        :options="{ pagingType: 'simple', dom: '<pf<t>i>', autoWidth: false }" ref="table">
+      <DataTable class="display compact nomargin" :columns="columns" :data="storyStore.unofficialStore" :options="options" ref="table">
         <thead>
           <tr>
             <th></th>
@@ -90,6 +83,9 @@ const columns = [
   },
   {
     data: 'title',
+    render: function (data) {
+      return data.replace(/_./g, ' ');
+    }
   },
   {
     data: 'age',
@@ -102,14 +98,21 @@ const columns = [
   }
 ];
 
+const options = {
+  pagingType: 'simple',
+  dom: '<pf<t>i>',
+  autoWidth: false,
+  columnDefs: [
+    { width: '20%', targets: 0 },
+    { width: '50%', targets: 1 },
+    { width: '15%', targets: 2 },
+    { width: '15%', targets: 3 }
+  ]
+}
+
 onMounted(() => {
   useListDownloadedPacks()
 });
-
-function debug() {
-  console.log(storyStore.columnDefs)
-  console.log(storyStore.unofficialStore)
-}
 
 
 function cancel() {

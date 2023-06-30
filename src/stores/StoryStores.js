@@ -8,7 +8,6 @@ export const useStoryStore = defineStore('StoryStore', {
       stories: [],
       unfavoriteStories: [],
       theme: null,
-      contributorPwd: null,
       timelineVisible: null,
       storiesListModalIsOpen: false,
       remoteStoriesLists: [],
@@ -94,17 +93,40 @@ export const useStoryStore = defineStore('StoryStore', {
           this.unfavoriteStories = JSON.parse(result.value);
         }
       });
+
+      Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
+        if (result.value === null) {
+          this.unfavoriteStories = [];
+        } else {
+          this.unfavoriteStories = JSON.parse(result.value);
+        }
+      });
+
+      Preferences.get({ key: 'storiesLists' }).then((result) => {
+        if (result.value === null) {
+          this.remoteStoriesLists = [];
+        } else {
+          this.remoteStoriesLists = JSON.parse(result.value);
+        }
+      });
     },
     async loadUnofficialStoreData() {
       let lists = await Preferences.get({ key: 'storiesLists' });
-      console.log('lists: ');
+      lists = JSON.parse(lists.value);
       console.log(lists);
 
-      let response = await fetch(
-        'https://hostmyscripts.000webhostapp.com/data.php?pwd=contribz'
-      );
-      let data = await response.json();
-      this.unofficialStore = data;
+      var fullData = [];
+      for (let url of lists) {
+        let response = await fetch(url);
+        let data = await response.json();
+        fullData.push(data);
+      }
+      var mergedData = [];
+      for (let array of fullData) {
+        mergedData.push(...array);
+      }
+      console.log(mergedData);
+      this.unofficialStore = mergedData;
     },
   },
 });
