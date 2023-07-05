@@ -1,6 +1,6 @@
 {
   "name": "bah",
-  "version": "0.3.15",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,12 +17,12 @@
     "@awesome-cordova-plugins/insomnia": "5.46.0",
     "@awesome-cordova-plugins/screen-orientation": "5.46.0",
     "@capacitor-community/screen-brightness": "5.0.0",
-    "@capacitor/android": "5.0.4",
-    "@capacitor/app": "^5.0.0",
+    "@capacitor/android": "5.1.0",
+    "@capacitor/app": "5.0.5",
     "@capacitor/core": "^5.0.0",
     "@capacitor/device": "^5.0.0",
     "@capacitor/dialog": "^5.0.0",
-    "@capacitor/filesystem": "^5.0.0",
+    "@capacitor/filesystem": "5.0.5",
     "@capacitor/haptics": "^5.0.0",
     "@capacitor/keyboard": "^5.0.0",
     "@capacitor/preferences": "^5.0.0",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@capacitor/assets": "2.0.4",
-    "@capacitor/cli": "^5.0.0",
+    "@capacitor/cli": "5.1.0",
     "@ionic/cli": "7.1.1",
     "@vue/cli-plugin-babel": "5.0.8",
     "@vue/cli-plugin-e2e-cypress": "5.0.8",

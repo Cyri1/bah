@@ -10,7 +10,7 @@
     </ion-header>
     <ion-content class="ion-padding ion-margin-bottom">
       <h2>Discord :</h2>
-      <p>Rejoignez le Discord de <strong>Lunii Créations</strong> pour obtenir plein d'histoires et aussi de l'aide sur cette appli dans le salon
+      <p>Rejoignez le Discord de <strong>Lunii Créations</strong> : <a target="_blank" href="https://monurl.ca/lunii.creations">https://monurl.ca/lunii.creations</a>pour obtenir plein d'histoires et aussi de l'aide sur cette appli dans le salon
         "bah-lemulateur-android" de ce même serveur.</p>
 
       <h2>Le site :</h2>

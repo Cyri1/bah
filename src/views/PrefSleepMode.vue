@@ -85,7 +85,8 @@ function selectStory(story, name, event) {
 
   var audioPath = useConvertPath(name + '/assets/' + story.audio)
   var audioSlidePath = useConvertPath(name + '/assets/' + story.audioSlide)
- 
+ console.log(audioPath);
+ console.log(audioSlidePath);
   if (event.srcElement.checked) {
     useCountTime(audioPath, 'add')
     storyStore.selectedStories.push(audioPath)
