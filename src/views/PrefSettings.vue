@@ -16,8 +16,10 @@
         <ion-card-content>
           <ion-list>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la
-                timeline :</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la timeline</ion-toggle>
+            </ion-item>
+            <ion-item>
+              <ion-toggle slot="end" @ionChange="activeBoxMode" :checked="storyStore.isBoxMode">Affichage box 3D</ion-toggle>
             </ion-item>
             <ion-item>
               <ion-select label="Choix du thème :" @ionChange="changeTheme" placeholder="Choisissez un thème">
@@ -133,6 +135,14 @@ function activeTimeline(event) {
     value: String(event.detail.checked),
   })
   storyStore.timelineVisible = event.detail.checked
+}
+
+function activeBoxMode(event) {
+  Preferences.set({
+    key: 'isBoxMode',
+    value: String(event.detail.checked),
+  })
+  storyStore.isBoxMode = event.detail.checked
 }
 
 </script>

@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content :color="storyStore.theme + 'prim'" :fullscreen="true">
+    <ion-content :color="storyStore.isBoxMode ? 'dark' : storyStore.theme + 'prim'" :fullscreen="true">
       <ion-grid class="ion-no-padding full-height">
         <ion-row class="top-row">
           <ion-col size="10">
@@ -8,18 +8,27 @@
             </AudioRange>
           </ion-col>
           <ion-col size="2">
-            <ion-button class="preferences" :color="storyStore.theme + 'sec'" icon-only @click="prefButton" size="small">
+            <ion-button class="preferences" :color="storyStore.isBoxMode ? 'medium' : storyStore.theme + 'sec'" icon-only
+              @pointerdown="storeClickTs($event._vts)" @pointerup="prefButton($event._vts)" size="small">
               <ion-icon :icon="settingsOutline" size="small"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-row class="ion-align-items-center middle-row">
-          <ion-col class="ion-align-items-center ion-text-center" size="2">
+        <ion-row class="middle-row ion-text-center">
+          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isBoxMode">
             <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col size="8">
+          <ion-col size="2" class="ion-align-self-end" v-show="storyStore.isBoxMode">
+            <ion-button color="medium" class="box-buttons-big" @click="homeButton" icon-only size="large">
+              <ion-icon :icon="home" size="large"></ion-icon>
+            </ion-button>
+            <ion-button color="medium" class="box-buttons-big " @click="storyStore.swiper.slidePrev()" icon-only size="large">
+              <ion-icon :icon="arrowBack" size="large"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col class="ion-align-self-center" size="8">
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
               @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
@@ -29,19 +38,34 @@
               </swiper-slide>
             </swiper>
           </ion-col>
-          <ion-col size="2">
-            <ion-button @click="pauseButton" class="big-buttons" :color="storyStore.theme + 'sec'" icon-only size="large">
+          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isBoxMode">
+            <ion-button v-show="!storyStore.isBoxMode" @click="pauseButton" class="big-buttons"
+              :color="storyStore.theme + 'sec'" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col class="ion-align-self-end" size="2" v-show="storyStore.isBoxMode">
+            <ion-button v-show="storyStore.isBoxMode" @click="pauseButton" class="box-buttons-small" color="medium" icon-only size="large">
+              <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
+              <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
+            </ion-button>
+            <ion-button v-show="storyStore.isBoxMode" @click="slideClick()" class="box-buttons-small" color="medium" icon-only size="large">
+              <ion-icon :icon="checkmark" size="large"></ion-icon>
+            </ion-button>
+            <ion-button v-show="storyStore.isBoxMode" @click="storyStore.swiper.slideNext()" color="medium" class="box-buttons-big" icon-only size="large">
+              <ion-icon :icon="arrowForward" size="large"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="bottom-row">
           <ion-col size="6">
-            <ion-img class="img-theme1" :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
+            <ion-img v-show="!storyStore.isBoxMode" class="img-theme1"
+              :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
           </ion-col>
           <ion-col size="6">
-            <ion-img class="img-theme2" :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
+            <ion-img v-show="!storyStore.isBoxMode" class="img-theme2"
+              :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -64,7 +88,7 @@ import {
   alertController,
   IonIcon,
 } from "@ionic/vue";
-import { home, playOutline, pauseSharp, settingsOutline } from "ionicons/icons";
+import { home, playOutline, pauseSharp, settingsOutline, arrowForward, arrowBack, checkmark } from "ionicons/icons";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/effect-flip";
@@ -84,6 +108,7 @@ onBeforeMount(() => {
   initHowlers();
   storyStore.setPreferences()
 })
+
 onMounted(() => {
   usePermissionsCheck().then((result) => {
     if (!result) {
@@ -110,7 +135,6 @@ onMounted(() => {
     }
   })
   storyStore.fillStoriesIndex()
-  window.plugins.insomnia.keepAwake();
 })
 
 router.afterEach((to) => {
@@ -132,6 +156,10 @@ storyStore.$subscribe((mutation) => {
     })();
   }
 })
+var prefDownTS;
+function storeClickTs(ts) {
+  prefDownTS = ts
+}
 
 function homeButton() {
   storyStore.activeAudioSlideHowl.stop()
@@ -152,8 +180,20 @@ function homeButton() {
   }
 }
 
-function prefButton() {
-  router.push('/preferences/download')
+function prefButton(prefUpTS) {
+  console.log(prefUpTS - prefDownTS);
+  if ((prefUpTS - prefDownTS) > 1000) {
+
+    oldOkTransition = null
+    storyStore.activeAudioSlideHowl.stop()
+    storyStore.activeAudioSlideSetHowl.stop()
+    storyStore.storyAudioHowl.unload()
+    storyStore.howlerIsPlaying = false
+    storyStore.storyAudioHowl._queue = []
+    storyStore.storyAudioHowl._src = [null]
+    storyStore.slidesVisible = true
+    router.push('/preferences/download')
+  }
 }
 
 function pauseButton() {
@@ -165,6 +205,10 @@ function pauseButton() {
     storyStore.storyAudioHowl.play()
     storyStore.howlerIsPlaying = false
   }
+
+}
+function slideClick() {
+  document.getElementsByClassName('swiper-slide-active')[0].getElementsByTagName("ion-img")[0].click()
 }
 
 function onSwiper(swiper) {
@@ -192,6 +236,7 @@ function handleSlideClick(okTransition) {
     console.log('old optionIndex :')
     console.log(oldOkTransition?.optionIndex)
     storyStore.homeTransition = null
+    oldOkTransition = null
     homeButton()
     return
   }
@@ -311,5 +356,15 @@ function handleSlideClick(okTransition) {
   --padding-end: 35px;
   --padding-bottom: 45px;
   --padding-top: 45px;
+}
+
+.box-buttons-big {
+  height: 120px;
+  width: 100%;
+}
+
+.box-buttons-small {
+  height: 60px;
+  width: 100%;
 }
 </style>

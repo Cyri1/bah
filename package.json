@@ -14,7 +14,6 @@
   "dependencies": {
     "@awesome-cordova-plugins/android-permissions": "5.46.0",
     "@awesome-cordova-plugins/core": "5.46.0",
-    "@awesome-cordova-plugins/insomnia": "5.46.0",
     "@awesome-cordova-plugins/screen-orientation": "5.46.0",
     "@capacitor-community/screen-brightness": "5.0.0",
     "@capacitor/android": "5.1.0",
@@ -33,7 +32,6 @@
     "@trapezedev/configure": "7.0.10",
     "cordova-open-native-settings": "^1.5.5",
     "cordova-plugin-file": "7.0.0",
-    "cordova-plugin-insomnia": "^4.3.0",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-zip": "^3.1.0",
     "core-js": "3.27.2",
