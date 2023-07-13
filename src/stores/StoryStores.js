@@ -119,22 +119,24 @@ export const useStoryStore = defineStore('StoryStore', {
       });
     },
     async loadUnofficialStoreData() {
-      let lists = await Preferences.get({ key: 'storiesLists' });
-      lists = JSON.parse(lists.value);
-      console.log(lists);
-
+      // let lists = await Preferences.get({ key: 'storiesLists' });
+      // lists = JSON.parse(lists.value);
+      let lists = this.remoteStoriesLists
       var fullData = [];
-      for (let url of lists) {
-        let response = await fetch(url);
-        let data = await response.json();
-        fullData.push(data);
+      console.log(lists);
+      if(lists.length) {
+        for (let url of lists) {
+          let response = await fetch(url);
+          let data = await response.json();
+          fullData.push(data);
+        }
+        var mergedData = [];
+        for (let array of fullData) {
+          mergedData.push(...array);
+        }
+        console.log(mergedData);
+        this.unofficialStore = mergedData;
       }
-      var mergedData = [];
-      for (let array of fullData) {
-        mergedData.push(...array);
-      }
-      console.log(mergedData);
-      this.unofficialStore = mergedData;
     },
   },
 });
