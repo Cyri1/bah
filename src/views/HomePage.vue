@@ -182,7 +182,7 @@ function homeButton() {
 
 function prefButton(prefUpTS) {
   console.log(prefUpTS - prefDownTS);
-  if ((prefUpTS - prefDownTS) > 1000) {
+  if ((prefUpTS - prefDownTS) > 200) {
 
     oldOkTransition = null
     storyStore.activeAudioSlideHowl.stop()
