@@ -5,9 +5,9 @@ platforms:
         target: manifest/application
         attrs:
           android:requestLegacyExternalStorage: "true"
+          android:theme: "@style/AppTheme.NoActionBar"
           # xmlns:tools: "http://schemas.android.com/tools"
           # tools:replace: "android:usesCleartextTraffic"
-
       - file: AndroidManifest.xml
         target: manifest
         merge:
@@ -21,5 +21,8 @@ platforms:
         target: resources/style[@name="AppTheme.NoActionBar"]
         merge: 
           <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:windowActionBar">false</item>
             <item name="android:windowFullscreen">true</item>
+            <item name="android:windowContentOverlay">@null</item>
           </style>
