@@ -24,7 +24,13 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 import { createPinia } from 'pinia'
 import { CapacitorUpdater } from '@capgo/capacitor-updater'
+import { AndroidFullScreen } from "@awesome-cordova-plugins/android-full-screen/";
+
 CapacitorUpdater.notifyAppReady()
+
+AndroidFullScreen.isImmersiveModeSupported()
+  .then(() => AndroidFullScreen.immersiveMode())
+  .catch(console.warn);
 
 const pinia = createPinia()
 
