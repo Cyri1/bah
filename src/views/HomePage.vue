@@ -137,6 +137,7 @@ onMounted(() => {
   storyStore.fillStoriesIndex()
 })
 
+
 router.afterEach((to) => {
   if (to.name === 'Home') {
     storyStore.fillStoriesIndex()
