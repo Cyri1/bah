@@ -21,7 +21,7 @@
     "@capacitor/core": "^5.0.0",
     "@capacitor/device": "^5.0.0",
     "@capacitor/dialog": "^5.0.0",
-    "@capacitor/filesystem": "5.1.0",
+    "@capacitor/filesystem": "5.1.1",
     "@capacitor/haptics": "^5.0.0",
     "@capacitor/keyboard": "^5.0.0",
     "@capacitor/preferences": "^5.0.0",
