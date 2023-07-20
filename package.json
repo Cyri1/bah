@@ -43,6 +43,7 @@
     "pinia": "2.0.30",
     "swiper": "8.4.7",
     "vue": "3.3.4",
+    "vue-console-feed": "^0.0.29",
     "vue-router": "4.2.2"
   },
   "devDependencies": {
