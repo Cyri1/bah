@@ -17,9 +17,9 @@
     "@awesome-cordova-plugins/screen-orientation": "6.4.0",
     "@capacitor-community/screen-brightness": "5.0.0",
     "@capacitor/android": "5.2.1",
-    "@capacitor/app": "5.0.5",
+    "@capacitor/app": "^5.0.5",
     "@capacitor/core": "^5.0.0",
-    "@capacitor/device": "^5.0.0",
+    "@capacitor/device": "^5.0.6",
     "@capacitor/dialog": "^5.0.0",
     "@capacitor/filesystem": "5.1.1",
     "@capacitor/haptics": "^5.0.0",
@@ -43,7 +43,6 @@
     "pinia": "2.0.30",
     "swiper": "8.4.7",
     "vue": "3.3.4",
-    "vue-console-feed": "^0.0.29",
     "vue-router": "4.2.2"
   },
   "devDependencies": {

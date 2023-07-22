@@ -56,7 +56,6 @@
             <ion-button v-show="storyStore.isBoxMode" :disabled="!storyStore.slidesVisible" @click="storyStore.swiper.slideNext()" color="medium" class="box-buttons-big" icon-only size="large">
               <ion-icon :icon="arrowForward" size="large"></ion-icon>
             </ion-button>
-            <Console :data="console.value"  type="log" />
           </ion-col>
         </ion-row>
         <ion-row class="bottom-row">
@@ -100,11 +99,8 @@ import { usePermissionsCheck } from '../composables/permissionsCheck';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
-import { Console, DataAPI } from "vue-console-feed"
-import "vue-console-feed/style.css"
 
 const storyStore = useStoryStore();
-const console = new DataAPI(false, 0) // if you use API set option to true, argument 2 offset deep location
 
 const modules = [EffectFlip];
 const router = useRouter();
