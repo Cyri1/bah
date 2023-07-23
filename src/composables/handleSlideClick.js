@@ -60,13 +60,13 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === false &&
       actionNode.image !== null) ||
-      (actionNode.audio !== null &&
-        actionNode.controlSettings.autoplay === true &&
-        actionNode.controlSettings.home === true &&
-        actionNode.controlSettings.ok === true &&
-        actionNode.controlSettings.pause === true &&
-        actionNode.controlSettings.wheel === false &&
-        actionNode.image !== null)
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === true &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === true &&
+      actionNode.controlSettings.pause === true &&
+      actionNode.controlSettings.wheel === false &&
+      actionNode.image !== null)
   ) {
     return { type: 'audioSlideSet', okTransition: actionNode.okTransition };
   } else if (
@@ -156,6 +156,27 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === false &&
       actionNode.controlSettings.pause === true &&
       actionNode.controlSettings.wheel === false &&
+      actionNode.image !== null) ||
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === true &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === false &&
+      actionNode.controlSettings.pause === true &&
+      actionNode.controlSettings.wheel === true &&
+      actionNode.image === null) ||
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === false &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === false &&
+      actionNode.controlSettings.pause === true &&
+      actionNode.controlSettings.wheel === false &&
+      actionNode.image === null) ||
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === true &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === false &&
+      actionNode.controlSettings.pause === true &&
+      actionNode.controlSettings.wheel === true &&
       actionNode.image !== null)
   ) {
     return { type: 'audioStory', okTransition: actionNode.okTransition };

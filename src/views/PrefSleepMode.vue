@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button default-href="../home"></ion-back-button>
+          <ion-back-button class="ion-margin-start" default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button size="large" slot="end" @click="playStories()">{{ new Date(storyStore.sleepModeTotalTime *

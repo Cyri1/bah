@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button default-href="../home"></ion-back-button>
+          <ion-back-button class="ion-margin-start" default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-title>Télécharger et installer un pack :</ion-title>
       </ion-toolbar>
