@@ -35,7 +35,7 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-align-self-center" size="8">
-            <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
+            <swiper :loop="true" v-show="storyStore.slidesVisible" :allowTouchMove="!storyStore.isButtonsMode" :modules="modules" :effect="'flip'" @swiper="onSwiper"
               @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
@@ -175,8 +175,8 @@ storyStore.$subscribe((mutation) => {
 })
 
 function homeButton() {
-  storyStore.activeAudioSlideHowl.stop()
-  storyStore.activeAudioSlideSetHowl.stop()
+  storyStore.activeAudioSlideHowl.unload()
+  storyStore.activeAudioSlideSetHowl.unload()
   storyStore.storyAudioHowl.unload()
   storyStore.howlerIsPlaying = false
   storyStore.storyAudioHowl._queue = []

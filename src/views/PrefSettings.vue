@@ -26,7 +26,7 @@
                 <ion-select-option value="lunii">Lunii</ion-select-option>
                 <ion-select-option value="spiderman">Spiderman</ion-select-option>
                 <ion-select-option value="rdn">Reine des neiges</ion-select-option>
-                <ion-select-option value="3dbox">Mode boîte impression 3D</ion-select-option>
+                <ion-select-option value="dark">Mode sombre</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
