@@ -34,7 +34,7 @@ export const useStoryStore = defineStore('StoryStore', {
       sleepModeTotalTime: 0,
       storyAudioSleepModeHowl: {},
       storyAudioSleepModeSlideHowl: {},
-      isBoxMode: true,
+      isButtonsMode: false,
     };
   },
   actions: {
@@ -87,11 +87,11 @@ export const useStoryStore = defineStore('StoryStore', {
           this.timelineVisible = JSON.parse(result.value.toLowerCase());
         }
       });
-      Preferences.get({ key: 'isBoxMode' }).then((result) => {
+      Preferences.get({ key: 'isButtonsMode' }).then((result) => {
         if (result.value === null) {
-          this.isBoxMode = false;
+          this.isButtonsMode = false;
         } else {
-          this.isBoxMode = JSON.parse(result.value);
+          this.isButtonsMode = JSON.parse(result.value);
         }
       });
       Preferences.get({ key: 'unfavoriteStories' }).then((result) => {

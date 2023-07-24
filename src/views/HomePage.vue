@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content :color="storyStore.isBoxMode ? 'dark' : storyStore.theme + 'prim'" :fullscreen="true">
+    <ion-content :color="storyStore.theme + 'prim'" :fullscreen="true">
       <ion-grid class="ion-no-padding full-height">
         <ion-row class="top-row">
           <ion-col size="10">
@@ -9,27 +9,27 @@
           </ion-col>
           <ion-col size="2">
             <ion-item-sliding ref="slidingElements">
-              <ion-item lines="none" :color="storyStore.isBoxMode ? 'dark' : storyStore.theme + 'prim'">
-                <ion-label><ion-icon :icon="chevronBack" :color="storyStore.isBoxMode ? 'light' : storyStore.theme + 'sec'"  size="small"></ion-icon><ion-icon :color="storyStore.isBoxMode ? 'light' : storyStore.theme + 'sec'" :icon="settings" size="small"></ion-icon></ion-label>
+              <ion-item lines="none" :color="storyStore.theme + 'prim'">
+                <ion-label><ion-icon :icon="chevronBack" :color="storyStore.theme + 'sec'"  size="small"></ion-icon><ion-icon :color="storyStore.theme + 'sec'" :icon="settings" size="small"></ion-icon></ion-label>
               </ion-item>
               <ion-item-options side="end" @ionSwipe="prefButton()">
-                <ion-item-option :color="storyStore.isBoxMode ? 'dark' : storyStore.theme + 'sec'">
+                <ion-item-option :color="storyStore.theme + 'sec'">
                 </ion-item-option>
               </ion-item-options>
             </ion-item-sliding>
           </ion-col>
         </ion-row>
         <ion-row class="middle-row ion-text-center">
-          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isBoxMode">
+          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isButtonsMode">
             <ion-button class="big-buttons" :color="storyStore.theme + 'sec'" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col size="2" class="ion-align-self-end" v-show="storyStore.isBoxMode">
-            <ion-button color="medium" class="box-buttons-big" @click="homeButton" icon-only size="large">
+          <ion-col size="2" class="ion-align-self-end" v-show="storyStore.isButtonsMode">
+            <ion-button :color="storyStore.theme + 'sec'" class="box-buttons-big" @click="homeButton" icon-only size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
-            <ion-button color="medium" class="box-buttons-big" :disabled="!storyStore.slidesVisible"
+            <ion-button :color="storyStore.theme + 'sec'" class="box-buttons-big" :disabled="!storyStore.slidesVisible"
               @click="storyStore.swiper.slidePrev()" icon-only size="large">
               <ion-icon :icon="arrowBack" size="large"></ion-icon>
             </ion-button>
@@ -44,36 +44,36 @@
               </swiper-slide>
             </swiper>
           </ion-col>
-          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isBoxMode">
-            <ion-button v-show="!storyStore.isBoxMode" @click="pauseButton" class="big-buttons"
+          <ion-col size="2" class="ion-align-self-center" v-show="!storyStore.isButtonsMode">
+            <ion-button v-show="!storyStore.isButtonsMode" @click="pauseButton" class="big-buttons"
               :color="storyStore.theme + 'sec'" icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col class="ion-align-self-end" size="2" v-show="storyStore.isBoxMode">
-            <ion-button v-show="storyStore.isBoxMode" @click="pauseButton" class="box-buttons-small" color="medium"
+          <ion-col class="ion-align-self-end" size="2" v-show="storyStore.isButtonsMode">
+            <ion-button @click="pauseButton" class="box-buttons-small" :color="storyStore.theme + 'sec'"
               icon-only size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
-            <ion-button v-show="storyStore.isBoxMode" :disabled="!storyStore.slidesVisible" @click="slideClick()"
-              class="box-buttons-small" color="medium" icon-only size="large">
-              <ion-icon :icon="checkmark" size="large"></ion-icon>
+            <ion-button :disabled="!storyStore.slidesVisible" @click="slideClick()"
+              class="box-buttons-small" :color="storyStore.theme + 'sec'" icon-only size="large">
+              <strong>OK</strong>
             </ion-button>
-            <ion-button v-show="storyStore.isBoxMode" :disabled="!storyStore.slidesVisible"
-              @click="storyStore.swiper.slideNext()" color="medium" class="box-buttons-big" icon-only size="large">
+            <ion-button :disabled="!storyStore.slidesVisible"
+              @click="storyStore.swiper.slideNext()" :color="storyStore.theme + 'sec'" class="box-buttons-big" icon-only size="large">
               <ion-icon :icon="arrowForward" size="large"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="bottom-row">
           <ion-col size="6">
-            <ion-img v-show="!storyStore.isBoxMode" class="img-theme1"
+            <ion-img class="img-theme1"
               :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
           </ion-col>
           <ion-col size="6">
-            <ion-img v-show="!storyStore.isBoxMode" class="img-theme2"
+            <ion-img class="img-theme2"
               :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
           </ion-col>
         </ion-row>
@@ -103,7 +103,7 @@ import {
   IonLabel
 } from "@ionic/vue";
 import { ref } from 'vue';
-import { home, playOutline, pauseSharp, settings , arrowForward, arrowBack, checkmark, chevronBack } from "ionicons/icons";
+import { home, playOutline, pauseSharp, settings , arrowForward, arrowBack, chevronBack } from "ionicons/icons";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/effect-flip";

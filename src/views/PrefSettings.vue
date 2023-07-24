@@ -19,13 +19,14 @@
               <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la timeline</ion-toggle>
             </ion-item>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeBoxMode" :checked="storyStore.isBoxMode">Affichage box 3D</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeButtonsMode" :checked="storyStore.isButtonsMode">Contrôle par boutons</ion-toggle>
             </ion-item>
             <ion-item>
               <ion-select label="Choix du thème :" @ionChange="changeTheme" placeholder="Choisissez un thème">
                 <ion-select-option value="lunii">Lunii</ion-select-option>
                 <ion-select-option value="spiderman">Spiderman</ion-select-option>
                 <ion-select-option value="rdn">Reine des neiges</ion-select-option>
+                <ion-select-option value="3dbox">Mode boîte impression 3D</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
@@ -137,12 +138,12 @@ function activeTimeline(event) {
   storyStore.timelineVisible = event.detail.checked
 }
 
-function activeBoxMode(event) {
+function activeButtonsMode(event) {
   Preferences.set({
-    key: 'isBoxMode',
+    key: 'isButtonsMode',
     value: String(event.detail.checked),
   })
-  storyStore.isBoxMode = event.detail.checked
+  storyStore.isButtonsMode = event.detail.checked
 }
 
 </script>

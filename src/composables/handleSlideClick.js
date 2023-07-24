@@ -45,14 +45,14 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === true &&
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === false &&
-      actionNode.image == null) ||
+      actionNode.image === null) ||
     (actionNode.audio !== null &&
       actionNode.controlSettings.autoplay === false &&
       actionNode.controlSettings.home === true &&
       actionNode.controlSettings.ok === true &&
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === true &&
-      actionNode.image == null) ||
+      actionNode.image === null) ||
     (actionNode.audio !== null &&
       actionNode.controlSettings.autoplay === true &&
       actionNode.controlSettings.home === false &&
@@ -66,7 +66,14 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === true &&
       actionNode.controlSettings.pause === true &&
       actionNode.controlSettings.wheel === false &&
-      actionNode.image !== null)
+      actionNode.image !== null) ||
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === true &&
+      actionNode.controlSettings.home === false &&
+      actionNode.controlSettings.ok === false &&
+      actionNode.controlSettings.pause === false &&
+      actionNode.controlSettings.wheel === false &&
+      actionNode.image === null)
   ) {
     return { type: 'audioSlideSet', okTransition: actionNode.okTransition };
   } else if (
@@ -111,14 +118,7 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === false &&
       actionNode.controlSettings.pause === true &&
       actionNode.controlSettings.wheel === false &&
-      actionNode.image !== null) ||
-    (actionNode.audio !== null &&
-      actionNode.controlSettings.autoplay === true &&
-      actionNode.controlSettings.home === false &&
-      actionNode.controlSettings.ok === false &&
-      actionNode.controlSettings.pause === false &&
-      actionNode.controlSettings.wheel === false &&
-      actionNode.image === null)
+      actionNode.image !== null)
   ) {
     return { type: 'displaySlideSet', okTransition: actionNode.okTransition };
   } else if (
