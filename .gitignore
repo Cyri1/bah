@@ -2,6 +2,7 @@ node_modules
 .vscode
 ios
 android
-dist
+dist/css/
+dist/js/
 resources/android/**/*
 env
