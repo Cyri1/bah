@@ -120,9 +120,8 @@ function cancel() {
 }
 
 function installPack(file) {
-  console.log(file);
   storyStore.isLoading = true
-  window.zip.unzip(file.path + file.name, '/sdcard/Documents/packs/' + file.name + '/',
+  window.zip.unzip(file.path + file.name, '/sdcard/Documents/packs/' + file.name.replace(/[&/\\[\]#,`$~%.'":*?<>{}]/g, ' ') + '/',
     function () {
       storyStore.isLoading = false
       storyStore.isDone = true
