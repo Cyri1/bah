@@ -10,7 +10,9 @@
           <ion-col size="2">
             <ion-item-sliding ref="slidingElements">
               <ion-item lines="none" :color="storyStore.theme + 'prim'">
-                <ion-label><ion-icon :icon="chevronBack" :color="storyStore.theme + 'sec'"  size="small"></ion-icon><ion-icon :color="storyStore.theme + 'sec'" :icon="settings" size="small"></ion-icon></ion-label>
+                <ion-label><ion-icon :icon="chevronBack" :color="storyStore.theme + 'sec'"
+                    size="small"></ion-icon><ion-icon :color="storyStore.theme + 'sec'" :icon="settings"
+                    size="small"></ion-icon></ion-label>
               </ion-item>
               <ion-item-options side="end" @ionSwipe="prefButton()">
                 <ion-item-option :color="storyStore.theme + 'sec'">
@@ -26,7 +28,8 @@
             </ion-button>
           </ion-col>
           <ion-col size="2" class="ion-align-self-end" v-show="storyStore.isButtonsMode">
-            <ion-button :color="storyStore.theme + 'sec'" class="box-buttons-big" @click="homeButton" icon-only size="large">
+            <ion-button :color="storyStore.theme + 'sec'" class="box-buttons-big" @click="homeButton" icon-only
+              size="large">
               <ion-icon :icon="home" size="large"></ion-icon>
             </ion-button>
             <ion-button :color="storyStore.theme + 'sec'" class="box-buttons-big" :disabled="!storyStore.slidesVisible"
@@ -52,29 +55,27 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-align-self-end" size="2" v-show="storyStore.isButtonsMode">
-            <ion-button @click="pauseButton" class="box-buttons-small" :color="storyStore.theme + 'sec'"
-              icon-only size="large">
+            <ion-button @click="pauseButton" class="box-buttons-small" :color="storyStore.theme + 'sec'" icon-only
+              size="large">
               <ion-icon :icon="pauseSharp" size="large" v-show="!storyStore.howlerIsPlaying"></ion-icon>
               <ion-icon :icon="playOutline" size="large" v-show="storyStore.howlerIsPlaying"></ion-icon>
             </ion-button>
-            <ion-button :disabled="!storyStore.slidesVisible" @click="slideClick()"
-              class="box-buttons-small" :color="storyStore.theme + 'sec'" icon-only size="large">
+            <ion-button :disabled="!storyStore.slidesVisible" @click="slideClick()" class="box-buttons-small"
+              :color="storyStore.theme + 'sec'" icon-only size="large">
               <strong>OK</strong>
             </ion-button>
-            <ion-button :disabled="!storyStore.slidesVisible"
-              @click="storyStore.swiper.slideNext()" :color="storyStore.theme + 'sec'" class="box-buttons-big" icon-only size="large">
+            <ion-button :disabled="!storyStore.slidesVisible" @click="storyStore.swiper.slideNext()"
+              :color="storyStore.theme + 'sec'" class="box-buttons-big" icon-only size="large">
               <ion-icon :icon="arrowForward" size="large"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="bottom-row">
           <ion-col size="6">
-            <ion-img class="img-theme1"
-              :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
+            <ion-img class="img-theme1" :src="'./assets/theme/' + storyStore.theme + '1.png'"></ion-img>
           </ion-col>
           <ion-col size="6">
-            <ion-img class="img-theme2"
-              :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
+            <ion-img class="img-theme2" :src="'./assets/theme/' + storyStore.theme + '2.png'"></ion-img>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -103,7 +104,7 @@ import {
   IonLabel
 } from "@ionic/vue";
 import { ref } from 'vue';
-import { home, playOutline, pauseSharp, settings , arrowForward, arrowBack, chevronBack } from "ionicons/icons";
+import { home, playOutline, pauseSharp, settings, arrowForward, arrowBack, chevronBack } from "ionicons/icons";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/effect-flip";
@@ -150,13 +151,14 @@ onMounted(() => {
       })();
     }
   })
-  storyStore.fillStoriesIndex()
+  resetSwiperSlides()
 })
 
 
 router.afterEach((to) => {
   if (to.name === 'Home') {
     storyStore.fillStoriesIndex()
+    resetSwiperSlides()
   }
 })
 
@@ -174,6 +176,15 @@ storyStore.$subscribe((mutation) => {
   }
 })
 
+function resetSwiperSlides() {
+  storyStore.activeStoryIndex = null
+  storyStore.fillStoriesIndex()
+  storyStore.fillIndexSlides()
+  storyStore.swiper.init(storyStore.swiper.el)
+  storyStore.swiper.slideToLoop(0, 0, true)
+  storyStore.swiper.emit('realIndexChange')
+}
+
 function homeButton() {
   storyStore.activeAudioSlideHowl.unload()
   storyStore.activeAudioSlideSetHowl.unload()
@@ -183,10 +194,7 @@ function homeButton() {
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
   if (storyStore.homeTransition === null) {
-    storyStore.activeStoryIndex = null
-    storyStore.fillIndexSlides()
-    storyStore.swiper.slideToLoop(0, 0, true)
-    storyStore.swiper.emit('realIndexChange')
+    resetSwiperSlides()
   }
   else {
     handleSlideClick(storyStore.homeTransition)

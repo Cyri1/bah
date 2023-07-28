@@ -11,7 +11,7 @@
     <ion-content class="ion-padding ion-margin-bottom" color="light">
       <ion-item color="light">
         <ion-text>Supprimez des packs d'histoires en cliquant sur <ion-icon color="danger" :icon="trash"></ion-icon> ou
-          choisissez les packs qui apparaitront <ion-icon color="warning" :icon="bookmark"></ion-icon> ou non <ion-icon
+          choisissez les packs qui apparaîtront <ion-icon color="warning" :icon="bookmark"></ion-icon> ou non <ion-icon
             color="warning" :icon="bookmarkOutline"></ion-icon> dans le déroulé :
           <br>
           <br>

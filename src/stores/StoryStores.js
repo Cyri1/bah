@@ -48,6 +48,19 @@ export const useStoryStore = defineStore('StoryStore', {
             var filteredData = result.data.filter(function (el) {
               return !arr.includes(el.name);
             });
+            // alphabetic order
+            filteredData.sort((a, b) => {
+              const titleA = a.name.toUpperCase();
+              const titleB = b.name.toUpperCase();
+              if (titleA < titleB) {
+                return -1;
+              }
+              if (titleA > titleB) {
+                return 1;
+              }
+              return 0;
+            });
+            /////
             this.stories = filteredData;
           }
         })

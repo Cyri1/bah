@@ -6,7 +6,6 @@
 
 <script setup>
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
-// import { CapacitorHttp } from '@capacitor/core';
 import { Device } from '@capacitor/device';
 import { App } from '@capacitor/app';
 
@@ -30,7 +29,6 @@ import { App } from '@capacitor/app';
     appVersion: appInfo.version
   };
 
-  console.log(data);
   const options = {
     method: 'POST',
     mode: 'no-cors',
@@ -43,8 +41,7 @@ import { App } from '@capacitor/app';
 
   try {
     const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php`, options);
-    const result = await fetchResponse;
-    console.log(result);
+    await fetchResponse;
   } catch (e) {
     console.log(e);
   }

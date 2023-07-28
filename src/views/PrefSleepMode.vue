@@ -6,8 +6,7 @@
           <ion-back-button class="ion-margin-start" default-href="../home"></ion-back-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button size="large" slot="end" @click="playStories()">{{ new Date(storyStore.sleepModeTotalTime *
-            1000).toISOString().substring(11, 16) }}<ion-icon color="success" :icon="play" /></ion-button>
+          <ion-button size="large" :disabled="storyStore.sleepModeTotalTime > 0 ? false : true" slot="end" @click="playStories()">{{ formatSeconds(storyStore.sleepModeTotalTime) }}<ion-icon color="success" :icon="play" /></ion-button>
         </ion-buttons>
         <ion-title>Mode nuit :</ion-title>
       </ion-toolbar>
@@ -20,9 +19,8 @@
           </ion-item>
           <div class="ion-padding" slot="content">
             <span class="wrapper" v-for="(story, index) in node[1]" :key="index">
-              <input type="checkbox"
-                @click="selectStory(story, node[0] , $event)"
-                class="checkbox-input" :id="node[0] + '-' + index" />
+              <input type="checkbox" @click="selectStory(story, node[0], $event)" class="checkbox-input"
+                :id="node[0] + '-' + index" />
               <label :for="node[0] + '-' + index">
                 <img :src="useConvertPath(node[0] + '/assets/' + story.icon)" />
               </label>
@@ -31,7 +29,7 @@
         </ion-accordion>
       </ion-accordion-group>
     </ion-content>
-    <ion-modal :is-open="storyStore.storyAudioSleepModeHowl.playing()">
+    <ion-modal ref="modalIsOpen">
       <ion-header>
         <ion-toolbar>
           <ion-title>Mode nuit en cours...</ion-title>
@@ -72,40 +70,67 @@ import {
   IonContent
 } from "@ionic/vue";
 import { play } from "ionicons/icons";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const storyStore = useStoryStore();
+const modalIsOpen = ref(false);
+
 onMounted(() => {
   useListStoryNodes()
   storyStore.selectedStories = []
   storyStore.sleepModeTotalTime = 0
 })
 
+function formatSeconds(ts) {
+  const heures = Math.floor(parseInt(ts) / 3600);
+  const minutes = Math.floor((parseInt(ts) % 3600) / 60);
+  const secondesRestantes = parseInt(ts) % 60;
+
+  const heuresFormat = heures < 10 ? `0${heures}` : heures;
+  const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
+  const secondesFormat = secondesRestantes < 10 ? `0${secondesRestantes}` : secondesRestantes;
+
+  return `${heuresFormat}:${minutesFormat}:${secondesFormat}`;
+}
+
 function selectStory(story, name, event) {
 
   var audioPath = useConvertPath(name + '/assets/' + story.audio)
   var audioSlidePath = useConvertPath(name + '/assets/' + story.audioSlide)
- console.log(audioPath);
- console.log(audioSlidePath);
-  if (event.srcElement.checked) {
-    useCountTime(audioPath, 'add')
+
+  if (!event.srcElement.parentElement.classList.contains('selectedWrapper')) {
+    event.srcElement.parentElement.classList.add('selectedWrapper');
     storyStore.selectedStories.push(audioPath)
     useReadAudioSleepModeSlide(audioSlidePath)
   }
   else {
+    event.srcElement.parentElement.classList.remove('selectedWrapper');
     let index = storyStore.selectedStories.indexOf(audioPath);
-    useCountTime(audioPath, 'remove')
     storyStore.selectedStories.splice(index, 1);
   }
-  console.log(storyStore.selectedStories);
+  useCountTime()
 }
 
 
 function playStories() {
   useReadAudioSleepModeStories()
+  modalIsOpen.value.$el.present();
 }
+
 function stopStories() {
-  storyStore.storyAudioSleepModeHowl.stop()
+  modalIsOpen.value.$el.dismiss();
+  storyStore.storyAudioSleepModeHowl.unload()
+  storyStore.selectedStories = []
+  storyStore.sleepModeTotalTime = 0
+  const checkboxInputs = document.querySelectorAll('input.checkbox-input');
+  checkboxInputs.forEach(input => {
+    input.removeAttribute('checked');
+  });
+
+  const selectedWrappers = document.querySelectorAll('.selectedWrapper');
+  selectedWrappers.forEach(el => {
+    el.classList.remove('selectedWrapper')
+  });
 }
 
 </script>
@@ -132,12 +157,12 @@ function stopStories() {
   transform-origin: 50% 50%;
 }
 
-.wrapper> :checked+label:before {
+.selectedWrapper> label:before {
   transform: scale(1);
   z-index: 1
 }
 
-.wrapper> :checked+label img {
+.selectedWrapper>label img {
   transform: scale(0.8);
   z-index: -1;
   box-shadow: 9px 6px 8px orange;

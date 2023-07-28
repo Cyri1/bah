@@ -134,17 +134,16 @@ export function useReadAudioSleepModeSlide(audio) {
   storyStore.storyAudioSleepModeSlideHowl.play();
 }
 
-export function useCountTime(audio, action) {
+export function useCountTime() {
   const storyStore = useStoryStore();
-  var howlCounter = new Howl({
-    src: [audio],
-    html5: true,
-    onload: () => {
-      if (action === 'add') {
+  storyStore.sleepModeTotalTime = 0
+  for (let audio of storyStore.selectedStories) {
+    let howlCounter = new Howl({
+      src: [audio],
+      html5: true,
+      onload: () => {
         storyStore.sleepModeTotalTime += howlCounter.duration();
-      } else if (action === 'remove') {
-        storyStore.sleepModeTotalTime -= howlCounter.duration();
-      }
-    },
-  });
+      },
+    });
+  }
 }

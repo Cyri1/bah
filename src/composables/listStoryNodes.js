@@ -4,6 +4,7 @@ import { detectTypeOfStageNode } from './handleSlideClick';
 export function useListStoryNodes() {
   var nodeList = [];
   const storyStore = useStoryStore();
+  storyStore.sortedStories = []
   for (var story of storyStore.stories) {
     for (var stageNode of story.stageNodes) {
       if (stageNode.image) {
