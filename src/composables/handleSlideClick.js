@@ -38,7 +38,16 @@ export function findNextActionNode(nextStageNodes) {
 }
 
 export function detectTypeOfStageNode(actionNode) {
-  if (
+  if (actionNode.type.includes('menu.questionstage')) {
+    return { type: 'audioSlideSet', okTransition: actionNode.okTransition };
+  }
+  else if (actionNode.type.includes('menu.optionstage') || actionNode.type === 'menu') {
+    return { type: 'displaySlideSet', okTransition: actionNode.okTransition };
+  }
+  else if (actionNode.type === 'story') {
+    return { type: 'audioStory', okTransition: actionNode.okTransition };
+  }
+  else if (
     (actionNode.audio !== null &&
       actionNode.controlSettings.autoplay === true &&
       actionNode.controlSettings.home === true &&
@@ -73,7 +82,21 @@ export function detectTypeOfStageNode(actionNode) {
       actionNode.controlSettings.ok === false &&
       actionNode.controlSettings.pause === false &&
       actionNode.controlSettings.wheel === false &&
-      actionNode.image === null)
+      actionNode.image === null) ||
+    (actionNode.audio !== null &&
+      actionNode.controlSettings.autoplay === true &&
+      actionNode.controlSettings.home === true &&
+      actionNode.controlSettings.ok === false &&
+      actionNode.controlSettings.pause === false &&
+      actionNode.controlSettings.wheel === false &&
+      actionNode.image === null) ||
+      (actionNode.audio !== null &&
+        actionNode.controlSettings.autoplay === true &&
+        actionNode.controlSettings.home === true &&
+        actionNode.controlSettings.ok === false &&
+        actionNode.controlSettings.pause === false &&
+        actionNode.controlSettings.wheel === true &&
+        actionNode.image === null)
   ) {
     return { type: 'audioSlideSet', okTransition: actionNode.okTransition };
   } else if (
