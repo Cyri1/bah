@@ -5,11 +5,11 @@
             <ion-col size="2">
                 <ion-badge class="margin-10" :color="storyStore.theme + 'sec'">
                     {{ new Date(storyStore.howlerCurrentPos * 1000).toISOString().substring(14, 19)}}/
-                {{ new Date(storyStore.storyAudioHowl.duration() * 1000).toISOString().substring(14, 19)}}
+                {{ new Date(storyStore.storyDuration * 1000).toISOString().substring(14, 19)}}
                 </ion-badge>
             </ion-col>
             <ion-col>
-                <ion-range class="audio-timeline" :pin="false" :max="storyStore.storyAudioHowl.duration()"
+                <ion-range class="audio-timeline" :pin="false" :max="storyStore.storyDuration-2"
                     :value="parseInt(storyStore.howlerCurrentPos)" @ionKnobMoveStart="onIonKnobMoveStart"
                     @ionKnobMoveEnd="onIonKnobMoveEnd" :color="storyStore.theme + 'sec'">
                 </ion-range>
@@ -31,6 +31,7 @@ import { useStoryStore } from '../stores/StoryStores';
 const storyStore = useStoryStore();
 
 function onIonKnobMoveStart() {
+    console.log(storyStore.storyAudioHowl);
     if (storyStore.storyAudioHowl.playing()) {
         storyStore.storyAudioHowl.pause()
         storyStore.howlerIsPlaying = true
@@ -38,6 +39,7 @@ function onIonKnobMoveStart() {
 }
 
 function onIonKnobMoveEnd({ detail }) {
+    console.log(storyStore.storyDuration);
     storyStore.storyAudioHowl.seek(detail.value)
     storyStore.storyAudioHowl.play()
     storyStore.howlerIsPlaying = false

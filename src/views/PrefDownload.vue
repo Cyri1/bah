@@ -18,7 +18,7 @@
         <ion-header>
           <ion-toolbar color="light">
             <ion-buttons slot="start">
-              <ion-back-button default-href="#" @click="cancel"></ion-back-button>
+              <ion-back-button class="ion-margin-start" default-href="#" @click="cancel"></ion-back-button>
             </ion-buttons>
             <ion-title>Liste des fichiers</ion-title>
           </ion-toolbar>
@@ -63,7 +63,7 @@ import {
   IonLabel,
   IonLoading,
 } from "@ionic/vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { downloadOutline } from "ionicons/icons";
 import { useStoryStore } from '../stores/StoryStores';
 import DataTable from 'datatables.net-vue3';
@@ -73,6 +73,8 @@ DataTable.use(DataTablesLib);
 import { useListDownloadedPacks } from '../composables/listDownloadedPacks';
 
 const storyStore = useStoryStore();
+const modal = ref();
+
 storyStore.loadUnofficialStoreData()
 const columns = [
   {
@@ -116,7 +118,7 @@ onMounted(() => {
 
 
 function cancel() {
-  document.querySelector('ion-modal').dismiss(null, 'cancel');
+  modal.value.$el.dismiss(null, 'cancel')
 }
 
 function installPack(file) {

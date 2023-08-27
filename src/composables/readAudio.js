@@ -26,6 +26,9 @@ export function useReadAudioActiveSlide() {
     storyStore.isAudioActiveSlideSetPlaying ||
     storyStore.activeSlides.length === 0
   ) {
+    console.log(storyStore.isAudioActiveSlideSetPlaying);
+    console.log(storyStore.activeSlides.length);
+    console.log('returned');
     return;
   }
   var convertedPath = useConvertPath(
@@ -61,12 +64,16 @@ export function useReadAudioActiveSlideSet(audio) {
 export function useReadAudioStory(audio) {
   console.log('read story');
   const storyStore = useStoryStore();
-
+  storyStore.isAudioActiveSlideSetPlaying = false;
   var convertedPath = useConvertPath(
     storyStore.activeSlides[storyStore.swiper.realIndex].name +
       '/assets/' +
       audio
   );
+  storyStore.storyAudioHowl.once('load', function () {
+    storyStore.storyDuration = storyStore.storyAudioHowl.duration()
+    console.log(storyStore.storyDuration);
+  })
   storyStore.activeAudioSlideHowl.stop();
   storyStore.activeAudioSlideSetHowl.stop();
   storyStore.storyAudioHowl.unload();

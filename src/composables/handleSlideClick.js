@@ -38,13 +38,16 @@ export function findNextActionNode(nextStageNodes) {
 }
 
 export function detectTypeOfStageNode(actionNode) {
-  if (actionNode.type.includes('menu.questionstage')) {
+  console.log('###################### trying to detect this node : ######################');
+  console.log(actionNode);
+  console.log('#########################################################################');
+  if (actionNode.type !== undefined && actionNode.type?.includes('menu.questionstage')) {
     return { type: 'audioSlideSet', okTransition: actionNode.okTransition };
   }
-  else if (actionNode.type.includes('menu.optionstage') || actionNode.type === 'menu') {
+  else if (actionNode.type !== undefined && actionNode.type?.includes('menu.optionstage') || actionNode.type === 'menu') {
     return { type: 'displaySlideSet', okTransition: actionNode.okTransition };
   }
-  else if (actionNode.type === 'story') {
+  else if (actionNode.type !== undefined && actionNode.type === 'story') {
     return { type: 'audioStory', okTransition: actionNode.okTransition };
   }
   else if (
@@ -216,7 +219,6 @@ export function detectTypeOfStageNode(actionNode) {
     return { type: 'endOfStory', okTransition: null };
   } else {
     console.log('actionNode doesnt match with any types :');
-    console.log(actionNode);
   }
 }
 

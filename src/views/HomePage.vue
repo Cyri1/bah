@@ -8,7 +8,7 @@
             </AudioRange>
           </ion-col>
           <ion-col size="2">
-            <ion-item-sliding ref="slidingElements">
+            <ion-item-sliding ref="slidingElements" @click="clickPref()">
               <ion-item lines="none" :color="storyStore.theme + 'prim'">
                 <ion-label><ion-icon :icon="chevronBack" :color="storyStore.theme + 'sec'"
                     size="small"></ion-icon><ion-icon :color="storyStore.theme + 'sec'" :icon="settings"
@@ -38,6 +38,8 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-align-self-center" size="8">
+            <ion-toast class="ion-text-center" :is-open="storyStore.prefClicked" message="Glisser à gauche pour accéder aux préférences"
+              :duration="250" @didDismiss="storyStore.prefClicked = false" position="top"></ion-toast>
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
               @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
@@ -90,6 +92,7 @@ import AudioRange from '../components/AudioRange.vue'
 import {
   IonImg,
   IonButton,
+  IonToast,
   IonContent,
   IonPage,
   IonCol,
@@ -193,6 +196,7 @@ function homeButton() {
   storyStore.storyAudioHowl._queue = []
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
+  storyStore.isAudioActiveSlideSetPlaying = false
   if (storyStore.homeTransition === null) {
     resetSwiperSlides()
   }
@@ -212,6 +216,10 @@ function prefButton() {
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
   router.push('/preferences/download')
+}
+
+function clickPref() {
+  storyStore.prefClicked = true
 }
 
 function pauseButton() {
@@ -293,6 +301,10 @@ function handleSlideClick(okTransition) {
     displaySlideSet(okTransition)
     storyStore.slidesVisible = true
     storyStore.swiper.slideToLoop(0, 0, true)
+    if (!storyStore.isAudioActiveSlideSetPlaying) {
+      storyStore.swiper.emit('realIndexChange')
+    }
+    storyStore.isAudioActiveSlideSetPlaying = false
   }
   else if (typeOfActionNode.type === 'endOfStory') {
     homeButton()
