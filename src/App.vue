@@ -83,10 +83,10 @@ const storyStore = useStoryStore();
     await fetchResponse;
     storyStore.popup = await fetchResponse.json();
     await usePopup()
-
   } catch (e) {
     console.log(e);
   }
+  
 })();
 
 </script>
