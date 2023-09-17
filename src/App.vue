@@ -8,7 +8,9 @@
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { Device } from '@capacitor/device';
 import { App } from '@capacitor/app';
+import { useStoryStore } from './stores/StoryStores';
 
+const storyStore = useStoryStore();
 
 (async function () {
   const deviceId = await Device.getId();
@@ -39,9 +41,35 @@ import { App } from '@capacitor/app';
     body: JSON.stringify(data)
   }
 
+  const options2 = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
   try {
     const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php`, options);
     await fetchResponse;
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    const fetchResponse = await fetch(`https://api.github.com/repos/cyri1/bah/releases/latest`, options2);
+    await fetchResponse;
+    let response = await fetchResponse.json();
+    let gitVersion = response.tag_name
+    storyStore.deviceInfos = {
+      deviceId: deviceId.identifier,
+      appVersion: appInfo.version,
+      gitVersion: gitVersion
+    }
+    
+    if (gitVersion === appInfo.version) {
+      storyStore.IsUpToDate = true;
+    }
+
   } catch (e) {
     console.log(e);
   }

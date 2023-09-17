@@ -1,11 +1,10 @@
-import { Directory } from '@capacitor/filesystem';
+import { useStoryStore } from '../stores/StoryStores';
 import { Capacitor } from '@capacitor/core';
 
-const basePath = '/storage/emulated/0/';
-const directory = Directory.Documents;
-
 export function useConvertPath(path) {
-  var fullPath = basePath + directory + '/packs/' + path;
+  const storyStore = useStoryStore();
+
+  var fullPath = storyStore.storagePath + path;
   var convertedPath = Capacitor.convertFileSrc(fullPath);
   return convertedPath;
 }

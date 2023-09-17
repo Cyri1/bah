@@ -38,8 +38,9 @@
             </ion-button>
           </ion-col>
           <ion-col class="ion-align-self-center" size="8">
-            <ion-toast class="ion-text-center" :is-open="storyStore.prefClicked" message="Glisser à gauche pour accéder aux préférences"
-              :duration="250" @didDismiss="storyStore.prefClicked = false" position="top"></ion-toast>
+            <ion-toast class="ion-text-center" :is-open="storyStore.prefClicked"
+              message="Glisser à gauche pour accéder aux préférences" :duration="250"
+              @didDismiss="storyStore.prefClicked = false" position="top"></ion-toast>
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
               @realIndexChange="useReadAudioActiveSlide()">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
@@ -115,9 +116,11 @@ import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
 import { usePermissionsCheck } from '../composables/permissionsCheck';
+import { useCreateNomedia } from '../composables/createNomedia';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
+import { ScreenBrightness } from '@capacitor-community/screen-brightness';
 
 const storyStore = useStoryStore();
 const slidingElements = ref();
@@ -136,7 +139,7 @@ onMounted(() => {
         const alert = await alertController.create({
           header: 'Permissions insuffisantes',
           subHeader: 'L\'application à besoin de permissions supplémentaires pour fonctionner.',
-          message: `Veuillez accorder l'autorisation "<strong>Autoriser la gestion de tous les fichiers</strong>".`,
+          message: `Veuillez accorder l'autorisation "Autoriser la gestion de tous les fichiers".`,
           buttons: [
             {
               text: 'Ouvrir les paramètres de l\'appli',
@@ -155,8 +158,8 @@ onMounted(() => {
     }
   })
   resetSwiperSlides()
+  useCreateNomedia()
 })
-
 
 router.afterEach((to) => {
   if (to.name === 'Home') {
@@ -165,12 +168,13 @@ router.afterEach((to) => {
   }
 })
 
+
 storyStore.$subscribe((mutation) => {
   if (mutation.events?.key === 'errors') {
     (async () => {
       const alert = await alertController.create({
         header: 'Erreur(s) lors de la lecture des packs d\'histoires :',
-        message: storyStore.errors.join('<br><br>'),
+        message: storyStore.errors.join(' ET '),
         buttons: ['OK'],
         cssClass: 'alert-size',
       });
@@ -197,6 +201,8 @@ function homeButton() {
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
   storyStore.isAudioActiveSlideSetPlaying = false
+  const brightness = 0.5;
+  ScreenBrightness.setBrightness({ brightness }).then()
   if (storyStore.homeTransition === null) {
     resetSwiperSlides()
   }
@@ -206,6 +212,8 @@ function homeButton() {
 }
 
 function prefButton() {
+  const brightness = 0.5;
+  ScreenBrightness.setBrightness({ brightness }).then()
   oldOkTransition = null
   slidingElements.value.$el.close();
   storyStore.activeAudioSlideHowl.stop()
@@ -225,10 +233,14 @@ function clickPref() {
 function pauseButton() {
   if (storyStore.storyAudioHowl.playing()) {
     storyStore.storyAudioHowl.pause()
+    const brightness = 0.5;
+    ScreenBrightness.setBrightness({ brightness }).then()
     storyStore.howlerIsPlaying = true
   }
   else {
     storyStore.storyAudioHowl.play()
+    const brightness = 0.0;
+    ScreenBrightness.setBrightness({ brightness }).then()
     storyStore.howlerIsPlaying = false
   }
 
@@ -300,6 +312,8 @@ function handleSlideClick(okTransition) {
   else if (typeOfActionNode.type === 'displaySlideSet') {
     displaySlideSet(okTransition)
     storyStore.slidesVisible = true
+    const brightness = 0.5;
+    ScreenBrightness.setBrightness({ brightness }).then()
     storyStore.swiper.slideToLoop(0, 0, true)
     if (!storyStore.isAudioActiveSlideSetPlaying) {
       storyStore.swiper.emit('realIndexChange')
@@ -312,6 +326,8 @@ function handleSlideClick(okTransition) {
   }
   else if (typeOfActionNode.type === 'audioStory') {
     useReadAudioStory(nextActionNode.audio)
+    const brightness = 0.0;
+    ScreenBrightness.setBrightness({ brightness }).then()
     storyStore.slidesVisible = false
     storyStore.homeTransition = nextActionNode.homeTransition
     setInterval(function () {

@@ -55,7 +55,7 @@ import { useListInstalledPacks } from '../composables/listInstalledPacks';
 import { trashOutline, bookmarkOutline, bookmark, trash } from "ionicons/icons";
 import { useStoryStore } from '../stores/StoryStores';
 import { Preferences } from '@capacitor/preferences';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem } from '@capacitor/filesystem';
 
 const storyStore = useStoryStore();
 onMounted(() => {
@@ -84,8 +84,7 @@ function favoriteStory(storyName) {
 function deleteStory(storyName) {
   try {
     Filesystem.rmdir({
-      path: 'packs/' + storyName,
-      directory: Directory.Documents,
+      path: storyStore.storagePath + storyName,
       recursive: true,
     }).then(() => {
       console.log(storyStore.installedPacks);

@@ -16,10 +16,12 @@
         <ion-card-content>
           <ion-list>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la timeline</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la
+                timeline</ion-toggle>
             </ion-item>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeButtonsMode" :checked="storyStore.isButtonsMode">Contrôle par boutons</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeButtonsMode" :checked="storyStore.isButtonsMode">Contrôle par
+                boutons</ion-toggle>
             </ion-item>
             <ion-item>
               <ion-select label="Choix du thème :" @ionChange="changeTheme" placeholder="Choisissez un thème">
@@ -34,11 +36,16 @@
       </ion-card>
       <ion-card>
         <ion-card-header>
-          <ion-card-title>Paramètres du store :</ion-card-title>
+          <ion-card-title>Paramètres du contenu :</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-button size="small" @click="storiesListModalIsOpen(true)">Ajouter une liste d'histoires au
-            store</ion-button>
+          <ion-item class="ion-margin-bottom">
+            <ion-button size="small" @click="storiesListModalIsOpen(true)">Ajouter une liste d'histoires au
+              store</ion-button>
+          </ion-item>
+          <ion-item class="ion-margin-bottom">
+            <ion-input @ionBlur="changeStoragePath" :value="storyStore.storagePath" type="text" fill="solid" label="Dossier de stockage des histoires :" labelPlacement="floating" helperText="Chemin par défaut : /sdcard/Documents/packs/"></ion-input>
+          </ion-item>
         </ion-card-content>
       </ion-card>
     </ion-content>
@@ -144,6 +151,13 @@ function activeButtonsMode(event) {
     value: String(event.detail.checked),
   })
   storyStore.isButtonsMode = event.detail.checked
+}
+function changeStoragePath(event) {
+  Preferences.set({
+    key: 'storagePath',
+    value: event.detail.srcElement.value,
+  })
+  storyStore.storagePath = event.detail.srcElement.value
 }
 
 </script>

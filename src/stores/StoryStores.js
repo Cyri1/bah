@@ -34,44 +34,57 @@ export const useStoryStore = defineStore('StoryStore', {
       storyAudioHowl: {},
       sleepModeTotalTime: 0,
       storyAudioSleepModeHowl: {},
+      storagePath: '',
       storyAudioSleepModeSlideHowl: {},
       isButtonsMode: false,
+      IsUptoDate: true,
+      deviceInfos: {},
     };
   },
   actions: {
     fillStoriesIndex() {
-      storiesIndex()
+      Preferences.get({ key: 'storagePath' })
         .then((result) => {
-          if (result.errors) {
-            this.errors = result.data;
+          if (result.value === null) {
+            this.storagePath = '/sdcard/Documents/packs/';
           } else {
-            var arr = this.unfavoriteStories;
-            var filteredData = result.data.filter(function (el) {
-              return !arr.includes(el.name);
-            });
-            // alphabetic order
-            filteredData.sort((a, b) => {
-              const titleA = a.name.toUpperCase();
-              const titleB = b.name.toUpperCase();
-              if (titleA < titleB) {
-                return -1;
-              }
-              if (titleA > titleB) {
-                return 1;
-              }
-              return 0;
-            });
-            /////
-            this.stories = filteredData;
+            this.storagePath = result.value;
           }
         })
-        .then(() => {
-          this.fillIndexSlides();
-        })
-        .then(() => {
-          this.swiper.slideToLoop(0, 100, false);
-          this.swiper.emit('realIndexChange');
-        });
+        .then(() =>
+          storiesIndex()
+            .then((result) => {
+              if (result.errors) {
+                this.errors = result.data;
+              } else {
+                var arr = this.unfavoriteStories;
+                var filteredData = result.data.filter(function (el) {
+                  return !arr.includes(el.name);
+                });
+                // alphabetic order
+                filteredData.sort((a, b) => {
+                  const titleA = a.name.toUpperCase();
+                  const titleB = b.name.toUpperCase();
+                  if (titleA < titleB) {
+                    return -1;
+                  }
+                  if (titleA > titleB) {
+                    return 1;
+                  }
+                  return 0;
+                });
+                /////
+                this.stories = filteredData;
+              }
+            })
+            .then(() => {
+              this.fillIndexSlides();
+            })
+            .then(() => {
+              this.swiper.slideToLoop(0, 100, false);
+              this.swiper.emit('realIndexChange');
+            })
+        );
     },
     fillIndexSlides() {
       //create array of stagesnodes containing squareOne
@@ -116,14 +129,6 @@ export const useStoryStore = defineStore('StoryStore', {
         }
       });
 
-      Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
-        if (result.value === null) {
-          this.unfavoriteStories = [];
-        } else {
-          this.unfavoriteStories = JSON.parse(result.value);
-        }
-      });
-
       Preferences.get({ key: 'storiesLists' }).then((result) => {
         if (result.value === null) {
           this.remoteStoriesLists = [];
@@ -131,14 +136,25 @@ export const useStoryStore = defineStore('StoryStore', {
           this.remoteStoriesLists = JSON.parse(result.value);
         }
       });
+
+      Preferences.get({ key: 'storagePath' }).then((result) => {
+        if (result.value === null) {
+          console.log('cache === null');
+          this.storagePath = '/sdcard/Documents/packs/';
+        } else {
+          console.log('cache !== null >>>' + result.value);
+          this.storagePath = result.value;
+          console.log('store data : ' + this.storagePath);
+        }
+      });
     },
     async loadUnofficialStoreData() {
       // let lists = await Preferences.get({ key: 'storiesLists' });
       // lists = JSON.parse(lists.value);
-      let lists = this.remoteStoriesLists
+      let lists = this.remoteStoriesLists;
       var fullData = [];
       console.log(lists);
-      if(lists.length) {
+      if (lists.length) {
         for (let url of lists) {
           let response = await fetch(url);
           let data = await response.json();

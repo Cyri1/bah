@@ -1,15 +1,14 @@
 
 import { useStoryStore } from '../stores/StoryStores';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem } from '@capacitor/filesystem';
 
 export async function useListInstalledPacks() {
     const storyStore = useStoryStore();
-    const directory = Directory.Documents;
+
     storyStore.installedPacks = [];
     try {
       Filesystem.readdir({
-        path: 'packs/',
-        directory: directory,
+        path: storyStore.storagePath,
       }).then((result) => {
         for (let file of result.files) {
           if (file.type == 'directory') {

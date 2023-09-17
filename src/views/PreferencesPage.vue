@@ -22,6 +22,7 @@
 
                 <ion-tab-button tab="help" href="help">
                     <ion-icon :icon="helpOutline" />
+                    <ion-badge color="danger" v-show="!storyStore.IsUptoDate" style="position: absolute; border-radius: 100%;"></ion-badge>
                 </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>
@@ -34,8 +35,12 @@ import {
     IonTabButton,
     IonTabs,
     IonRouterOutlet,
+    IonBadge,
     IonIcon
 } from "@ionic/vue";
 import { downloadOutline, libraryOutline, settingsOutline, moonOutline, helpOutline } from "ionicons/icons";
+
+import { useStoryStore } from '../stores/StoryStores';
+const storyStore = useStoryStore();
 
 </script>

@@ -1,6 +1,6 @@
 {
   "name": "bah",
-  "version": "1.0.6-beta",
+  "version": "1.1.0-beta",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,7 +18,7 @@
     "@capacitor-community/screen-brightness": "5.0.0",
     "@capacitor/android": "5.2.1",
     "@capacitor/app": "^5.0.5",
-    "@capacitor/core": "^5.0.0",
+    "@capacitor/core": "5.2.1",
     "@capacitor/device": "^5.0.6",
     "@capacitor/dialog": "^5.0.0",
     "@capacitor/filesystem": "5.1.1",
