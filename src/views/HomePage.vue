@@ -168,7 +168,6 @@ router.afterEach((to) => {
   }
 })
 
-
 storyStore.$subscribe((mutation) => {
   if (mutation.events?.key === 'errors') {
     (async () => {

@@ -39,6 +39,7 @@ export const useStoryStore = defineStore('StoryStore', {
       isButtonsMode: false,
       IsUptoDate: true,
       deviceInfos: {},
+      popup: {},
     };
   },
   actions: {

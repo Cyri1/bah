@@ -11,11 +11,18 @@
     <ion-content class="ion-padding ion-margin-bottom">
 
       <h2>Versions :</h2>
-      <ul>
-        <li>Version de l'appli : {{ storyStore.deviceInfos.appVersion }}</li>
-        <li>Dernière version de l'appli : {{ storyStore.deviceInfos.gitVersion }}</li>
-        <li>Device ID : {{ storyStore.deviceInfos.deviceId }}</li>
-      </ul>
+
+      <ion-list :inset="true">
+        <ion-item>
+          <ion-label>Version de l'appli : {{ storyStore.deviceInfos.appVersion }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label :color="storyStore.IsUptoDate ? 'danger' : ''">Dernière version de l'appli : {{ storyStore.deviceInfos.gitVersion }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Device ID : {{ storyStore.deviceInfos.deviceId }}</ion-label>
+        </ion-item>
+      </ion-list>
       <h2>Discord :</h2>
       <p>Rejoignez le Discord de <strong>Lunii Créations</strong> : <a target="_blank"
           href="https://monurl.ca/lunii.creations">https://monurl.ca/lunii.creations</a>pour obtenir plein d'histoires et
@@ -56,6 +63,9 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonList,
+  IonItem,
+  IonLabel,
 } from "@ionic/vue";
 import { useStoryStore } from '../stores/StoryStores';
 const storyStore = useStoryStore();

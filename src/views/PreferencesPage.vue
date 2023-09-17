@@ -22,7 +22,7 @@
 
                 <ion-tab-button tab="help" href="help">
                     <ion-icon :icon="helpOutline" />
-                    <ion-badge color="danger" v-show="!storyStore.IsUptoDate" style="position: absolute; border-radius: 100%;"></ion-badge>
+                    <ion-badge color="danger" v-show="storyStore.IsUptoDate" style="position: absolute; border-radius: 100%;"></ion-badge>
                 </ion-tab-button>
             </ion-tab-bar>
         </ion-tabs>

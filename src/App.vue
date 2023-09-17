@@ -9,6 +9,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { Device } from '@capacitor/device';
 import { App } from '@capacitor/app';
 import { useStoryStore } from './stores/StoryStores';
+import { usePopup } from './composables/popup';
 
 const storyStore = useStoryStore();
 
@@ -31,7 +32,7 @@ const storyStore = useStoryStore();
     appVersion: appInfo.version
   };
 
-  const options = {
+  const stats = {
     method: 'POST',
     mode: 'no-cors',
     headers: {
@@ -41,22 +42,26 @@ const storyStore = useStoryStore();
     body: JSON.stringify(data)
   }
 
-  const options2 = {
+  const appVersion = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     }
   }
 
+  const popup = {
+    method: 'GET',
+  }
+
   try {
-    const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php`, options);
+    const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php`+'?'+Date.now(), stats);
     await fetchResponse;
   } catch (e) {
     console.log(e);
   }
 
   try {
-    const fetchResponse = await fetch(`https://api.github.com/repos/cyri1/bah/releases/latest`, options2);
+    const fetchResponse = await fetch(`https://api.github.com/repos/cyri1/bah/releases/latest`+'?'+Date.now(), appVersion);
     await fetchResponse;
     let response = await fetchResponse.json();
     let gitVersion = response.tag_name
@@ -69,6 +74,15 @@ const storyStore = useStoryStore();
     if (gitVersion === appInfo.version) {
       storyStore.IsUpToDate = true;
     }
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    const fetchResponse = await fetch(`https://gist.githubusercontent.com/Cyri1/ec56bb526a7de9182b8dbb04ef549479/raw/popup.json`+'?'+Date.now(), popup);
+    await fetchResponse;
+    storyStore.popup = await fetchResponse.json();
+    await usePopup()
 
   } catch (e) {
     console.log(e);
