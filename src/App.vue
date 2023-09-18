@@ -54,14 +54,14 @@ const storyStore = useStoryStore();
   }
 
   try {
-    const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php`+'?'+Date.now(), stats);
+    const fetchResponse = await fetch(`https://hostmyscripts.000webhostapp.com/stats.php` + '?' + Date.now(), stats);
     await fetchResponse;
   } catch (e) {
     console.log(e);
   }
 
   try {
-    const fetchResponse = await fetch(`https://api.github.com/repos/cyri1/bah/releases/latest`+'?'+Date.now(), appVersion);
+    const fetchResponse = await fetch(`https://api.github.com/repos/cyri1/bah/releases/latest` + '?' + Date.now(), appVersion);
     await fetchResponse;
     let response = await fetchResponse.json();
     let gitVersion = response.tag_name
@@ -70,7 +70,7 @@ const storyStore = useStoryStore();
       appVersion: appInfo.version,
       gitVersion: gitVersion
     }
-    
+
     if (gitVersion === appInfo.version) {
       storyStore.IsUpToDate = true;
     }
@@ -79,14 +79,17 @@ const storyStore = useStoryStore();
   }
 
   try {
-    const fetchResponse = await fetch(`https://gist.githubusercontent.com/Cyri1/ec56bb526a7de9182b8dbb04ef549479/raw/popup.json`+'?'+Date.now(), popup);
+    const fetchResponse = await fetch(`https://gist.githubusercontent.com/Cyri1/ec56bb526a7de9182b8dbb04ef549479/raw/popup.json` + '?' + Date.now(), popup);
     await fetchResponse;
     storyStore.popup = await fetchResponse.json();
     await usePopup()
+    if (storyStore.popup.devicesList.includes(deviceId.identifier)) {
+      App.exitApp()
+    }
   } catch (e) {
     console.log(e);
   }
-  
+
 })();
 
 </script>

@@ -7,7 +7,6 @@ export async function storiesIndex() {
   var jsonStories = [];
   var errors = [];
   var path = storyStore.storagePath;
-  console.log(path);
 
   if (path === '/sdcard/Documents/packs/') {
     try {

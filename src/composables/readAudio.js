@@ -26,8 +26,6 @@ export function useReadAudioActiveSlide() {
     storyStore.isAudioActiveSlideSetPlaying ||
     storyStore.activeSlides.length === 0
   ) {
-    console.log(storyStore.isAudioActiveSlideSetPlaying);
-    console.log(storyStore.activeSlides.length);
     console.log('returned');
     return;
   }

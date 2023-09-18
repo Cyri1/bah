@@ -140,18 +140,13 @@ export const useStoryStore = defineStore('StoryStore', {
 
       Preferences.get({ key: 'storagePath' }).then((result) => {
         if (result.value === null) {
-          console.log('cache === null');
           this.storagePath = '/sdcard/Documents/packs/';
         } else {
-          console.log('cache !== null >>>' + result.value);
           this.storagePath = result.value;
-          console.log('store data : ' + this.storagePath);
         }
       });
     },
     async loadUnofficialStoreData() {
-      // let lists = await Preferences.get({ key: 'storiesLists' });
-      // lists = JSON.parse(lists.value);
       let lists = this.remoteStoriesLists;
       var fullData = [];
       console.log(lists);
