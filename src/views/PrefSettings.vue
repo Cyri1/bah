@@ -44,7 +44,7 @@
               store</ion-button>
           </ion-item>
           <ion-item class="ion-margin-bottom">
-            <ion-input @ionBlur="changeStoragePath" :value="storyStore.storagePath" type="text" fill="solid" label="Dossier de stockage des histoires :" labelPlacement="floating" helperText="Chemin par défaut : /sdcard/Documents/packs/"></ion-input>
+            <ion-input @ionBlur="changeStoragePath" :value="storyStore.storagePath" type="text" fill="solid" label="Dossier de stockage des histoires :" labelPlacement="floating" helperText="Chemin par défaut : /sdcard/Documents/packs/, Exemple de chemin pour la carte sd externe : /storage/XXXX-XXXX/Dossier_ou_sont_les_packs/"></ion-input>
           </ion-item>
         </ion-card-content>
       </ion-card>

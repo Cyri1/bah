@@ -17,7 +17,7 @@
           <ion-label>Version de l'appli : {{ storyStore.deviceInfos.appVersion }}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label :color="storyStore.IsUptoDate ? 'danger' : ''">Dernière version de l'appli : {{ storyStore.deviceInfos.gitVersion }}</ion-label>
+          <ion-label :color="storyStore.IsUptoDate ? '' : 'danger'">Dernière version de l'appli : {{ storyStore.deviceInfos.gitVersion }}</ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Device ID : {{ storyStore.deviceInfos.deviceId }}</ion-label>
