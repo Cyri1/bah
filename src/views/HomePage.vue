@@ -41,8 +41,9 @@
             <ion-toast class="ion-text-center" :is-open="storyStore.prefClicked"
               message="Glisser à gauche pour accéder aux préférences" :duration="250"
               @didDismiss="storyStore.prefClicked = false" position="top"></ion-toast>
+              
             <swiper :loop="true" v-show="storyStore.slidesVisible" :modules="modules" :effect="'flip'" @swiper="onSwiper"
-              @realIndexChange="useReadAudioActiveSlide()">
+              @realIndexChange="useReadAudioActiveSlide()" class="mySwiper2" :thumbs="storyStore.swiper">
               <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
                 <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
                   :src="useConvertPath(slide.name + '/assets/' + slide.image)">
@@ -121,6 +122,8 @@ import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory,
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
 import { ScreenBrightness } from '@capacitor-community/screen-brightness';
+
+
 
 const storyStore = useStoryStore();
 const slidingElements = ref();
@@ -400,4 +403,93 @@ function handleSlideClick(okTransition) {
   height: 60px;
   width: 100%;
 }
+
+
+
+
+
+
+/* 
+
+// Import Swiper styles
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+// import required modules
+import { FreeMode, Navigation, Thumbs } from 'swiper';
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper {
+  width: 100%;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+.mySwiper2 {
+  height: 80%;
+  width: 100%;
+}
+
+.mySwiper {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+/*
+<swiper :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
+              :watchSlidesProgress="true" :modules="[FreeMode, Navigation, Thumbs]" class="mySwiper">
+              <swiper-slide v-for="(slide, index) in storyStore.activeSlides" :key="index">
+                <ion-img @click="storeActiveStoryIndex(index), handleSlideClick(slide.okTransition)"
+                  :src="useConvertPath(slide.name + '/assets/' + slide.image)">
+                </ion-img>
+              </swiper-slide>
+            </swiper>
+            
+            
+            
+            */
+
 </style>
