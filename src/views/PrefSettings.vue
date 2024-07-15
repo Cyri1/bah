@@ -16,12 +16,19 @@
         <ion-card-content>
           <ion-list>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">Afficher la
-                timeline</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeTimeline" :checked="storyStore.timelineVisible">
+                Afficher la timeline
+              </ion-toggle>
             </ion-item>
             <ion-item>
-              <ion-toggle slot="end" @ionChange="activeButtonsMode" :checked="storyStore.isButtonsMode">Contrôle par
-                boutons</ion-toggle>
+              <ion-toggle slot="end" @ionChange="activeButtonsMode" :checked="storyStore.isButtonsMode">
+                Contrôle par boutons
+              </ion-toggle>
+            </ion-item>
+            <ion-item>
+              <ion-toggle slot="end" @ionChange="setDynamicBrightness" :checked="storyStore.isDynamicBrightness">
+                Luminosité dynamique
+              </ion-toggle>
             </ion-item>
             <ion-item>
               <ion-select label="Choix du thème :" @ionChange="changeTheme" placeholder="Choisissez un thème">
@@ -99,6 +106,7 @@ import {
 } from "@ionic/vue";
 import { Preferences } from '@capacitor/preferences';
 import { useStoryStore } from '../stores/StoryStores';
+import { useHighBrightness, useDefaultBrightness } from '../composables/brightness';
 
 const storyStore = useStoryStore();
 
@@ -151,6 +159,18 @@ function activeButtonsMode(event) {
     value: String(event.detail.checked),
   })
   storyStore.isButtonsMode = event.detail.checked
+}
+function setDynamicBrightness(event) {
+  Preferences.set({
+    key: 'isDynamicBrightness',
+    value: String(event.detail.checked),
+  })
+  storyStore.isDynamicBrightness = event.detail.checked
+  if (storyStore.isDynamicBrightness) {
+    useHighBrightness()
+  } else {
+    useDefaultBrightness()
+  }
 }
 function changeStoragePath(event) {
   Preferences.set({

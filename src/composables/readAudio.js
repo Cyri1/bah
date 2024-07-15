@@ -1,7 +1,7 @@
 import { Howl } from 'howler';
 import { useConvertPath } from './convertPath';
 import { useStoryStore } from '../stores/StoryStores';
-import { ScreenBrightness } from '@capacitor-community/screen-brightness';
+import { useDefaultBrightness, useCustomBrightness} from '../composables/brightness'
 
 export function initHowlers() {
   const storyStore = useStoryStore();
@@ -94,11 +94,7 @@ export function useReadAudioSleepModeStories() {
     i++;
     if (i === playlist.length) {
       console.log('Playlist end');
-      (async () => {
-        const brightness = -1;
-        await ScreenBrightness.setBrightness({ brightness });
-        console.log(await ScreenBrightness.getBrightness());
-      })();
+      useDefaultBrightness()
       return;
     } else {
       console.log('Playlist next audio');
@@ -114,9 +110,7 @@ export function useReadAudioSleepModeStories() {
   if (i === 0) {
     console.log('Playlist first audio');
     (async () => {
-      const brightness = 0.1;
-      await ScreenBrightness.setBrightness({ brightness });
-      console.log(await ScreenBrightness.getBrightness());
+      useCustomBrightness(0.1)
     })();
 
     // nothing else
