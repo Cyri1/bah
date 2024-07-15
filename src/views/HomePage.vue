@@ -116,12 +116,12 @@ import "swiper/css/effect-flip";
 import "@ionic/vue/css/ionic-swiper.css";
 import { EffectFlip } from "swiper";
 import { useConvertPath } from '../composables/convertPath';
+import { useLowBrightness, useHighBrightness } from '../composables/brightness';
 import { usePermissionsCheck } from '../composables/permissionsCheck';
 import { useCreateNomedia } from '../composables/createNomedia';
 import { useReadAudioActiveSlide, useReadAudioActiveSlideSet, useReadAudioStory, initHowlers } from '../composables/readAudio';
 import { findNextStageNodes, findNextActionNode, detectTypeOfStageNode, displaySlideSet } from '../composables/handleSlideClick';
 import { useStoryStore } from '../stores/StoryStores';
-import { ScreenBrightness } from '@capacitor-community/screen-brightness';
 
 
 
@@ -203,8 +203,7 @@ function homeButton() {
   storyStore.storyAudioHowl._src = [null]
   storyStore.slidesVisible = true
   storyStore.isAudioActiveSlideSetPlaying = false
-  const brightness = 0.5;
-  ScreenBrightness.setBrightness({ brightness }).then()
+  useHighBrightness()
   if (storyStore.homeTransition === null) {
     resetSwiperSlides()
   }
@@ -214,8 +213,7 @@ function homeButton() {
 }
 
 function prefButton() {
-  const brightness = 0.5;
-  ScreenBrightness.setBrightness({ brightness }).then()
+  useHighBrightness()
   oldOkTransition = null
   slidingElements.value.$el.close();
   storyStore.activeAudioSlideHowl.stop()
@@ -235,14 +233,12 @@ function clickPref() {
 function pauseButton() {
   if (storyStore.storyAudioHowl.playing()) {
     storyStore.storyAudioHowl.pause()
-    const brightness = 0.5;
-    ScreenBrightness.setBrightness({ brightness }).then()
+    useHighBrightness()
     storyStore.howlerIsPlaying = true
   }
   else {
     storyStore.storyAudioHowl.play()
-    const brightness = 0.0;
-    ScreenBrightness.setBrightness({ brightness }).then()
+    useLowBrightness()
     storyStore.howlerIsPlaying = false
   }
 
@@ -314,8 +310,7 @@ function handleSlideClick(okTransition) {
   else if (typeOfActionNode.type === 'displaySlideSet') {
     displaySlideSet(okTransition)
     storyStore.slidesVisible = true
-    const brightness = 0.5;
-    ScreenBrightness.setBrightness({ brightness }).then()
+    useHighBrightness()
     storyStore.swiper.slideToLoop(0, 0, true)
     if (!storyStore.isAudioActiveSlideSetPlaying) {
       storyStore.swiper.emit('realIndexChange')
@@ -328,8 +323,7 @@ function handleSlideClick(okTransition) {
   }
   else if (typeOfActionNode.type === 'audioStory') {
     useReadAudioStory(nextActionNode.audio)
-    const brightness = 0.0;
-    ScreenBrightness.setBrightness({ brightness }).then()
+    useLowBrightness()
     storyStore.slidesVisible = false
     storyStore.homeTransition = nextActionNode.homeTransition
     setInterval(function () {

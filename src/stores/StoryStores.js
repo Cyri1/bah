@@ -37,6 +37,7 @@ export const useStoryStore = defineStore('StoryStore', {
       storagePath: '',
       storyAudioSleepModeSlideHowl: {},
       isButtonsMode: false,
+      isDynamicBrightness: true,
       IsUptoDate: true,
       deviceInfos: {},
       popup: {},
@@ -120,6 +121,13 @@ export const useStoryStore = defineStore('StoryStore', {
           this.isButtonsMode = false;
         } else {
           this.isButtonsMode = JSON.parse(result.value);
+        }
+      });
+      Preferences.get({ key: 'isDynamicBrightness' }).then((result) => {
+        if (result.value === null) {
+          this.isDynamicBrightness = false;
+        } else {
+          this.isDynamicBrightness = JSON.parse(result.value);
         }
       });
       Preferences.get({ key: 'unfavoriteStories' }).then((result) => {
